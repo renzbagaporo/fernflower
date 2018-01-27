@@ -105,7 +105,8 @@ public class StructContext {
       }
 
       if (filename.endsWith(".class")) {
-        try (DataInputFullStream in = loader.getClassStream(file.getAbsolutePath(), null)) {
+        try {
+          DataInputFullStream in = loader.getClassStream(file.getAbsolutePath(), null);
           StructClass cl = new StructClass(in, isOwn, loader);
           classes.put(cl.qualifiedName, cl);
           unit.addClass(cl, filename);
@@ -124,7 +125,8 @@ public class StructContext {
 
   private void addArchive(String path, File file, int type, boolean isOwn) throws IOException {
     //noinspection IOResourceOpenedButNotSafelyClosed
-    try (ZipFile archive = type == ContextUnit.TYPE_JAR ? new JarFile(file) : new ZipFile(file)) {
+
+      ZipFile archive = type == ContextUnit.TYPE_JAR ? new JarFile(file) : new ZipFile(file);
       Enumeration<? extends ZipEntry> entries = archive.entries();
       while (entries.hasMoreElements()) {
         ZipEntry entry = entries.nextElement();
@@ -155,7 +157,6 @@ public class StructContext {
           unit.addDirEntry(name);
         }
       }
-    }
   }
 
   public Map<String, StructClass> getClasses() {
