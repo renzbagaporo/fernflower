@@ -3,7 +3,7 @@ package org.jetbrains.java.decompiler;
 
 import org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler;
 import org.jetbrains.java.decompiler.main.decompiler.PrintStreamLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.util.InterpreterUtil;
 
 import java.io.File;
@@ -42,12 +42,12 @@ public class DecompilerTestFixture {
     assertThat(targetDir.mkdirs()).isTrue();
 
     Map<String, Object> options = new HashMap<>();
-    options.put(IFernflowerPreferences.LOG_LEVEL, "warn");
-    options.put(IFernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES, "1");
-    options.put(IFernflowerPreferences.REMOVE_SYNTHETIC, "1");
-    options.put(IFernflowerPreferences.REMOVE_BRIDGE, "1");
-    options.put(IFernflowerPreferences.LITERALS_AS_IS, "1");
-    options.put(IFernflowerPreferences.UNIT_TEST_MODE, "1");
+    options.put(FernflowerPreferences.LOG_LEVEL, "warn");
+    options.put(FernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES, "1");
+    options.put(FernflowerPreferences.REMOVE_SYNTHETIC, "1");
+    options.put(FernflowerPreferences.REMOVE_BRIDGE, "1");
+    options.put(FernflowerPreferences.LITERALS_AS_IS, "1");
+    options.put(FernflowerPreferences.UNIT_TEST_MODE, "1");
     for (int i = 0; i < optionPairs.length; i += 2) {
       options.put(optionPairs[i], optionPairs[i + 1]);
     }

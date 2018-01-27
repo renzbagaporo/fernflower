@@ -9,46 +9,46 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface IFernflowerPreferences {
-  String REMOVE_BRIDGE = "rbr";
-  String REMOVE_SYNTHETIC = "rsy";
-  String DECOMPILE_INNER = "din";
-  String DECOMPILE_CLASS_1_4 = "dc4";
-  String DECOMPILE_ASSERTIONS = "das";
-  String HIDE_EMPTY_SUPER = "hes";
-  String HIDE_DEFAULT_CONSTRUCTOR = "hdc";
-  String DECOMPILE_GENERIC_SIGNATURES = "dgs";
-  String NO_EXCEPTIONS_RETURN = "ner";
-  String DECOMPILE_ENUM = "den";
-  String REMOVE_GET_CLASS_NEW = "rgn";
-  String LITERALS_AS_IS = "lit";
-  String BOOLEAN_TRUE_ONE = "bto";
-  String ASCII_STRING_CHARACTERS = "asc";
-  String SYNTHETIC_NOT_SET = "nns";
-  String UNDEFINED_PARAM_TYPE_OBJECT = "uto";
-  String USE_DEBUG_VAR_NAMES = "udv";
-  String USE_METHOD_PARAMETERS = "ump";
-  String REMOVE_EMPTY_RANGES = "rer";
-  String FINALLY_DEINLINE = "fdi";
-  String IDEA_NOT_NULL_ANNOTATION = "inn";
-  String LAMBDA_TO_ANONYMOUS_CLASS = "lac";
-  String BYTECODE_SOURCE_MAPPING = "bsm";
+public abstract class FernflowerPreferences {
+  public static String REMOVE_BRIDGE = "rbr";
+  public static String REMOVE_SYNTHETIC = "rsy";
+  public static String DECOMPILE_INNER = "din";
+  public static String DECOMPILE_CLASS_1_4 = "dc4";
+  public static String DECOMPILE_ASSERTIONS = "das";
+  public static String HIDE_EMPTY_SUPER = "hes";
+  public static String HIDE_DEFAULT_CONSTRUCTOR = "hdc";
+  public static String DECOMPILE_GENERIC_SIGNATURES = "dgs";
+  public static String NO_EXCEPTIONS_RETURN = "ner";
+  public static String DECOMPILE_ENUM = "den";
+  public static String REMOVE_GET_CLASS_NEW = "rgn";
+  public static String LITERALS_AS_IS = "lit";
+  public static String BOOLEAN_TRUE_ONE = "bto";
+  public static String ASCII_STRING_CHARACTERS = "asc";
+  public static String SYNTHETIC_NOT_SET = "nns";
+  public static String UNDEFINED_PARAM_TYPE_OBJECT = "uto";
+  public static String USE_DEBUG_VAR_NAMES = "udv";
+  public static String USE_METHOD_PARAMETERS = "ump";
+  public static String REMOVE_EMPTY_RANGES = "rer";
+  public static String FINALLY_DEINLINE = "fdi";
+  public static String IDEA_NOT_NULL_ANNOTATION = "inn";
+  public static String LAMBDA_TO_ANONYMOUS_CLASS = "lac";
+  public static String BYTECODE_SOURCE_MAPPING = "bsm";
 
-  String LOG_LEVEL = "log";
-  String MAX_PROCESSING_METHOD = "mpm";
-  String RENAME_ENTITIES = "ren";
-  String USER_RENAMER_CLASS = "urc";
-  String NEW_LINE_SEPARATOR = "nls";
-  String INDENT_STRING = "ind";
-  String BANNER = "ban";
+  public static String LOG_LEVEL = "log";
+  public static String MAX_PROCESSING_METHOD = "mpm";
+  public static String RENAME_ENTITIES = "ren";
+  public static String USER_RENAMER_CLASS = "urc";
+  public static String NEW_LINE_SEPARATOR = "nls";
+  public static String INDENT_STRING = "ind";
+  public static String BANNER = "ban";
 
-  String DUMP_ORIGINAL_LINES = "__dump_original_lines__";
-  String UNIT_TEST_MODE = "__unit_test_mode__";
+  public static String DUMP_ORIGINAL_LINES = "__dump_original_lines__";
+  public static String UNIT_TEST_MODE = "__unit_test_mode__";
 
-  String LINE_SEPARATOR_WIN = "\r\n";
-  String LINE_SEPARATOR_UNX = "\n";
+  public static String LINE_SEPARATOR_WIN = "\r\n";
+  public static String LINE_SEPARATOR_UNX = "\n";
 
-  Map<String, Object> DEFAULTS = getDefaults();
+  public static Map<String, Object> DEFAULTS = getDefaults();
 
   static Map<String, Object> getDefaults() {
     Map<String, Object> defaults = new HashMap<>();

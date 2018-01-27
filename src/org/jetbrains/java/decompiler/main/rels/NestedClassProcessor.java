@@ -7,7 +7,7 @@ import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.collectors.CounterContainer;
 import org.jetbrains.java.decompiler.main.collectors.VarNamesCollector;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
@@ -103,7 +103,7 @@ public class NestedClassProcessor {
     final VarType lambda_class_type = new VarType(lambda_class_name, true);
 
     // this pointer
-    if (!is_static_lambda_content && DecompilerContext.getOption(IFernflowerPreferences.LAMBDA_TO_ANONYMOUS_CLASS)) {
+    if (!is_static_lambda_content && DecompilerContext.getOption(FernflowerPreferences.LAMBDA_TO_ANONYMOUS_CLASS)) {
       method.varproc.getThisVars().put(new VarVersionPair(0, 0), parent_class_name);
       method.varproc.setVarName(new VarVersionPair(0, 0), parent.simpleName + ".this");
     }
@@ -609,7 +609,7 @@ public class NestedClassProcessor {
       return null;
     }
 
-    boolean noSynthFlag = DecompilerContext.getOption(IFernflowerPreferences.SYNTHETIC_NOT_SET);
+    boolean noSynthFlag = DecompilerContext.getOption(FernflowerPreferences.SYNTHETIC_NOT_SET);
 
     // no loop at the begin
     DirectNode firstNode = graph.first;

@@ -7,7 +7,7 @@ import org.jetbrains.java.decompiler.code.CodeConstants;
 import org.jetbrains.java.decompiler.main.ClassesProcessor.ClassNode;
 import org.jetbrains.java.decompiler.main.collectors.BytecodeMappingTracer;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.main.rels.ClassWrapper;
 import org.jetbrains.java.decompiler.main.rels.MethodWrapper;
 import org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor;
@@ -47,15 +47,15 @@ public class ClassWriter {
 
     if (node.type == ClassNode.CLASS_ROOT &&
         !cl.isVersionGE_1_5() &&
-        DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_CLASS_1_4)) {
+        DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_CLASS_1_4)) {
       ClassReference14Processor.processClassReferences(node);
     }
 
-    if (cl.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ENUM)) {
+    if (cl.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ENUM)) {
       EnumProcessor.clearEnum(wrapper);
     }
 
-    if (DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ASSERTIONS)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ASSERTIONS)) {
       AssertProcessor.buildAssertions(node);
     }
   }
@@ -66,7 +66,7 @@ public class ClassWriter {
       return;
     }
 
-    boolean lambdaToAnonymous = DecompilerContext.getOption(IFernflowerPreferences.LAMBDA_TO_ANONYMOUS_CLASS);
+    boolean lambdaToAnonymous = DecompilerContext.getOption(FernflowerPreferences.LAMBDA_TO_ANONYMOUS_CLASS);
 
     ClassNode outerNode = (ClassNode)DecompilerContext.getProperty(DecompilerContext.CURRENT_CLASS_NODE);
     DecompilerContext.setProperty(DecompilerContext.CURRENT_CLASS_NODE, node);
@@ -166,11 +166,11 @@ public class ClassWriter {
       dummy_tracer.incrementCurrentSourceLine(buffer.countLines(start_class_def));
 
       for (StructField fd : cl.getFields()) {
-        boolean hide = fd.isSynthetic() && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_SYNTHETIC) ||
+        boolean hide = fd.isSynthetic() && DecompilerContext.getOption(FernflowerPreferences.REMOVE_SYNTHETIC) ||
                        wrapper.getHiddenMembers().contains(InterpreterUtil.makeUniqueKey(fd.getName(), fd.getDescriptor()));
         if (hide) continue;
 
-        boolean isEnum = fd.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ENUM);
+        boolean isEnum = fd.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ENUM);
         if (isEnum) {
           if (enumFields) {
             buffer.append(',').appendLineSeparator();
@@ -201,8 +201,8 @@ public class ClassWriter {
 
       // methods
       for (StructMethod mt : cl.getMethods()) {
-        boolean hide = mt.isSynthetic() && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_SYNTHETIC) ||
-                       mt.hasModifier(CodeConstants.ACC_BRIDGE) && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_BRIDGE) ||
+        boolean hide = mt.isSynthetic() && DecompilerContext.getOption(FernflowerPreferences.REMOVE_SYNTHETIC) ||
+                       mt.hasModifier(CodeConstants.ACC_BRIDGE) && DecompilerContext.getOption(FernflowerPreferences.REMOVE_BRIDGE) ||
                        wrapper.getHiddenMembers().contains(InterpreterUtil.makeUniqueKey(mt.getName(), mt.getDescriptor()));
         if (hide) continue;
 
@@ -230,7 +230,7 @@ public class ClassWriter {
         if (inner.type == ClassNode.CLASS_MEMBER) {
           StructClass innerCl = inner.classStruct;
           boolean isSynthetic = (inner.access & CodeConstants.ACC_SYNTHETIC) != 0 || innerCl.isSynthetic();
-          boolean hide = isSynthetic && DecompilerContext.getOption(IFernflowerPreferences.REMOVE_SYNTHETIC) ||
+          boolean hide = isSynthetic && DecompilerContext.getOption(FernflowerPreferences.REMOVE_SYNTHETIC) ||
                          wrapper.getHiddenMembers().contains(innerCl.qualifiedName);
           if (hide) continue;
 
@@ -279,7 +279,7 @@ public class ClassWriter {
     int flags = node.type == ClassNode.CLASS_ROOT ? cl.getAccessFlags() : node.access;
     boolean isDeprecated = cl.hasAttribute("Deprecated");
     boolean isSynthetic = (flags & CodeConstants.ACC_SYNTHETIC) != 0 || cl.hasAttribute("Synthetic");
-    boolean isEnum = DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ENUM) && (flags & CodeConstants.ACC_ENUM) != 0;
+    boolean isEnum = DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ENUM) && (flags & CodeConstants.ACC_ENUM) != 0;
     boolean isInterface = (flags & CodeConstants.ACC_INTERFACE) != 0;
     boolean isAnnotation = (flags & CodeConstants.ACC_ANNOTATION) != 0;
 
@@ -370,7 +370,7 @@ public class ClassWriter {
     int start = buffer.length();
     boolean isInterface = cl.hasModifier(CodeConstants.ACC_INTERFACE);
     boolean isDeprecated = fd.hasAttribute("Deprecated");
-    boolean isEnum = fd.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ENUM);
+    boolean isEnum = fd.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ENUM);
 
     if (isDeprecated) {
       appendDeprecation(buffer, indent);
@@ -396,7 +396,7 @@ public class ClassWriter {
     VarType fieldType = new VarType(fd.getDescriptor(), false);
 
     GenericFieldDescriptor descriptor = null;
-    if (DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
       StructGenericSignatureAttribute attr = (StructGenericSignatureAttribute)fd.getAttribute("Signature");
       if (attr != null) {
         descriptor = GenericMain.parseFieldSignature(attr.getSignature());
@@ -491,7 +491,7 @@ public class ClassWriter {
 
             String typeName = ExprProcessor.getCastTypeName(md_content.params[i].copy());
             if (ExprProcessor.UNDEFINED_TYPE_STRING.equals(typeName) &&
-                DecompilerContext.getOption(IFernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
+                DecompilerContext.getOption(FernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
               typeName = ExprProcessor.getCastTypeName(VarType.VARTYPE_OBJECT);
             }
 
@@ -583,7 +583,7 @@ public class ClassWriter {
     try {
       boolean isInterface = cl.hasModifier(CodeConstants.ACC_INTERFACE);
       boolean isAnnotation = cl.hasModifier(CodeConstants.ACC_ANNOTATION);
-      boolean isEnum = cl.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_ENUM);
+      boolean isEnum = cl.hasModifier(CodeConstants.ACC_ENUM) && DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_ENUM);
       boolean isDeprecated = mt.hasAttribute("Deprecated");
       boolean clinit = false, init = false, dinit = false;
 
@@ -643,7 +643,7 @@ public class ClassWriter {
       }
 
       GenericMethodDescriptor descriptor = null;
-      if (DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
+      if (DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
         StructGenericSignatureAttribute attr = (StructGenericSignatureAttribute)mt.getAttribute("Signature");
         if (attr != null) {
           descriptor = GenericMain.parseMethodSignature(attr.getSignature());
@@ -704,7 +704,7 @@ public class ClassWriter {
         }
 
         List<StructMethodParametersAttribute.Entry> methodParameters = null;
-        if (DecompilerContext.getOption(IFernflowerPreferences.USE_METHOD_PARAMETERS)) {
+        if (DecompilerContext.getOption(FernflowerPreferences.USE_METHOD_PARAMETERS)) {
           StructMethodParametersAttribute attr =
             (StructMethodParametersAttribute)mt.getAttribute(StructGeneralAttribute.ATTRIBUTE_METHOD_PARAMETERS);
           if (attr != null) {
@@ -750,7 +750,7 @@ public class ClassWriter {
             }
 
             if (ExprProcessor.UNDEFINED_TYPE_STRING.equals(typeName) &&
-                DecompilerContext.getOption(IFernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
+                DecompilerContext.getOption(FernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
               typeName = ExprProcessor.getCastTypeName(VarType.VARTYPE_OBJECT);
             }
             buffer.append(typeName);
@@ -871,7 +871,7 @@ public class ClassWriter {
   }
 
   private static boolean hideConstructor(ClassWrapper wrapper, boolean init, boolean throwsExceptions, int paramCount) {
-    if (!init || throwsExceptions || paramCount > 0 || !DecompilerContext.getOption(IFernflowerPreferences.HIDE_DEFAULT_CONSTRUCTOR)) {
+    if (!init || throwsExceptions || paramCount > 0 || !DecompilerContext.getOption(FernflowerPreferences.HIDE_DEFAULT_CONSTRUCTOR)) {
       return false;
     }
 
@@ -935,7 +935,7 @@ public class ClassWriter {
   private static String getTypePrintOut(VarType type) {
     String typeText = ExprProcessor.getCastTypeName(type, false);
     if (ExprProcessor.UNDEFINED_TYPE_STRING.equals(typeText) &&
-        DecompilerContext.getOption(IFernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
+        DecompilerContext.getOption(FernflowerPreferences.UNDEFINED_PARAM_TYPE_OBJECT)) {
       typeText = ExprProcessor.getCastTypeName(VarType.VARTYPE_OBJECT, false);
     }
     return typeText;
@@ -1053,7 +1053,7 @@ public class ClassWriter {
   }
 
   public static GenericClassDescriptor getGenericClassDescriptor(StructClass cl) {
-    if (DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_GENERIC_SIGNATURES)) {
       StructGenericSignatureAttribute attr = (StructGenericSignatureAttribute)cl.getAttribute("Signature");
       if (attr != null) {
         return GenericMain.parseClassSignature(attr.getSignature());

@@ -7,7 +7,7 @@ import org.jetbrains.java.decompiler.code.cfg.ControlFlowGraph;
 import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.collectors.CounterContainer;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.code.DeadCodeHelper;
 import org.jetbrains.java.decompiler.modules.decompiler.*;
 import org.jetbrains.java.decompiler.modules.decompiler.deobfuscator.ExceptionDeobfuscator;
@@ -78,11 +78,11 @@ public class MethodProcessorRunnable implements Runnable {
 
     ExceptionDeobfuscator.restorePopRanges(graph);
 
-    if (DecompilerContext.getOption(IFernflowerPreferences.REMOVE_EMPTY_RANGES)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.REMOVE_EMPTY_RANGES)) {
       ExceptionDeobfuscator.removeEmptyRanges(graph);
     }
 
-    if (DecompilerContext.getOption(IFernflowerPreferences.NO_EXCEPTIONS_RETURN)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.NO_EXCEPTIONS_RETURN)) {
       // special case: single return instruction outside of a protected range
       DeadCodeHelper.incorporateValueReturns(graph);
     }
@@ -146,7 +146,7 @@ public class MethodProcessorRunnable implements Runnable {
         }
       }
 
-      if (DecompilerContext.getOption(IFernflowerPreferences.IDEA_NOT_NULL_ANNOTATION)) {
+      if (DecompilerContext.getOption(FernflowerPreferences.IDEA_NOT_NULL_ANNOTATION)) {
         if (IdeaNotNullHelper.removeHardcodedChecks(root, mt)) {
           SequenceHelper.condenseSequences(root);
 

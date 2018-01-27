@@ -8,7 +8,7 @@ import org.jetbrains.java.decompiler.code.cfg.BasicBlock;
 import org.jetbrains.java.decompiler.code.cfg.ControlFlowGraph;
 import org.jetbrains.java.decompiler.code.cfg.ExceptionRangeCFG;
 import org.jetbrains.java.decompiler.main.DecompilerContext;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 
 import java.util.*;
 
@@ -127,7 +127,7 @@ public class DeadCodeHelper {
           List<BasicBlock> lst = range.getProtectedRange();
 
           if (lst.size() == 1 && lst.get(0) == block) {
-            if (DecompilerContext.getOption(IFernflowerPreferences.REMOVE_EMPTY_RANGES)) {
+            if (DecompilerContext.getOption(FernflowerPreferences.REMOVE_EMPTY_RANGES)) {
               block.removeSuccessorException(range.getHandler());
               lstRanges.remove(i);
 

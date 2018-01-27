@@ -7,7 +7,7 @@ import org.jetbrains.java.decompiler.code.CodeConstants;
 import org.jetbrains.java.decompiler.main.collectors.BytecodeSourceMapper;
 import org.jetbrains.java.decompiler.main.collectors.ImportCollector;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.main.extern.IIdentifierRenamer;
 import org.jetbrains.java.decompiler.main.rels.ClassWrapper;
 import org.jetbrains.java.decompiler.main.rels.LambdaProcessor;
@@ -54,7 +54,7 @@ public class ClassesProcessor {
     Map<String, Set<String>> mapEnclosingClassReferences = new HashMap<>();
     Map<String, String> mapNewSimpleNames = new HashMap<>();
 
-    boolean bDecompileInner = DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_INNER);
+    boolean bDecompileInner = DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_INNER);
 
     // create class nodes
     for (StructClass cl : context.getClasses().values()) {
@@ -264,13 +264,13 @@ public class ClassesProcessor {
 
       buffer.append(classBuffer);
 
-      if (DecompilerContext.getOption(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING)) {
+      if (DecompilerContext.getOption(FernflowerPreferences.BYTECODE_SOURCE_MAPPING)) {
         BytecodeSourceMapper mapper = DecompilerContext.getBytecodeSourceMapper();
         mapper.addTotalOffset(offsetLines);
-        if (DecompilerContext.getOption(IFernflowerPreferences.DUMP_ORIGINAL_LINES)) {
+        if (DecompilerContext.getOption(FernflowerPreferences.DUMP_ORIGINAL_LINES)) {
           buffer.dumpOriginalLineNumbers(mapper.getOriginalLinesMapping());
         }
-        if (DecompilerContext.getOption(IFernflowerPreferences.UNIT_TEST_MODE)) {
+        if (DecompilerContext.getOption(FernflowerPreferences.UNIT_TEST_MODE)) {
           buffer.appendLineSeparator();
           mapper.dumpMapping(buffer, true);
         }

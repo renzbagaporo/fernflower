@@ -5,7 +5,7 @@ import org.jetbrains.java.decompiler.main.collectors.BytecodeSourceMapper;
 import org.jetbrains.java.decompiler.main.collectors.CounterContainer;
 import org.jetbrains.java.decompiler.main.collectors.ImportCollector;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.decompiler.vars.VarProcessor;
 import org.jetbrains.java.decompiler.modules.renamer.PoolInterceptor;
 import org.jetbrains.java.decompiler.struct.StructContext;
@@ -59,12 +59,12 @@ public class DecompilerContext {
     Objects.requireNonNull(structContext);
     Objects.requireNonNull(classProcessor);
 
-    Map<String, Object> properties = new HashMap<>(IFernflowerPreferences.DEFAULTS);
+    Map<String, Object> properties = new HashMap<>(FernflowerPreferences.DEFAULTS);
     if (customProperties != null) {
       properties.putAll(customProperties);
     }
 
-    String level = (String)properties.get(IFernflowerPreferences.LOG_LEVEL);
+    String level = (String)properties.get(FernflowerPreferences.LOG_LEVEL);
     if (level != null) {
       try {
         logger.setSeverity(IFernflowerLogger.Severity.valueOf(level.toUpperCase(Locale.US)));
@@ -107,8 +107,8 @@ public class DecompilerContext {
   }
 
   public static String getNewLineSeparator() {
-    return getOption(IFernflowerPreferences.NEW_LINE_SEPARATOR) ?
-           IFernflowerPreferences.LINE_SEPARATOR_UNX : IFernflowerPreferences.LINE_SEPARATOR_WIN;
+    return getOption(FernflowerPreferences.NEW_LINE_SEPARATOR) ?
+           FernflowerPreferences.LINE_SEPARATOR_UNX : FernflowerPreferences.LINE_SEPARATOR_WIN;
   }
 
   public static IFernflowerLogger getLogger() {

@@ -4,7 +4,7 @@
 package org.jetbrains.java.decompiler;
 
 import org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class SingleClassesTest {
   @Before
   public void setUp() throws IOException {
     fixture = new DecompilerTestFixture();
-    fixture.setUp(IFernflowerPreferences.BYTECODE_SOURCE_MAPPING, "1",
-                  IFernflowerPreferences.DUMP_ORIGINAL_LINES, "1");
+    fixture.setUp(FernflowerPreferences.BYTECODE_SOURCE_MAPPING, "1",
+                  FernflowerPreferences.DUMP_ORIGINAL_LINES, "1");
   }
 
   @After

@@ -4,7 +4,7 @@
 package org.jetbrains.java.decompiler.util;
 
 import org.jetbrains.java.decompiler.main.DecompilerContext;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 
 import java.util.*;
 import java.util.function.Function;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 @SuppressWarnings("UnusedReturnValue")
 public class TextBuffer {
   private final String myLineSeparator = DecompilerContext.getNewLineSeparator();
-  private final String myIndent = (String)DecompilerContext.getProperty(IFernflowerPreferences.INDENT_STRING);
+  private final String myIndent = (String)DecompilerContext.getProperty(FernflowerPreferences.INDENT_STRING);
   private final StringBuilder myStringBuilder;
   private Map<Integer, Integer> myLineToOffsetMapping = null;
 

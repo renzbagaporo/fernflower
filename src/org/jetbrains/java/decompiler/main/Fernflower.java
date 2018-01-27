@@ -27,9 +27,9 @@ public class Fernflower implements IDecompiledData {
     classProcessor = new ClassesProcessor(structContext);
 
     PoolInterceptor interceptor = null;
-    Object rename = options.get(IFernflowerPreferences.RENAME_ENTITIES);
-    if ("1".equals(rename) || rename == null && "1".equals(IFernflowerPreferences.DEFAULTS.get(IFernflowerPreferences.RENAME_ENTITIES))) {
-      helper = loadHelper((String)options.get(IFernflowerPreferences.USER_RENAMER_CLASS));
+    Object rename = options.get(FernflowerPreferences.RENAME_ENTITIES);
+    if ("1".equals(rename) || rename == null && "1".equals(FernflowerPreferences.DEFAULTS.get(FernflowerPreferences.RENAME_ENTITIES))) {
+      helper = loadHelper((String)options.get(FernflowerPreferences.USER_RENAMER_CLASS));
       interceptor = new PoolInterceptor();
       converter = new IdentifierConverter(structContext, helper, interceptor);
     }
@@ -86,7 +86,7 @@ public class Fernflower implements IDecompiledData {
   public String getClassContent(StructClass cl) {
     try {
       TextBuffer buffer = new TextBuffer(ClassesProcessor.AVERAGE_CLASS_SIZE);
-      buffer.append(DecompilerContext.getProperty(IFernflowerPreferences.BANNER).toString());
+      buffer.append(DecompilerContext.getProperty(FernflowerPreferences.BANNER).toString());
       classProcessor.writeClass(cl, buffer);
       return buffer.toString();
     }

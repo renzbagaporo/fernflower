@@ -4,7 +4,7 @@ package org.jetbrains.java.decompiler.modules.decompiler;
 import org.jetbrains.java.decompiler.code.CodeConstants;
 import org.jetbrains.java.decompiler.main.ClassesProcessor.ClassNode;
 import org.jetbrains.java.decompiler.main.DecompilerContext;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.main.rels.ClassWrapper;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.SSAConstructorSparseEx;
@@ -56,7 +56,7 @@ public class SimplifyExprentsHelper {
 
     List<Exprent> expressions = stat.getExprents();
     if (expressions == null) {
-      boolean processClass14 = DecompilerContext.getOption(IFernflowerPreferences.DECOMPILE_CLASS_1_4);
+      boolean processClass14 = DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_CLASS_1_4);
 
       while (true) {
         boolean changed = false;
@@ -144,7 +144,7 @@ public class SimplifyExprentsHelper {
       }
 
       // remove getClass() invocation, which is part of a qualified new
-      if (DecompilerContext.getOption(IFernflowerPreferences.REMOVE_GET_CLASS_NEW)) {
+      if (DecompilerContext.getOption(FernflowerPreferences.REMOVE_GET_CLASS_NEW)) {
         if (isQualifiedNewGetClass(current, next)) {
           list.remove(index);
           res = true;

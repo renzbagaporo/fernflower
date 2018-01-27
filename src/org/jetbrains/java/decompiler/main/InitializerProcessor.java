@@ -3,7 +3,7 @@ package org.jetbrains.java.decompiler.main;
 
 import org.jetbrains.java.decompiler.code.CodeConstants;
 import org.jetbrains.java.decompiler.main.ClassesProcessor.ClassNode;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
+import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 import org.jetbrains.java.decompiler.main.rels.ClassWrapper;
 import org.jetbrains.java.decompiler.main.rels.MethodWrapper;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
@@ -31,7 +31,7 @@ public class InitializerProcessor {
     // This can happen if InnerClasses attributes are erased
     liftConstructor(wrapper);
 
-    if (DecompilerContext.getOption(IFernflowerPreferences.HIDE_EMPTY_SUPER)) {
+    if (DecompilerContext.getOption(FernflowerPreferences.HIDE_EMPTY_SUPER)) {
       hideEmptySuper(wrapper);
     }
   }
