@@ -178,7 +178,14 @@ public class DomHelper {
         lstPosts.add(stt.id);
       }
 
-      lstPosts.sort(Comparator.comparing(mapSortOrder::get));
+      lstPosts.sort(Comparator.comparing(new Function<Integer, Integer>() {
+		@Override
+		public Integer apply(Integer v) {
+			return mapSortOrder.get(v);
+		}
+	}));
+      
+      
 
       if (lstPosts.size() > 1 && lstPosts.get(0).intValue() == st.id) {
         lstPosts.add(lstPosts.remove(0));

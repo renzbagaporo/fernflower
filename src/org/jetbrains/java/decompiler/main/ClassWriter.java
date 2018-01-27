@@ -30,6 +30,7 @@ import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.TextBuffer;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class ClassWriter {
   private final PoolInterceptor interceptor;
@@ -650,7 +651,12 @@ public class ClassWriter {
             long actualParams = md.params.length;
             List<VarVersionPair> mask = methodWrapper.synthParameters;
             if (mask != null) {
-              actualParams = mask.stream().filter(Objects::isNull).count();
+              actualParams = mask.stream().filter(new Predicate<VarVersionPair>() {
+				@Override
+				public boolean test(VarVersionPair v) {
+					return Objects.isNull(v);
+				}
+			}).count();
             }
             else if (isEnum && init) {
               actualParams -= 2;
