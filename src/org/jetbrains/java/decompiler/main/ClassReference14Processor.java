@@ -8,6 +8,7 @@ import org.jetbrains.java.decompiler.main.rels.ClassWrapper;
 import org.jetbrains.java.decompiler.main.rels.MethodWrapper;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph;
+import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.BasicBlockStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.CatchStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement;
@@ -74,7 +75,7 @@ public class ClassReference14Processor {
     }
   }
 
-  private static void processClassRec(ClassNode node, Map<ClassWrapper, MethodWrapper> mapClassMeths, Set<ClassWrapper> setFound) {
+  private static void processClassRec(ClassNode node, final Map<ClassWrapper, MethodWrapper> mapClassMeths, final Set<ClassWrapper> setFound) {
     ClassWrapper wrapper = node.getWrapper();
 
     // search code
@@ -82,14 +83,17 @@ public class ClassReference14Processor {
       RootStatement root = meth.root;
       if (root != null) {
         DirectGraph graph = meth.getOrBuildGraph();
-        graph.iterateExprents(exprent -> {
-          for (Entry<ClassWrapper, MethodWrapper> ent : mapClassMeths.entrySet()) {
-            if (replaceInvocations(exprent, ent.getKey(), ent.getValue())) {
-              setFound.add(ent.getKey());
-            }
-          }
-          return 0;
-        });
+        graph.iterateExprents(new ExprentIterator() {
+			@Override
+			public int processExprent(Exprent exprent) {
+			  for (Entry<ClassWrapper, MethodWrapper> ent : mapClassMeths.entrySet()) {
+			    if (replaceInvocations(exprent, ent.getKey(), ent.getValue())) {
+			      setFound.add(ent.getKey());
+			    }
+			  }
+			  return 0;
+			}
+		});
       }
     }
 

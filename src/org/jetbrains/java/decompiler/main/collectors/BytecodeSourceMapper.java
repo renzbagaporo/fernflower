@@ -8,6 +8,7 @@ import org.jetbrains.java.decompiler.util.TextBuffer;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class BytecodeSourceMapper {
   private int offset_total;
@@ -20,8 +21,18 @@ public class BytecodeSourceMapper {
   private final Set<Integer> unmappedLines = new TreeSet<>();
 
   public void addMapping(String className, String methodName, int bytecodeOffset, int sourceLine) {
-    Map<String, Map<Integer, Integer>> class_mapping = mapping.computeIfAbsent(className, k -> new LinkedHashMap<>()); // need to preserve order
-    Map<Integer, Integer> method_mapping = class_mapping.computeIfAbsent(methodName, k -> new HashMap<>());
+    Map<String, Map<Integer, Integer>> class_mapping = mapping.computeIfAbsent(className, new Function<String, Map<String, Map<Integer, Integer>>>() {
+		@Override
+		public Map<String, Map<Integer, Integer>> apply(String k) {
+			return new LinkedHashMap<>();
+		}
+	}); // need to preserve order
+    Map<Integer, Integer> method_mapping = class_mapping.computeIfAbsent(methodName, new Function<String, Map<Integer, Integer>>() {
+		@Override
+		public Map<Integer, Integer> apply(String k) {
+			return new HashMap<>();
+		}
+	});
 
     // don't overwrite
     if (!method_mapping.containsKey(bytecodeOffset)) {

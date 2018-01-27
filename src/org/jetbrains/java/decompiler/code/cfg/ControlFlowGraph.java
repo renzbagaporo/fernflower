@@ -14,6 +14,7 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 public class ControlFlowGraph implements CodeConstants {
 
@@ -105,7 +106,7 @@ public class ControlFlowGraph implements CodeConstants {
     DeadCodeHelper.removeEmptyBlocks(this);
   }
 
-  public void removeBlock(BasicBlock block) {
+  public void removeBlock(final BasicBlock block) {
 
     while (block.getSuccs().size() > 0) {
       block.removeSuccessor(block.getSuccs().get(0));
@@ -142,7 +143,12 @@ public class ControlFlowGraph implements CodeConstants {
       }
     }
 
-    subroutines.entrySet().removeIf(ent -> ent.getKey() == block || ent.getValue() == block);
+    subroutines.entrySet().removeIf(new Predicate<Entry<BasicBlock, BasicBlock>>() {
+		@Override
+		public boolean test(Entry<BasicBlock, BasicBlock> ent) {
+			return ent.getKey() == block || ent.getValue() == block;
+		}
+	});
   }
 
   public ExceptionRangeCFG getExceptionRange(BasicBlock handler, BasicBlock block) {

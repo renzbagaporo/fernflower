@@ -26,6 +26,7 @@ import org.jetbrains.java.decompiler.util.TextBuffer;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class ClassesProcessor {
   public static final int AVERAGE_CLASS_SIZE = 16 * 1024;
@@ -104,9 +105,19 @@ public class ClassesProcessor {
                 }
 
                 // reference to the nested class
-                mapNestedClassReferences.computeIfAbsent(enclClassName, k -> new HashSet<>()).add(innerName);
+                mapNestedClassReferences.computeIfAbsent(enclClassName, new Function<String, Set<String>>() {
+					@Override
+					public Set<String> apply(String k) {
+						return new HashSet<>();
+					}
+				}).add(innerName);
                 // reference to the enclosing class
-                mapEnclosingClassReferences.computeIfAbsent(innerName, k -> new HashSet<>()).add(enclClassName);
+                mapEnclosingClassReferences.computeIfAbsent(innerName, new Function<String, Set<String>>() {
+					@Override
+					public Set<String> apply(String k) {
+						return new HashSet<>();
+					}
+				}).add(enclClassName);
               }
             }
           }

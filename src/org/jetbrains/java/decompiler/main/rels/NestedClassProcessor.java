@@ -10,6 +10,7 @@ import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph;
+import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectNode;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.DoStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement;
@@ -87,19 +88,19 @@ public class NestedClassProcessor {
       return;
     }
 
-    MethodWrapper method = parent.getWrapper().getMethods().getWithKey(child.lambdaInformation.content_method_key);
-    MethodWrapper enclosingMethod = parent.getWrapper().getMethods().getWithKey(child.enclosingMethod);
+    final MethodWrapper method = parent.getWrapper().getMethods().getWithKey(child.lambdaInformation.content_method_key);
+    final MethodWrapper enclosingMethod = parent.getWrapper().getMethods().getWithKey(child.enclosingMethod);
 
     MethodDescriptor md_lambda = MethodDescriptor.parseDescriptor(child.lambdaInformation.method_descriptor);
-    MethodDescriptor md_content = MethodDescriptor.parseDescriptor(child.lambdaInformation.content_method_descriptor);
+    final MethodDescriptor md_content = MethodDescriptor.parseDescriptor(child.lambdaInformation.content_method_descriptor);
 
-    int vars_count = md_content.params.length - md_lambda.params.length;
-    boolean is_static_lambda_content = child.lambdaInformation.is_content_method_static;
+    final int vars_count = md_content.params.length - md_lambda.params.length;
+    final boolean is_static_lambda_content = child.lambdaInformation.is_content_method_static;
 
     String parent_class_name = parent.getWrapper().getClassStruct().qualifiedName;
     String lambda_class_name = child.simpleName;
 
-    VarType lambda_class_type = new VarType(lambda_class_name, true);
+    final VarType lambda_class_type = new VarType(lambda_class_name, true);
 
     // this pointer
     if (!is_static_lambda_content && DecompilerContext.getOption(IFernflowerPreferences.LAMBDA_TO_ANONYMOUS_CLASS)) {
@@ -107,45 +108,48 @@ public class NestedClassProcessor {
       method.varproc.setVarName(new VarVersionPair(0, 0), parent.simpleName + ".this");
     }
 
-    Map<VarVersionPair, String> mapNewNames = new HashMap<>();
+    final Map<VarVersionPair, String> mapNewNames = new HashMap<>();
 
-    enclosingMethod.getOrBuildGraph().iterateExprents(exprent -> {
-      List<Exprent> lst = exprent.getAllExprents(true);
-      lst.add(exprent);
+    enclosingMethod.getOrBuildGraph().iterateExprents(new ExprentIterator() {
+		@Override
+		public int processExprent(Exprent exprent) {
+		  List<Exprent> lst = exprent.getAllExprents(true);
+		  lst.add(exprent);
 
-      for (Exprent expr : lst) {
-        if (expr.type == Exprent.EXPRENT_NEW) {
-          NewExprent new_expr = (NewExprent)expr;
+		  for (Exprent expr : lst) {
+		    if (expr.type == Exprent.EXPRENT_NEW) {
+		      NewExprent new_expr = (NewExprent)expr;
 
-          VarNamesCollector enclosingCollector = new VarNamesCollector(enclosingMethod.varproc.getVarNames());
+		      VarNamesCollector enclosingCollector = new VarNamesCollector(enclosingMethod.varproc.getVarNames());
 
-          if (new_expr.isLambda() && lambda_class_type.equals(new_expr.getNewType())) {
-            InvocationExprent inv_dynamic = new_expr.getConstructor();
+		      if (new_expr.isLambda() && lambda_class_type.equals(new_expr.getNewType())) {
+		        InvocationExprent inv_dynamic = new_expr.getConstructor();
 
-            int param_index = is_static_lambda_content ? 0 : 1;
-            int varIndex = is_static_lambda_content ? 0 : 1;
+		        int param_index = is_static_lambda_content ? 0 : 1;
+		        int varIndex = is_static_lambda_content ? 0 : 1;
 
-            for (int i = 0; i < md_content.params.length; ++i) {
-              VarVersionPair varVersion = new VarVersionPair(varIndex, 0);
-              if (i < vars_count) {
-                Exprent param = inv_dynamic.getLstParameters().get(param_index + i);
+		        for (int i = 0; i < md_content.params.length; ++i) {
+		          VarVersionPair varVersion = new VarVersionPair(varIndex, 0);
+		          if (i < vars_count) {
+		            Exprent param = inv_dynamic.getLstParameters().get(param_index + i);
 
-                if (param.type == Exprent.EXPRENT_VAR) {
-                  mapNewNames.put(varVersion, enclosingMethod.varproc.getVarName(new VarVersionPair((VarExprent)param)));
-                }
-              }
-              else {
-                mapNewNames.put(varVersion, enclosingCollector.getFreeName(method.varproc.getVarName(varVersion)));
-              }
+		            if (param.type == Exprent.EXPRENT_VAR) {
+		              mapNewNames.put(varVersion, enclosingMethod.varproc.getVarName(new VarVersionPair((VarExprent)param)));
+		            }
+		          }
+		          else {
+		            mapNewNames.put(varVersion, enclosingCollector.getFreeName(method.varproc.getVarName(varVersion)));
+		          }
 
-              varIndex += md_content.params[i].stackSize;
-            }
-          }
-        }
-      }
+		          varIndex += md_content.params[i].stackSize;
+		        }
+		      }
+		    }
+		  }
 
-      return 0;
-    });
+		  return 0;
+		}
+	});
 
     // update names of local variables
     Set<String> setNewOuterNames = new HashSet<>(mapNewNames.values());

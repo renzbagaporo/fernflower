@@ -9,10 +9,12 @@ import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.Exprent;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.VarExprent;
+import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.vars.VarProcessor;
 import org.jetbrains.java.decompiler.modules.decompiler.vars.VarVersionPair;
 import org.jetbrains.java.decompiler.struct.StructClass;
+import org.jetbrains.java.decompiler.struct.StructField;
 import org.jetbrains.java.decompiler.struct.StructMethod;
 import org.jetbrains.java.decompiler.struct.attr.StructLocalVariableTableAttribute;
 import org.jetbrains.java.decompiler.struct.gen.MethodDescriptor;
@@ -22,6 +24,8 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ClassWrapper {
   private final StructClass classStruct;
@@ -46,7 +50,7 @@ public class ClassWrapper {
       DecompilerContext.getLogger().startMethod(mt.getName() + " " + mt.getDescriptor());
 
       MethodDescriptor md = MethodDescriptor.parseDescriptor(mt.getDescriptor());
-      VarProcessor varProc = new VarProcessor(mt, md);
+      final VarProcessor varProc = new VarProcessor(mt, md);
       DecompilerContext.startMethod(varProc);
 
       VarNamesCollector vc = varProc.getVarNamesCollector();
@@ -135,8 +139,13 @@ public class ClassWrapper {
 
       if (!isError) {
         // rename vars so that no one has the same name as a field
-        VarNamesCollector namesCollector = new VarNamesCollector();
-        classStruct.getFields().forEach(f -> namesCollector.addName(f.getName()));
+        final VarNamesCollector namesCollector = new VarNamesCollector();
+        classStruct.getFields().forEach(new Consumer<StructField>() {
+			@Override
+			public void accept(StructField f) {
+				namesCollector.addName(f.getName());
+			}
+		});
         varProc.refreshVarNames(namesCollector);
 
         // if debug information present and should be used
@@ -147,20 +156,31 @@ public class ClassWrapper {
             varProc.setDebugVarNames(attr.getMapParamNames());
 
             // the rest is here
-            methodWrapper.getOrBuildGraph().iterateExprents(exprent -> {
-              List<Exprent> lst = exprent.getAllExprents(true);
-              lst.add(exprent);
-              lst.stream()
-                .filter(e -> e.type == Exprent.EXPRENT_VAR)
-                .forEach(e -> {
-                  VarExprent varExprent = (VarExprent)e;
-                  String name = varExprent.getDebugName(mt);
-                  if (name != null) {
-                    varProc.setVarName(varExprent.getVarVersionPair(), name);
-                  }
-                });
-              return 0;
-            });
+            methodWrapper.getOrBuildGraph().iterateExprents(new ExprentIterator() {
+				@Override
+				public int processExprent(Exprent exprent) {
+				  List<Exprent> lst = exprent.getAllExprents(true);
+				  lst.add(exprent);
+				  lst.stream()
+				    .filter(new Predicate<Exprent>() {
+						@Override
+						public boolean test(Exprent e) {
+							return e.type == Exprent.EXPRENT_VAR;
+						}
+					})
+				    .forEach(new Consumer<Exprent>() {
+						@Override
+						public void accept(Exprent e) {
+						  VarExprent varExprent = (VarExprent)e;
+						  String name = varExprent.getDebugName(mt);
+						  if (name != null) {
+						    varProc.setVarName(varExprent.getVarVersionPair(), name);
+						  }
+						}
+					});
+				  return 0;
+				}
+			});
           }
         }
       }

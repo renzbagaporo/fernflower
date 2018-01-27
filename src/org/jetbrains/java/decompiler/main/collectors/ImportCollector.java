@@ -11,6 +11,8 @@ import org.jetbrains.java.decompiler.struct.StructContext;
 import org.jetbrains.java.decompiler.struct.StructField;
 
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ImportCollector {
@@ -146,13 +148,17 @@ public class ImportCollector {
 
   private List<String> packImports() {
     return mapSimpleNames.entrySet().stream()
-      .filter(ent ->
-                // exclude the current class or one of the nested ones
-                // empty, java.lang and the current packages
-                !setNotImportedNames.contains(ent.getKey()) &&
-                !ent.getValue().isEmpty() &&
-                !JAVA_LANG_PACKAGE.equals(ent.getValue()) &&
-                !ent.getValue().equals(currentPackagePoint)
+      .filter(new Predicate<Entry<String, String>>() {
+		@Override
+		public boolean test(Entry<String, String> ent) {
+			return // exclude the current class or one of the nested ones
+			// empty, java.lang and the current packages
+			!setNotImportedNames.contains(ent.getKey()) &&
+			!ent.getValue().isEmpty() &&
+			!JAVA_LANG_PACKAGE.equals(ent.getValue()) &&
+			!ent.getValue().equals(currentPackagePoint);
+		}
+	}
       )
       .sorted(Map.Entry.<String, String>comparingByValue().thenComparing(Map.Entry.comparingByKey()))
       .map(ent -> ent.getValue() + "." + ent.getKey())
