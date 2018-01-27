@@ -35,7 +35,7 @@ public class ExceptionDeobfuscator {
 
   public static void restorePopRanges(ControlFlowGraph graph) {
 
-    List<Range> lstRanges = new ArrayList<>();
+    List<Range> lstRanges = new ArrayList<Range>();
 
     // aggregate ranges
     for (ExceptionRangeCFG range : graph.getExceptions()) {
@@ -68,13 +68,13 @@ public class ExceptionDeobfuscator {
 
           if (firstinstr.opcode == CodeConstants.opc_pop ||
               firstinstr.opcode == CodeConstants.opc_astore) {
-            Set<BasicBlock> setrange = new HashSet<>(range.protectedRange);
+            Set<BasicBlock> setrange = new HashSet<BasicBlock>(range.protectedRange);
 
             for (Range range_super : lstRanges) { // finally or strict superset
 
               if (range != range_super) {
 
-                Set<BasicBlock> setrange_super = new HashSet<>(range_super.protectedRange);
+                Set<BasicBlock> setrange_super = new HashSet<BasicBlock>(range_super.protectedRange);
 
                 if (!setrange.contains(range_super.handler) && !setrange_super.contains(handler)
                     && (range_super.uniqueStr == null || setrange_super.containsAll(setrange))) {
@@ -100,7 +100,7 @@ public class ExceptionDeobfuscator {
                       graph.getBlocks().addWithKey(newblock, newblock.id);
 
 
-                      List<BasicBlock> lstTemp = new ArrayList<>();
+                      List<BasicBlock> lstTemp = new ArrayList<BasicBlock>();
                       lstTemp.addAll(handler.getPreds());
                       lstTemp.addAll(handler.getPredExceptions());
 
@@ -146,7 +146,7 @@ public class ExceptionDeobfuscator {
 
   public static void insertEmptyExceptionHandlerBlocks(ControlFlowGraph graph) {
 
-    Set<BasicBlock> setVisited = new HashSet<>();
+    Set<BasicBlock> setVisited = new HashSet<BasicBlock>();
 
     for (ExceptionRangeCFG range : graph.getExceptions()) {
       BasicBlock handler = range.getHandler();
@@ -160,7 +160,7 @@ public class ExceptionDeobfuscator {
       graph.getBlocks().addWithKey(emptyblock, emptyblock.id);
 
       // only exception predecessors considered
-      List<BasicBlock> lstTemp = new ArrayList<>(handler.getPredExceptions());
+      List<BasicBlock> lstTemp = new ArrayList<BasicBlock>(handler.getPredExceptions());
 
       // replace predecessors
       for (BasicBlock pred : lstTemp) {
@@ -217,7 +217,7 @@ public class ExceptionDeobfuscator {
       }
 
       public Set<? extends IGraphNode> getRoots() {
-        return new HashSet<>(Collections.singletonList(graph.getFirst()));
+        return new HashSet<IGraphNode>(Collections.singletonList(graph.getFirst()));
       }
     });
 

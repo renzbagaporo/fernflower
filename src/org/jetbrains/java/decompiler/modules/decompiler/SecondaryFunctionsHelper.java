@@ -29,7 +29,7 @@ public class SecondaryFunctionsHelper {
     FunctionExprent.FUNCTION_CADD
   };
 
-  private static final HashMap<Integer, Integer[]> mapNumComparisons = new HashMap<>();
+  private static final HashMap<Integer, Integer[]> mapNumComparisons = new HashMap<Integer, Integer[]>();
 
   static {
     mapNumComparisons.put(FunctionExprent.FUNCTION_EQ,
@@ -88,7 +88,7 @@ public class SecondaryFunctionsHelper {
     while (replaced) {
       replaced = false;
 
-      List<Object> lstObjects = new ArrayList<>(stat.getExprents() == null ? stat.getSequentialObjects() : stat.getExprents());
+      List<Object> lstObjects = new ArrayList<Object>(stat.getExprents() == null ? stat.getSequentialObjects() : stat.getExprents());
 
       for (int i = 0; i < lstObjects.size(); i++) {
         Object obj = lstObjects.get(i);
@@ -215,7 +215,7 @@ public class SecondaryFunctionsHelper {
                 }
 
                 if (val == -1) {
-                  List<Exprent> lstBitNotOperand = new ArrayList<>();
+                  List<Exprent> lstBitNotOperand = new ArrayList<Exprent>();
                   lstBitNotOperand.add(lstOperands.get(1 - i));
                   return new FunctionExprent(FunctionExprent.FUNCTION_BIT_NOT, lstBitNotOperand, fexpr.bytecode);
                 }
@@ -236,7 +236,7 @@ public class SecondaryFunctionsHelper {
                     return lstOperands.get(1 - i);
                   }
                   else {
-                    List<Exprent> lstNotOperand = new ArrayList<>();
+                    List<Exprent> lstNotOperand = new ArrayList<Exprent>();
                     lstNotOperand.add(lstOperands.get(1 - i));
                     return new FunctionExprent(FunctionExprent.FUNCTION_BOOL_NOT, lstNotOperand, fexpr.bytecode);
                   }

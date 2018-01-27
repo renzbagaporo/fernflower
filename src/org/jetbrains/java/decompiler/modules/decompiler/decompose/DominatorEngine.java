@@ -11,7 +11,7 @@ public class DominatorEngine {
 
   private final Statement statement;
 
-  private final VBStyleCollection<Integer, Integer> colOrderedIDoms = new VBStyleCollection<>();
+  private final VBStyleCollection<Integer, Integer> colOrderedIDoms = new VBStyleCollection<Integer, Integer>();
 
 
   public DominatorEngine(Statement statement) {

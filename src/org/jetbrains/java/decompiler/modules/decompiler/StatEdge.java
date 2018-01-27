@@ -49,7 +49,7 @@ public class StatEdge {
   public StatEdge(Statement source, Statement destination, List<String> exceptions) {
     this(TYPE_EXCEPTION, source, destination);
     if (exceptions != null) {
-      this.exceptions = new ArrayList<>(exceptions);
+      this.exceptions = new ArrayList<String>(exceptions);
     }
   }
 

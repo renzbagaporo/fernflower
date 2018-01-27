@@ -21,7 +21,7 @@ public class SwitchHelper {
     Exprent value = switchExprent.getValue();
     if (isEnumArray(value)) {
       List<List<Exprent>> caseValues = switchStatement.getCaseValues();
-      final Map<Exprent, Exprent> mapping = new HashMap<>(caseValues.size());
+      final Map<Exprent, Exprent> mapping = new HashMap<Exprent, Exprent>(caseValues.size());
       ArrayExprent array = (ArrayExprent)value;
       final FieldExprent arrayField = (FieldExprent)array.getArray();
       ClassesProcessor.ClassNode classNode =
@@ -45,9 +45,9 @@ public class SwitchHelper {
         }
       }
 
-      List<List<Exprent>> realCaseValues = new ArrayList<>(caseValues.size());
+      List<List<Exprent>> realCaseValues = new ArrayList<List<Exprent>>(caseValues.size());
       for (List<Exprent> caseValue : caseValues) {
-        List<Exprent> values = new ArrayList<>(caseValue.size());
+        List<Exprent> values = new ArrayList<Exprent>(caseValue.size());
         realCaseValues.add(values);
         for (Exprent exprent : caseValue) {
           if (exprent == null) {

@@ -168,7 +168,7 @@ public class LoopExtractHelper {
 
     loop.addSuccessor(new StatEdge(StatEdge.TYPE_REGULAR, loop, target));
 
-    for (StatEdge edge : new ArrayList<>(block.getLabelEdges())) {
+    for (StatEdge edge : new ArrayList<StatEdge>(block.getLabelEdges())) {
       if (edge.getType() == StatEdge.TYPE_CONTINUE || edge == ifedge) {
         loop.addLabeledEdge(edge);
       }

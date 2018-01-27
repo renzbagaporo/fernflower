@@ -25,7 +25,7 @@ public class SequenceHelper {
 
     if (stat.type == Statement.TYPE_SEQUENCE) {
 
-      List<Statement> lst = new ArrayList<>(stat.getStats());
+      List<Statement> lst = new ArrayList<Statement>(stat.getStats());
 
       boolean unfolded = false;
 
@@ -69,7 +69,7 @@ public class SequenceHelper {
               st.removeSuccessor(edge);
             }
 
-            for (StatEdge edge : new HashSet<>(st.getLabelEdges())) {
+            for (StatEdge edge : new HashSet<StatEdge>(st.getLabelEdges())) {
               if (edge.getSource() != last) {
                 last.addLabeledEdge(edge);
               }

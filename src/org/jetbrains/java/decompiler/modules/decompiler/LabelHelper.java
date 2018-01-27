@@ -49,7 +49,7 @@ public class LabelHelper {
           if (dest.type != Statement.TYPE_DUMMYEXIT) {
             Statement parent = dest.getParent();
 
-            List<Statement> lst = new ArrayList<>();
+            List<Statement> lst = new ArrayList<Statement>();
             if (parent.type == Statement.TYPE_SEQUENCE) {
               lst.addAll(parent.getStats());
             }
@@ -124,7 +124,7 @@ public class LabelHelper {
 
   public static void lowClosures(Statement stat) {
 
-    for (StatEdge edge : new ArrayList<>(stat.getLabelEdges())) {
+    for (StatEdge edge : new ArrayList<StatEdge>(stat.getLabelEdges())) {
 
       if (edge.getType() == StatEdge.TYPE_BREAK) {  // FIXME: ?
         for (Statement st : stat.getStats()) {
@@ -167,7 +167,7 @@ public class LabelHelper {
 
   private static HashMap<Statement, List<StatEdge>> setExplicitEdges(Statement stat) {
 
-    HashMap<Statement, List<StatEdge>> mapEdges = new HashMap<>();
+    HashMap<Statement, List<StatEdge>> mapEdges = new HashMap<Statement, List<StatEdge>>();
 
     if (stat.getExprents() != null) {
       return mapEdges;
@@ -265,7 +265,7 @@ public class LabelHelper {
           Statement stlast = swst.getCaseStatements().get(last);
           if (stlast.getExprents() != null && stlast.getExprents().isEmpty()) {
             StatEdge edge = stlast.getAllSuccessorEdges().get(0);
-            mapEdges.put(edge.getDestination(), new ArrayList<>(Collections.singletonList(edge)));
+            mapEdges.put(edge.getDestination(), new ArrayList<StatEdge>(Collections.singletonList(edge)));
           }
           else {
             mapEdges = setExplicitEdges(stlast);
@@ -326,7 +326,7 @@ public class LabelHelper {
             edge.explicit = false;
           }
 
-          mapEdges.put(newedge.getDestination(), new ArrayList<>(Collections.singletonList(newedge)));
+          mapEdges.put(newedge.getDestination(), new ArrayList<StatEdge>(Collections.singletonList(newedge)));
         }
       }
     }
@@ -374,7 +374,7 @@ public class LabelHelper {
     }
 
     if (statedge != null) {
-      mapEdges.put(statedge.getDestination(), new ArrayList<>(Collections.singletonList(statedge)));
+      mapEdges.put(statedge.getDestination(), new ArrayList<StatEdge>(Collections.singletonList(statedge)));
     }
   }
 
@@ -407,8 +407,8 @@ public class LabelHelper {
   }
 
   private static class LabelSets {
-    private final Set<Statement> breaks = new HashSet<>();
-    private final Set<Statement> continues = new HashSet<>();
+    private final Set<Statement> breaks = new HashSet<Statement>();
+    private final Set<Statement> continues = new HashSet<Statement>();
   }
 
   private static LabelSets processStatementLabel(Statement stat) {

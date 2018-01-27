@@ -36,7 +36,7 @@ public class ExprProcessor implements CodeConstants {
   public static final String UNKNOWN_TYPE_STRING = "<unknown>";
   public static final String NULL_TYPE_STRING = "<null>";
 
-  private static final Map<Integer, Integer> mapConsts = new HashMap<>();
+  private static final Map<Integer, Integer> mapConsts = new HashMap<Integer, Integer>();
   static {
     mapConsts.put(opc_arraylength, FunctionExprent.FUNCTION_ARRAY_LENGTH);
     mapConsts.put(opc_checkcast, FunctionExprent.FUNCTION_CAST);
@@ -110,32 +110,32 @@ public class ExprProcessor implements CodeConstants {
     DirectGraph dgraph = flatthelper.buildDirectGraph(root);
 
     // collect finally entry points
-    Set<String> setFinallyShortRangeEntryPoints = new HashSet<>();
+    Set<String> setFinallyShortRangeEntryPoints = new HashSet<String>();
     for (List<FinallyPathWrapper> lst : dgraph.mapShortRangeFinallyPaths.values()) {
       for (FinallyPathWrapper finwrap : lst) {
         setFinallyShortRangeEntryPoints.add(finwrap.entry);
       }
     }
 
-    Set<String> setFinallyLongRangeEntryPaths = new HashSet<>();
+    Set<String> setFinallyLongRangeEntryPaths = new HashSet<String>();
     for (List<FinallyPathWrapper> lst : dgraph.mapLongRangeFinallyPaths.values()) {
       for (FinallyPathWrapper finwrap : lst) {
         setFinallyLongRangeEntryPaths.add(finwrap.source + "##" + finwrap.entry);
       }
     }
 
-    Map<String, VarExprent> mapCatch = new HashMap<>();
+    Map<String, VarExprent> mapCatch = new HashMap<String, VarExprent>();
     collectCatchVars(root, flatthelper, mapCatch);
 
-    Map<DirectNode, Map<String, PrimitiveExprsList>> mapData = new HashMap<>();
+    Map<DirectNode, Map<String, PrimitiveExprsList>> mapData = new HashMap<DirectNode, Map<String, PrimitiveExprsList>>();
 
-    LinkedList<DirectNode> stack = new LinkedList<>();
-    LinkedList<LinkedList<String>> stackEntryPoint = new LinkedList<>();
+    LinkedList<DirectNode> stack = new LinkedList<DirectNode>();
+    LinkedList<LinkedList<String>> stackEntryPoint = new LinkedList<LinkedList<String>>();
 
     stack.add(dgraph.first);
     stackEntryPoint.add(new LinkedList<String>());
 
-    Map<String, PrimitiveExprsList> map = new HashMap<>();
+    Map<String, PrimitiveExprsList> map = new HashMap<String, PrimitiveExprsList>();
     map.put(null, new PrimitiveExprsList());
     mapData.put(dgraph.first, map);
 
@@ -177,10 +177,10 @@ public class ExprProcessor implements CodeConstants {
           Map<String, PrimitiveExprsList> mapSucc = mapData.computeIfAbsent(nd, new Function<DirectNode, Map<String, PrimitiveExprsList>>() {
 			@Override
 			public Map<String, PrimitiveExprsList> apply(DirectNode k) {
-				return new HashMap<>();
+				return new HashMap<String, PrimitiveExprsList>();
 			}
 		});
-          LinkedList<String> ndentrypoints = new LinkedList<>(entrypoints);
+          LinkedList<String> ndentrypoints = new LinkedList<String>(entrypoints);
 
           if (setFinallyLongRangeEntryPaths.contains(node.id + "##" + nd.id)) {
             ndentrypoints.addLast(node.id);
@@ -657,7 +657,7 @@ public class ExprProcessor implements CodeConstants {
 
     int base = VarExprent.STACK_BASE + stack.size();
 
-    LinkedList<VarExprent> lst = new LinkedList<>();
+    LinkedList<VarExprent> lst = new LinkedList<VarExprent>();
 
     for (int i = -1; i >= offset; i--) {
       Exprent varex = stack.pop();

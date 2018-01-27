@@ -219,8 +219,8 @@ public class NestedMemberAccess {
 
         DirectGraph graph = meth.getOrBuildGraph();
 
-        HashSet<DirectNode> setVisited = new HashSet<>();
-        LinkedList<DirectNode> stack = new LinkedList<>();
+        HashSet<DirectNode> setVisited = new HashSet<DirectNode>();
+        LinkedList<DirectNode> stack = new LinkedList<DirectNode>();
         stack.add(graph.first);
 
         while (!stack.isEmpty()) {  // TODO: replace with interface iterator?

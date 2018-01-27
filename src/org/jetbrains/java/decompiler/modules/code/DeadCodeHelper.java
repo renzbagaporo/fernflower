@@ -16,8 +16,8 @@ public class DeadCodeHelper {
 
   public static void removeDeadBlocks(ControlFlowGraph graph) {
 
-    LinkedList<BasicBlock> stack = new LinkedList<>();
-    HashSet<BasicBlock> setStacked = new HashSet<>();
+    LinkedList<BasicBlock> stack = new LinkedList<BasicBlock>();
+    HashSet<BasicBlock> setStacked = new HashSet<BasicBlock>();
 
     stack.add(graph.getFirst());
     setStacked.add(graph.getFirst());
@@ -25,7 +25,7 @@ public class DeadCodeHelper {
     while (!stack.isEmpty()) {
       BasicBlock block = stack.removeFirst();
 
-      List<BasicBlock> lstSuccs = new ArrayList<>(block.getSuccs());
+      List<BasicBlock> lstSuccs = new ArrayList<BasicBlock>(block.getSuccs());
       lstSuccs.addAll(block.getSuccExceptions());
 
       for (BasicBlock succ : lstSuccs) {
@@ -36,7 +36,7 @@ public class DeadCodeHelper {
       }
     }
 
-    HashSet<BasicBlock> setAllBlocks = new HashSet<>(graph.getBlocks());
+    HashSet<BasicBlock> setAllBlocks = new HashSet<BasicBlock>(graph.getBlocks());
     setAllBlocks.removeAll(setStacked);
 
     for (BasicBlock block : setAllBlocks) {
@@ -80,7 +80,7 @@ public class DeadCodeHelper {
         }
       }
 
-      HashSet<BasicBlock> setExits = new HashSet<>(graph.getLast().getPreds());
+      HashSet<BasicBlock> setExits = new HashSet<BasicBlock>(graph.getLast().getPreds());
 
       if (block.getPredExceptions().isEmpty() &&
           (!setExits.contains(block) || block.getPreds().size() == 1)) {
@@ -95,15 +95,15 @@ public class DeadCodeHelper {
           }
         }
 
-        HashSet<BasicBlock> setPreds = new HashSet<>(block.getPreds());
-        HashSet<BasicBlock> setSuccs = new HashSet<>(block.getSuccs());
+        HashSet<BasicBlock> setPreds = new HashSet<BasicBlock>(block.getPreds());
+        HashSet<BasicBlock> setSuccs = new HashSet<BasicBlock>(block.getSuccs());
 
         // collect common exception ranges of predecessors and successors
         HashSet<BasicBlock> setCommonExceptionHandlers = null;
         for (int i = 0; i < 2; ++i) {
           for (BasicBlock pred : i == 0 ? setPreds : setSuccs) {
             if (setCommonExceptionHandlers == null) {
-              setCommonExceptionHandlers = new HashSet<>(pred.getSuccExceptions());
+              setCommonExceptionHandlers = new HashSet<BasicBlock>(pred.getSuccExceptions());
             }
             else {
               setCommonExceptionHandlers.retainAll(pred.getSuccExceptions());
@@ -145,7 +145,7 @@ public class DeadCodeHelper {
           BasicBlock pred = block.getPreds().get(0);
           pred.removeSuccessor(block);
 
-          List<BasicBlock> lstSuccs = new ArrayList<>(block.getSuccs());
+          List<BasicBlock> lstSuccs = new ArrayList<BasicBlock>(block.getSuccs());
           for (BasicBlock succ : lstSuccs) {
             block.removeSuccessor(succ);
             pred.addSuccessor(succ);
@@ -191,13 +191,13 @@ public class DeadCodeHelper {
 
   public static boolean isDominator(ControlFlowGraph graph, BasicBlock block, BasicBlock dom) {
 
-    HashSet<BasicBlock> marked = new HashSet<>();
+    HashSet<BasicBlock> marked = new HashSet<BasicBlock>();
 
     if (block == dom) {
       return true;
     }
 
-    LinkedList<BasicBlock> lstNodes = new LinkedList<>();
+    LinkedList<BasicBlock> lstNodes = new LinkedList<BasicBlock>();
     lstNodes.add(block);
 
     while (!lstNodes.isEmpty()) {
@@ -248,7 +248,7 @@ public class DeadCodeHelper {
   public static void connectDummyExitBlock(ControlFlowGraph graph) {
 
     BasicBlock exit = graph.getLast();
-    for (BasicBlock block : new HashSet<>(exit.getPreds())) {
+    for (BasicBlock block : new HashSet<BasicBlock>(exit.getPreds())) {
       exit.removePredecessor(block);
       block.addSuccessor(exit);
     }
@@ -297,8 +297,8 @@ public class DeadCodeHelper {
 
           if (!block.getPreds().isEmpty()) {
 
-            HashSet<BasicBlock> setPredHandlersUnion = new HashSet<>();
-            HashSet<BasicBlock> setPredHandlersIntersection = new HashSet<>();
+            HashSet<BasicBlock> setPredHandlersUnion = new HashSet<BasicBlock>();
+            HashSet<BasicBlock> setPredHandlersIntersection = new HashSet<BasicBlock>();
 
             boolean firstpred = true;
             for (BasicBlock pred : block.getPreds()) {
@@ -325,7 +325,7 @@ public class DeadCodeHelper {
             }
 
             // remove redundant ranges
-            HashSet<BasicBlock> setRangesToBeRemoved = new HashSet<>(block.getSuccExceptions());
+            HashSet<BasicBlock> setRangesToBeRemoved = new HashSet<BasicBlock>(block.getSuccExceptions());
             setRangesToBeRemoved.removeAll(setPredHandlersUnion);
 
             for (BasicBlock handler : setRangesToBeRemoved) {
@@ -355,7 +355,7 @@ public class DeadCodeHelper {
               }
 
               // remove superfluous ranges from successors
-              for (BasicBlock succ : new HashSet<>(block.getSuccExceptions())) {
+              for (BasicBlock succ : new HashSet<BasicBlock>(block.getSuccExceptions())) {
                 if (!bpred.getSuccExceptions().contains(succ)) {
                   ExceptionRangeCFG range = graph.getExceptionRange(succ, block);
 

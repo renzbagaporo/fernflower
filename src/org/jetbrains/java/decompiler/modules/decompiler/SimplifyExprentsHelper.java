@@ -275,7 +275,7 @@ public class SimplifyExprentsHelper {
           }
 
           VarExprent arrVar = (VarExprent)as.getLeft();
-          Map<Integer, Exprent> mapInit = new HashMap<>();
+          Map<Integer, Exprent> mapInit = new HashMap<Integer, Exprent>();
 
           int i = 1;
           while (index + i < list.size() && i <= size) {
@@ -310,7 +310,7 @@ public class SimplifyExprentsHelper {
           double fraction = ((double)mapInit.size()) / size;
 
           if ((arrVar.isStack() && fraction > 0) || (size <= 7 && fraction >= 0.3) || (size > 7 && fraction >= 0.7)) {
-            List<Exprent> lstRet = new ArrayList<>();
+            List<Exprent> lstRet = new ArrayList<Exprent>();
 
             VarType arrayType = newExpr.getNewType().decreaseArrayDim();
             ConstExprent defaultVal = ExprProcessor.getDefaultArrayValue(arrayType);
@@ -636,7 +636,7 @@ public class SimplifyExprentsHelper {
                 }
 
                 if (found) {
-                  List<Exprent> data = new ArrayList<>(statement.getFirst().getExprents());
+                  List<Exprent> data = new ArrayList<Exprent>(statement.getFirst().getExprents());
 
                   List<Exprent> operands = Arrays.asList(statement.getHeadexprent().getCondition(), ifAssign.getRight(), elseAssign.getRight());
                   data.add(new AssignmentExprent(ifVar, new FunctionExprent(FunctionExprent.FUNCTION_IIF, operands, ifHeadExprBytecode), ifHeadExprBytecode));
@@ -677,7 +677,7 @@ public class SimplifyExprentsHelper {
                 return false;
               }
 
-              List<Exprent> data = new ArrayList<>(statement.getFirst().getExprents());
+              List<Exprent> data = new ArrayList<Exprent>(statement.getFirst().getExprents());
 
               data.add(new ExitExprent(ifExit.getExitType(), new FunctionExprent(FunctionExprent.FUNCTION_IIF,
                                                                                Arrays.asList(
@@ -715,7 +715,7 @@ public class SimplifyExprentsHelper {
 
       assignment.replaceExprent(assignment.getRight(), new ConstExprent(VarType.VARTYPE_CLASS, class_name, null));
 
-      List<Exprent> data = new ArrayList<>(stat.getFirst().getExprents());
+      List<Exprent> data = new ArrayList<Exprent>(stat.getFirst().getExprents());
 
       stat.setExprents(data);
 
