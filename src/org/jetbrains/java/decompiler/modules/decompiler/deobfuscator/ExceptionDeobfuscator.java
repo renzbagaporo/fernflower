@@ -283,12 +283,13 @@ public class ExceptionDeobfuscator {
   public static boolean hasObfuscatedExceptions(ControlFlowGraph graph) {
     Map<BasicBlock, Set<BasicBlock>> mapRanges = new HashMap<BasicBlock, Set<BasicBlock>>();
     for (ExceptionRangeCFG range : graph.getExceptions()) {
-      mapRanges.computeIfAbsent(range.getHandler(), new Function<BasicBlock, Set<BasicBlock>>() {
-		@Override
-		public Set<BasicBlock> apply(BasicBlock k) {
-			return new HashSet<BasicBlock>();
-		}
-	}).addAll(range.getProtectedRange());
+    
+      if(!mapRanges.containsKey(range.getHandler()) || mapRanges.get(range.getHandler()) == null)
+      {
+    	  Set<BasicBlock> toAdd = new HashSet<BasicBlock>(); 
+    	  toAdd.addAll(range.getProtectedRange());
+    	  mapRanges.put(range.getHandler(), toAdd);
+      }
     }
 
     for (Entry<BasicBlock, Set<BasicBlock>> ent : mapRanges.entrySet()) {

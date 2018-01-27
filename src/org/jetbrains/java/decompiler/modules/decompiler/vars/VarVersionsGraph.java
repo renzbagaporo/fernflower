@@ -118,6 +118,9 @@ public class VarVersionsGraph {
 			return new ArrayList<VarVersionEdge>(n.succs);
 		}
 	});
+      
+      
+      
       for (; index < lstSuccs.size(); index++) {
         VarVersionNode succ = lstSuccs.get(index).dest;
 

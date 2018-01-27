@@ -85,12 +85,16 @@ public class StructLocalVariableTableAttribute extends StructGeneralAttribute {
   }
 
   public boolean containsName(final String name) {
-    return localVariables.stream().anyMatch(new Predicate<LocalVariable>() {
-		@Override
-		public boolean test(LocalVariable v) {
-			return v.name == name;
+	
+	for(LocalVariable v : localVariables)
+	{
+		if(v.name.equals(name))
+		{
+			return true;
 		}
-	});
+	}
+	
+	return false;
   }
 
   public Map<Integer, String> getMapParamNames() {

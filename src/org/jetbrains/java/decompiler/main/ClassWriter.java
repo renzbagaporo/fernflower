@@ -651,12 +651,17 @@ public class ClassWriter {
             long actualParams = md.params.length;
             List<VarVersionPair> mask = methodWrapper.synthParameters;
             if (mask != null) {
-              actualParams = mask.stream().filter(new Predicate<VarVersionPair>() {
-				@Override
-				public boolean test(VarVersionPair v) {
-					return Objects.isNull(v);
-				}
-			}).count();
+              int count = 0;
+              
+              for (VarVersionPair v : mask)
+              {
+            	  if (v == null)
+            	  {
+            		  count++;
+            	  }
+              }  
+              
+              actualParams = count;
             }
             else if (isEnum && init) {
               actualParams -= 2;

@@ -22,10 +22,9 @@ import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class ClassWrapper {
   private final StructClass classStruct;
@@ -140,12 +139,12 @@ public class ClassWrapper {
       if (!isError) {
         // rename vars so that no one has the same name as a field
         final VarNamesCollector namesCollector = new VarNamesCollector();
-        classStruct.getFields().forEach(new Consumer<StructField>() {
-			@Override
-			public void accept(StructField f) {
-				namesCollector.addName(f.getName());
-			}
-		});
+        
+        for(StructField f : classStruct.getFields())
+        {
+        	namesCollector.addName(f.getName());
+        }
+        
         varProc.refreshVarNames(namesCollector);
 
         // if debug information present and should be used
@@ -161,23 +160,26 @@ public class ClassWrapper {
 				public int processExprent(Exprent exprent) {
 				  List<Exprent> lst = exprent.getAllExprents(true);
 				  lst.add(exprent);
-				  lst.stream()
-				    .filter(new Predicate<Exprent>() {
-						@Override
-						public boolean test(Exprent e) {
-							return e.type == Exprent.EXPRENT_VAR;
-						}
-					})
-				    .forEach(new Consumer<Exprent>() {
-						@Override
-						public void accept(Exprent e) {
-						  VarExprent varExprent = (VarExprent)e;
-						  String name = varExprent.getDebugName(mt);
-						  if (name != null) {
-						    varProc.setVarName(varExprent.getVarVersionPair(), name);
-						  }
-						}
-					});
+				  
+				  List<Exprent> filtered = new LinkedList<Exprent>();
+				  
+				  for(Exprent e : lst)
+				  {
+					  if(e.type == Exprent.EXPRENT_VAR)
+					  {
+						  filtered.add(e);
+					  }
+				  }
+				  
+				  for(Exprent e : filtered)
+				  {
+					  VarExprent varExprent = (VarExprent)e;
+					  String name = varExprent.getDebugName(mt);
+					  if (name != null) {
+					    varProc.setVarName(varExprent.getVarVersionPair(), name);
+					  }
+				  }
+				  
 				  return 0;
 				}
 			});

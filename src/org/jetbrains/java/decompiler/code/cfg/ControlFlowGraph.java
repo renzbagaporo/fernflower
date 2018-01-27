@@ -142,13 +142,18 @@ public class ControlFlowGraph implements CodeConstants {
         }
       }
     }
-
-    subroutines.entrySet().removeIf(new Predicate<Entry<BasicBlock, BasicBlock>>() {
-		@Override
-		public boolean test(Entry<BasicBlock, BasicBlock> ent) {
-			return ent.getKey() == block || ent.getValue() == block;
-		}
-	});
+    
+    List<Entry<BasicBlock, BasicBlock>> toRemove = new LinkedList<Entry<BasicBlock, BasicBlock>>();
+    
+    for (Entry<BasicBlock, BasicBlock> ent : subroutines.entrySet())
+    {
+    	if(ent.getKey() == block || ent.getValue() == block)
+    	{
+    		toRemove.add(ent);
+    	}
+    }
+    
+    subroutines.entrySet().removeAll(toRemove);
   }
 
   public ExceptionRangeCFG getExceptionRange(BasicBlock handler, BasicBlock block) {

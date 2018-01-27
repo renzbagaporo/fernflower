@@ -4,6 +4,7 @@ package org.jetbrains.java.decompiler.modules.decompiler.deobfuscator;
 import org.jetbrains.java.decompiler.modules.decompiler.StatEdge;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.BasicBlockStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.Statement;
+import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -165,12 +166,13 @@ public class IrreducibleCFGDeobfuscator {
       res = ((BasicBlockStatement)statement).getBlock().getSeq().length();
     }
     else {
-      res = statement.getStats().stream().mapToInt(new ToIntFunction<Statement>() {
-		@Override
-		public int applyAsInt(Statement v) {
-			return IrreducibleCFGDeobfuscator.getStatementSize(v);
-		}
-	}).sum();
+      
+      res = 0;
+      
+      for(Statement v : statement.getStats())
+      {
+    	  res += IrreducibleCFGDeobfuscator.getStatementSize(v);
+      }
     }
 
     return res;
