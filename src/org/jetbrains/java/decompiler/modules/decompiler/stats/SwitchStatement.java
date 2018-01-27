@@ -162,7 +162,7 @@ public class SwitchStatement extends Statement {
 
   public List<Object> getSequentialObjects() {
 
-    List<Object> lst = new ArrayList<>(stats);
+    List<Object> lst = new ArrayList<Object>(stats);
     lst.add(1, headexprent.get(0));
 
     return lst;

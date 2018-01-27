@@ -29,7 +29,13 @@ public class ExprUtil {
     }
     else if (parameters > 0 && node.type == ClassNode.CLASS_MEMBER && (node.access & CodeConstants.ACC_STATIC) == 0) {
       // non-static member class
-      mask = new ArrayList<>(Collections.nCopies(parameters, null));
+      mask = new ArrayList<VarVersionPair>();
+      
+      for(int i = 0; i < parameters; i++)
+      {
+    	  mask.add(null);
+      }
+ 
       mask.set(0, new VarVersionPair(-1, 0));
     }
 

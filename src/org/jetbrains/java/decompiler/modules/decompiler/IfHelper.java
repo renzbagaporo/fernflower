@@ -13,7 +13,7 @@ import java.util.*;
 
 public class IfHelper {
   public static boolean mergeAllIfs(RootStatement root) {
-    boolean res = mergeAllIfsRec(root, new HashSet<>());
+    boolean res = mergeAllIfsRec(root, new HashSet<Integer>());
     if (res) {
       SequenceHelper.condenseSequences(root);
     }

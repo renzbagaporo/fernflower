@@ -24,6 +24,6 @@ public class GenericMethodDescriptor {
   }
 
   private static <T> List<T> substitute(List<T> list) {
-    return list.isEmpty() ? Collections.emptyList() : list;
+    return (List<T>) (list.isEmpty() ? Collections.emptyList() : list);
   }
 }

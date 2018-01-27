@@ -388,7 +388,7 @@ public class ControlFlowGraph implements CodeConstants {
         Set<BasicBlock> setVisited = new HashSet<>();
 
         stack.add(block);
-        stackJsrStacks.add(new LinkedList<>());
+        stackJsrStacks.add(new LinkedList<BasicBlock>());
 
         while (!stack.isEmpty()) {
 

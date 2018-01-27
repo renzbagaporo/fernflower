@@ -4,6 +4,7 @@ package org.jetbrains.java.decompiler.modules.decompiler;
 import org.jetbrains.java.decompiler.code.cfg.BasicBlock;
 import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.collectors.CounterContainer;
+import org.jetbrains.java.decompiler.modules.decompiler.exps.Exprent;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.BasicBlockStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.SequenceStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.Statement;
@@ -286,7 +287,7 @@ public class SequenceHelper {
     BasicBlockStatement bstat = new BasicBlockStatement(new BasicBlock(
       DecompilerContext.getCounterContainer().getCounterAndIncrement(CounterContainer.STATEMENT_COUNTER)));
     if (stat.getExprents() == null) {
-      bstat.setExprents(new ArrayList<>());
+      bstat.setExprents(new ArrayList<Exprent>());
     }
     else {
       bstat.setExprents(DecHelper.copyExprentList(stat.getExprents()));

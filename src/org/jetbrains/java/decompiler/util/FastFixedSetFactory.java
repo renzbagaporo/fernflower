@@ -179,7 +179,7 @@ public class FastFixedSetFactory<E> {
     }
 
     public Set<E> toPlainSet() {
-      return toPlainCollection(new HashSet<>());
+      return toPlainCollection(new HashSet<E>());
     }
 
     private <T extends Collection<E>> T toPlainCollection(T cl) {

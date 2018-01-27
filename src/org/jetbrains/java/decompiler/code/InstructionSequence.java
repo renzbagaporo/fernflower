@@ -18,7 +18,7 @@ public abstract class InstructionSequence {
   protected ExceptionTable exceptionTable = ExceptionTable.EMPTY;
 
   protected InstructionSequence() {
-    this(new VBStyleCollection<>());
+    this(new VBStyleCollection<Instruction, Integer>());
   }
 
   protected InstructionSequence(VBStyleCollection<Instruction, Integer> collinstr) {

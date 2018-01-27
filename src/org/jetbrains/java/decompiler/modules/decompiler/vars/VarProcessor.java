@@ -113,7 +113,7 @@ public class VarProcessor {
   }
 
   public Collection<String> getVarNames() {
-    return mapVarNames != null ? mapVarNames.values() : Collections.emptySet();
+    return (Collection<String>) (mapVarNames != null ? mapVarNames.values() : Collections.emptySet());
   }
 
   public int getVarFinal(VarVersionPair pair) {

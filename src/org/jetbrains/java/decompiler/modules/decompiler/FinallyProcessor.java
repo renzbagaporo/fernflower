@@ -563,7 +563,7 @@ public class FinallyProcessor {
 
     Map<String, BasicBlock[]> mapNext = new HashMap<>();
 
-    stack.add(new BlockStackEntry(startCatch, startSample, new ArrayList<>()));
+    stack.add(new BlockStackEntry(startCatch, startSample, new ArrayList<int[]>()));
 
     while (!stack.isEmpty()) {
 

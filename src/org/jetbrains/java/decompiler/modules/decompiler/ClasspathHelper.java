@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ClasspathHelper {
 
-  private static final Map<String, Method> METHOD_CACHE = Collections.synchronizedMap(new HashMap<>());
+  private static final Map<String, Method> METHOD_CACHE = Collections.synchronizedMap(new HashMap<String, Method>());
 
   public static Method findMethod(String classname, String methodName, MethodDescriptor descriptor) {
     String targetClass = classname.replace('/', '.');

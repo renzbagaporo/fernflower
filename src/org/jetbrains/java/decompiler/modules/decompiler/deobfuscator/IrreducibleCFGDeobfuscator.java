@@ -132,7 +132,7 @@ public class IrreducibleCFGDeobfuscator {
     StatEdge enteredge = splitnode.getPredecessorEdges(StatEdge.TYPE_REGULAR).iterator().next();
 
     // copy the smallest statement
-    Statement splitcopy = copyStatement(splitnode, null, new HashMap<>());
+    Statement splitcopy = copyStatement(splitnode, null, new HashMap<Statement, Statement>());
     initCopiedStatement(splitcopy);
 
     // insert the copy

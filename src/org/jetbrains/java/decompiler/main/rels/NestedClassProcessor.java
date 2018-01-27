@@ -356,7 +356,7 @@ public class NestedClassProcessor {
       }
 
       if (interPairMask == null) { // member or local and never instantiated
-        interPairMask = interMask != null ? new ArrayList<>(interMask) : new ArrayList<>();
+        interPairMask = (List<VarFieldPair>) (interMask != null ? new ArrayList<>(interMask) : new ArrayList<>());
 
         boolean found = false;
 

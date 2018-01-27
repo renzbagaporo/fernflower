@@ -13,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StructAnnotationAttribute extends StructGeneralAttribute {
@@ -129,7 +130,7 @@ public class StructAnnotationAttribute extends StructGeneralAttribute {
           newType = new VarType(elementType.type, 1, elementType.value);
         }
 
-        NewExprent newExpr = new NewExprent(newType, Collections.emptyList(), null);
+        NewExprent newExpr = new NewExprent(newType, new LinkedList<Exprent>(), null);
         newExpr.setDirectArrayInit(true);
         newExpr.setLstArrayElements(elements);
         return newExpr;

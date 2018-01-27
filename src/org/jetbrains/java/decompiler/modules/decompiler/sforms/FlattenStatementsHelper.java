@@ -74,7 +74,7 @@ public class FlattenStatementsHelper {
 
     LinkedList<StatementStackEntry> lstStackStatements = new LinkedList<>();
 
-    lstStackStatements.add(new StatementStackEntry(root, new LinkedList<>(), null));
+    lstStackStatements.add(new StatementStackEntry(root, new LinkedList<StackEntry>(), null));
 
     mainloop:
     while (!lstStackStatements.isEmpty()) {

@@ -133,7 +133,7 @@ public class ExprProcessor implements CodeConstants {
     LinkedList<LinkedList<String>> stackEntryPoint = new LinkedList<>();
 
     stack.add(dgraph.first);
-    stackEntryPoint.add(new LinkedList<>());
+    stackEntryPoint.add(new LinkedList<String>());
 
     Map<String, PrimitiveExprsList> map = new HashMap<>();
     map.put(null, new PrimitiveExprsList());

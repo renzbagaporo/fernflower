@@ -486,7 +486,7 @@ public class Statement implements IMatchable {
 
   // TODO: make obsolete and remove
   public List<Object> getSequentialObjects() {
-    return new ArrayList<>(stats);
+    return new ArrayList<Object>(stats);
   }
 
   public void initExprents() {
@@ -683,7 +683,7 @@ public class Statement implements IMatchable {
     List<StatEdge> res;
     if ((type & (type - 1)) == 0) {
       res = map.get(type);
-      res = res == null ? new ArrayList<>() : new ArrayList<>(res);
+      res = (List<StatEdge>) (res == null ? new ArrayList<>() : new ArrayList<>(res));
     }
     else {
       res = new ArrayList<>();
@@ -707,7 +707,7 @@ public class Statement implements IMatchable {
     List<Statement> res;
     if ((type & (type - 1)) == 0) {
       res = map.get(type);
-      res = res == null ? new ArrayList<>() : new ArrayList<>(res);
+      res = (List<Statement>) (res == null ? new ArrayList<>() : new ArrayList<>(res));
     }
     else {
       res = new ArrayList<>();

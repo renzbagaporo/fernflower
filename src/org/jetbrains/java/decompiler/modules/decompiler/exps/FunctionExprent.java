@@ -187,7 +187,7 @@ public class FunctionExprent extends Exprent {
   private final List<Exprent> lstOperands;
 
   public FunctionExprent(int funcType, ListStack<Exprent> stack, Set<Integer> bytecodeOffsets) {
-    this(funcType, new ArrayList<>(), bytecodeOffsets);
+    this(funcType, new ArrayList<Exprent>(), bytecodeOffsets);
 
     if (funcType >= FUNCTION_BIT_NOT && funcType <= FUNCTION_PPI && funcType != FUNCTION_CAST && funcType != FUNCTION_INSTANCEOF) {
       lstOperands.add(stack.pop());
@@ -211,7 +211,7 @@ public class FunctionExprent extends Exprent {
   }
 
   public FunctionExprent(int funcType, Exprent operand, Set<Integer> bytecodeOffsets) {
-    this(funcType, new ArrayList<>(1), bytecodeOffsets);
+    this(funcType, new ArrayList<Exprent>(1), bytecodeOffsets);
     lstOperands.add(operand);
   }
 
