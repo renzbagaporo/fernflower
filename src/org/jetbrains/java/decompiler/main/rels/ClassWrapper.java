@@ -46,7 +46,7 @@ public class ClassWrapper {
     int maxSec = Integer.parseInt(DecompilerContext.getProperty(FernflowerPreferences.MAX_PROCESSING_METHOD).toString());
     boolean testMode = DecompilerContext.getOption(FernflowerPreferences.UNIT_TEST_MODE);
 
-    for (StructMethod mt : classStruct.getMethods()) {
+    for (final StructMethod mt : classStruct.getMethods()) {
       DecompilerContext.getLogger().startMethod(mt.getName() + " " + mt.getDescriptor());
 
       MethodDescriptor md = MethodDescriptor.parseDescriptor(mt.getDescriptor());

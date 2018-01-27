@@ -168,6 +168,6 @@ public class ImportCollector {
   			return ent.getValue() + "." + ent.getKey();
   		}
   	  })
-      .collect(Collectors.toList());
+      .collect(Collectors.toList());    
   }
 }

@@ -391,17 +391,17 @@ public class NestedClassProcessor {
     }
   }
 
-  private static void insertLocalVars(ClassNode parent, ClassNode child) {
+  private static void insertLocalVars(ClassNode parent, final ClassNode child) {
     // enclosing method, is null iff member class
     MethodWrapper enclosingMethod = parent.getWrapper().getMethods().getWithKey(child.enclosingMethod);
 
     // iterate all child methods
-    for (MethodWrapper method : child.getWrapper().getMethods()) {
+    for (final MethodWrapper method : child.getWrapper().getMethods()) {
       if (method.root != null) { // neither abstract nor native
         Map<VarVersionPair, String> mapNewNames = new HashMap<>();  // local var names
         Map<VarVersionPair, VarType> mapNewTypes = new HashMap<>();  // local var types
 
-        Map<Integer, VarVersionPair> mapParamsToNewVars = new HashMap<>();
+        final Map<Integer, VarVersionPair> mapParamsToNewVars = new HashMap<>();
         if (method.synthParameters != null) {
           int index = 0, varIndex = 1;
           MethodDescriptor md = MethodDescriptor.parseDescriptor(method.methodStruct.getDescriptor());
@@ -441,7 +441,7 @@ public class NestedClassProcessor {
           }
         }
 
-        Map<String, VarVersionPair> mapFieldsToNewVars = new HashMap<>();
+        final Map<String, VarVersionPair> mapFieldsToNewVars = new HashMap<>();
         for (ClassNode classNode = child; classNode != null; classNode = classNode.parent) {
           for (Entry<String, VarVersionPair> entry : classNode.mapFieldsToVars.entrySet()) {
             VarVersionPair newVar = new VarVersionPair(method.counter.getCounterAndIncrement(CounterContainer.VAR_COUNTER), 0);

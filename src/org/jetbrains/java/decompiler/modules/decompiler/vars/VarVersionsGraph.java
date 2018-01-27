@@ -64,7 +64,7 @@ public class VarVersionsGraph {
   }
 
   public void initDominators() {
-    Set<VarVersionNode> roots = new HashSet<>();
+    final Set<VarVersionNode> roots = new HashSet<>();
 
     for (VarVersionNode node : nodes) {
       if (node.preds.isEmpty()) {
