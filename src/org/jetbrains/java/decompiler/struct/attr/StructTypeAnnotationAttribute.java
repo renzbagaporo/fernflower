@@ -19,7 +19,7 @@ public class StructTypeAnnotationAttribute extends StructGeneralAttribute {
   public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
     int len = data.readUnsignedShort();
     if (len > 0) {
-      annotations = new ArrayList<>(len);
+      annotations = new ArrayList<TypeAnnotation>(len);
       for (int i = 0; i < len; i++) {
         annotations.add(parse(data, pool));
       }

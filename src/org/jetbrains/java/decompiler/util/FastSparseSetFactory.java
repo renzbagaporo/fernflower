@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class FastSparseSetFactory<E> {
 
-  private final VBStyleCollection<int[], E> colValuesInternal = new VBStyleCollection<>();
+  private final VBStyleCollection<int[], E> colValuesInternal = new VBStyleCollection<int[], E>();
 
   private int lastBlock;
 
@@ -57,7 +57,7 @@ public class FastSparseSetFactory<E> {
   }
 
   public FastSparseSet<E> spawnEmptySet() {
-    return new FastSparseSet<>(this);
+    return new FastSparseSet<E>(this);
   }
 
   public int getLastBlock() {
@@ -105,7 +105,7 @@ public class FastSparseSetFactory<E> {
       System.arraycopy(data, 0, cpdata, 0, arrlength);
       System.arraycopy(next, 0, cpnext, 0, arrlength);
 
-      return new FastSparseSet<>(factory, cpdata, cpnext);
+      return new FastSparseSet<E>(factory, cpdata, cpnext);
     }
 
     private int[] ensureCapacity(int index) {
@@ -318,11 +318,11 @@ public class FastSparseSetFactory<E> {
     }
 
     public Iterator<E> iterator() {
-      return new FastSparseSetIterator<>(this);
+      return new FastSparseSetIterator<E>(this);
     }
 
     public Set<E> toPlainSet() {
-      HashSet<E> set = new HashSet<>();
+      HashSet<E> set = new HashSet<E>();
 
       int[] intdata = data;
 

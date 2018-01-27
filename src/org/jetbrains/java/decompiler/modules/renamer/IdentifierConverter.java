@@ -19,9 +19,9 @@ public class IdentifierConverter implements NewClassNameBuilder {
   private final StructContext context;
   private final IIdentifierRenamer helper;
   private final PoolInterceptor interceptor;
-  private List<ClassWrapperNode> rootClasses = new ArrayList<>();
-  private List<ClassWrapperNode> rootInterfaces = new ArrayList<>();
-  private Map<String, Map<String, String>> interfaceNameMaps = new HashMap<>();
+  private List<ClassWrapperNode> rootClasses = new ArrayList<ClassWrapperNode>();
+  private List<ClassWrapperNode> rootInterfaces = new ArrayList<ClassWrapperNode>();
+  private Map<String, Map<String, String>> interfaceNameMaps = new HashMap<String, Map<String, String>>();
 
   public IdentifierConverter(StructContext context, IIdentifierRenamer helper, PoolInterceptor interceptor) {
     this.context = context;
@@ -44,11 +44,11 @@ public class IdentifierConverter implements NewClassNameBuilder {
 
   private void renameClasses() {
     List<ClassWrapperNode> lstClasses = getReversePostOrderListIterative(rootClasses);
-    Map<String, Map<String, String>> classNameMaps = new HashMap<>();
+    Map<String, Map<String, String>> classNameMaps = new HashMap<String, Map<String, String>>();
 
     for (ClassWrapperNode node : lstClasses) {
       StructClass cl = node.getClassStruct();
-      Map<String, String> names = new HashMap<>();
+      Map<String, String> names = new HashMap<String, String>();
 
       // merge information on super class
       if (cl.superClass != null) {
@@ -81,7 +81,7 @@ public class IdentifierConverter implements NewClassNameBuilder {
   }
 
   private Map<String, String> processExternalInterface(StructClass cl) {
-    Map<String, String> names = new HashMap<>();
+    Map<String, String> names = new HashMap<String, String>();
 
     for (String ifName : cl.getInterfaceNames()) {
       Map<String, String> mapInt = interfaceNameMaps.get(ifName);
@@ -103,13 +103,13 @@ public class IdentifierConverter implements NewClassNameBuilder {
 
   private void renameInterfaces() {
     List<ClassWrapperNode> lstInterfaces = getReversePostOrderListIterative(rootInterfaces);
-    Map<String, Map<String, String>> interfaceNameMaps = new HashMap<>();
+    Map<String, Map<String, String>> interfaceNameMaps = new HashMap<String, Map<String, String>>();
 
     // rename methods and fields
     for (ClassWrapperNode node : lstInterfaces) {
 
       StructClass cl = node.getClassStruct();
-      Map<String, String> names = new HashMap<>();
+      Map<String, String> names = new HashMap<String, String>();
 
       // merge information on super interfaces
       for (String ifName : cl.getInterfaceNames()) {
@@ -129,7 +129,7 @@ public class IdentifierConverter implements NewClassNameBuilder {
 
   private void renameAllClasses() {
     // order not important
-    List<ClassWrapperNode> lstAllClasses = new ArrayList<>(getReversePostOrderListIterative(rootInterfaces));
+    List<ClassWrapperNode> lstAllClasses = new ArrayList<ClassWrapperNode>(getReversePostOrderListIterative(rootInterfaces));
     lstAllClasses.addAll(getReversePostOrderListIterative(rootClasses));
 
     // rename all interfaces and classes
@@ -171,7 +171,7 @@ public class IdentifierConverter implements NewClassNameBuilder {
     }
 
     // methods
-    HashSet<String> setMethodNames = new HashSet<>();
+    HashSet<String> setMethodNames = new HashSet<String>();
     for (StructMethod md : cl.getMethods()) {
       setMethodNames.add(md.getName());
     }
@@ -218,7 +218,7 @@ public class IdentifierConverter implements NewClassNameBuilder {
 
     // fields
     // FIXME: should overloaded fields become the same name?
-    HashSet<String> setFieldNames = new HashSet<>();
+    HashSet<String> setFieldNames = new HashSet<String>();
     for (StructField fd : cl.getFields()) {
       setFieldNames.add(fd.getName());
     }
@@ -254,12 +254,12 @@ public class IdentifierConverter implements NewClassNameBuilder {
   }
 
   private static List<ClassWrapperNode> getReversePostOrderListIterative(List<ClassWrapperNode> roots) {
-    List<ClassWrapperNode> res = new ArrayList<>();
+    List<ClassWrapperNode> res = new ArrayList<ClassWrapperNode>();
 
-    LinkedList<ClassWrapperNode> stackNode = new LinkedList<>();
-    LinkedList<Integer> stackIndex = new LinkedList<>();
+    LinkedList<ClassWrapperNode> stackNode = new LinkedList<ClassWrapperNode>();
+    LinkedList<Integer> stackIndex = new LinkedList<Integer>();
 
-    Set<ClassWrapperNode> setVisited = new HashSet<>();
+    Set<ClassWrapperNode> setVisited = new HashSet<ClassWrapperNode>();
 
     for (ClassWrapperNode root : roots) {
       stackNode.add(root);
@@ -294,19 +294,19 @@ public class IdentifierConverter implements NewClassNameBuilder {
   }
 
   private void buildInheritanceTree() {
-    Map<String, ClassWrapperNode> nodes = new HashMap<>();
+    Map<String, ClassWrapperNode> nodes = new HashMap<String, ClassWrapperNode>();
     Map<String, StructClass> classes = context.getClasses();
 
-    List<ClassWrapperNode> rootClasses = new ArrayList<>();
-    List<ClassWrapperNode> rootInterfaces = new ArrayList<>();
+    List<ClassWrapperNode> rootClasses = new ArrayList<ClassWrapperNode>();
+    List<ClassWrapperNode> rootInterfaces = new ArrayList<ClassWrapperNode>();
 
     for (StructClass cl : classes.values()) {
       if (!cl.isOwn()) {
         continue;
       }
 
-      LinkedList<StructClass> stack = new LinkedList<>();
-      LinkedList<ClassWrapperNode> stackSubNodes = new LinkedList<>();
+      LinkedList<StructClass> stack = new LinkedList<StructClass>();
+      LinkedList<ClassWrapperNode> stackSubNodes = new LinkedList<ClassWrapperNode>();
 
       stack.add(cl);
       stackSubNodes.add(null);

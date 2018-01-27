@@ -25,7 +25,7 @@ public class StructMethodParametersAttribute extends StructGeneralAttribute {
     int len = data.readUnsignedByte();
     List<Entry> entries;
     if (len > 0) {
-      entries = new ArrayList<>(len);
+      entries = new ArrayList<Entry>(len);
 
       for (int i = 0; i < len; i++) {
         int nameIndex = data.readUnsignedShort();

@@ -69,7 +69,7 @@ public class VarExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    return new ArrayList<>();
+    return new ArrayList<Exprent>();
   }
 
   @Override

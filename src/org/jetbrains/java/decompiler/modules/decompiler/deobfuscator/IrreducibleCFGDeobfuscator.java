@@ -18,15 +18,15 @@ public class IrreducibleCFGDeobfuscator {
 
     class Node {
       public Integer id;
-      public final Set<Node> preds = new HashSet<>();
-      public final Set<Node> succs = new HashSet<>();
+      public final Set<Node> preds = new HashSet<Node>();
+      public final Set<Node> succs = new HashSet<Node>();
 
       public Node(Integer id) {
         this.id = id;
       }
     }
 
-    HashMap<Integer, Node> mapNodes = new HashMap<>();
+    HashMap<Integer, Node> mapNodes = new HashMap<Integer, Node>();
 
     // checking exceptions and creating nodes
     for (Statement stat : statement.getStats()) {

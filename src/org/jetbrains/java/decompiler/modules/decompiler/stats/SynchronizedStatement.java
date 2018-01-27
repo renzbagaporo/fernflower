@@ -20,7 +20,7 @@ public class SynchronizedStatement extends Statement {
 
   private Statement body;
 
-  private final List<Exprent> headexprent = new ArrayList<>(1);
+  private final List<Exprent> headexprent = new ArrayList<Exprent>(1);
 
   // *****************************************************************************
   // constructors

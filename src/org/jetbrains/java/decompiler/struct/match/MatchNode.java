@@ -32,8 +32,8 @@ public class MatchNode {
   public static final int MATCHNODE_EXPRENT = 1;
 
   private final int type;
-  private final Map<MatchProperties, RuleValue> rules = new HashMap<>();
-  private final List<MatchNode> children = new ArrayList<>();
+  private final Map<MatchProperties, RuleValue> rules = new HashMap<MatchProperties, RuleValue>();
+  private final List<MatchNode> children = new ArrayList<MatchNode>();
 
   public MatchNode(int type) {
     this.type = type;

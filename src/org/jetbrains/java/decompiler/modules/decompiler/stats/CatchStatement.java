@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 public class CatchStatement extends Statement {
-  private final List<List<String>> exctstrings = new ArrayList<>();
-  private final List<VarExprent> vars = new ArrayList<>();
+  private final List<List<String>> exctstrings = new ArrayList<List<String>>();
+  private final List<VarExprent> vars = new ArrayList<VarExprent>();
 
   // *****************************************************************************
   // constructors
@@ -42,7 +42,7 @@ public class CatchStatement extends Statement {
 
       if (setHandlers.contains(stat)) {
         stats.addWithKey(stat, stat.id);
-        exctstrings.add(new ArrayList<>(edge.getExceptions()));
+        exctstrings.add(new ArrayList<String>(edge.getExceptions()));
 
         vars.add(new VarExprent(DecompilerContext.getCounterContainer().getCounterAndIncrement(CounterContainer.VAR_COUNTER),
                                 new VarType(CodeConstants.TYPE_OBJECT, 0, edge.getExceptions().get(0)),
@@ -114,7 +114,7 @@ public class CatchStatement extends Statement {
       }
 
       if (hnextcount != 1 && !setHandlers.isEmpty()) {
-        List<Statement> lst = new ArrayList<>();
+        List<Statement> lst = new ArrayList<Statement>();
         lst.add(head);
         lst.addAll(setHandlers);
 
@@ -184,7 +184,7 @@ public class CatchStatement extends Statement {
     CatchStatement cs = new CatchStatement();
 
     for (List<String> exc : this.exctstrings) {
-      cs.exctstrings.add(new ArrayList<>(exc));
+      cs.exctstrings.add(new ArrayList<String>(exc));
       cs.vars.add(new VarExprent(DecompilerContext.getCounterContainer().getCounterAndIncrement(CounterContainer.VAR_COUNTER),
                                  new VarType(CodeConstants.TYPE_OBJECT, 0, exc.get(0)),
                                  DecompilerContext.getVarProcessor()));

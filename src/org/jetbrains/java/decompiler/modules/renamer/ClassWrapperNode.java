@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClassWrapperNode {
   private final StructClass classStruct;
-  private final List<ClassWrapperNode> subclasses = new ArrayList<>();
+  private final List<ClassWrapperNode> subclasses = new ArrayList<ClassWrapperNode>();
 
   public ClassWrapperNode(StructClass cl) {
     this.classStruct = cl;

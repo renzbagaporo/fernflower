@@ -41,7 +41,7 @@ public class StructMember {
   protected Map<String, StructGeneralAttribute> readAttributes(DataInputFullStream in, ConstantPool pool) throws IOException {
     int length = in.readUnsignedShort();
 
-    Map<String, StructGeneralAttribute> attributes = new HashMap<>(length);
+    Map<String, StructGeneralAttribute> attributes = new HashMap<String, StructGeneralAttribute>(length);
     for (int i = 0; i < length; i++) {
       int nameIndex = in.readUnsignedShort();
       String name = pool.getPrimitiveConstant(nameIndex).getString();

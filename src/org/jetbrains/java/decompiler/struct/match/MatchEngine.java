@@ -13,14 +13,14 @@ import org.jetbrains.java.decompiler.struct.match.MatchNode.RuleValue;
 import java.util.*;
 
 public class MatchEngine {
-  private static final Map<String, MatchProperties> stat_properties = new HashMap<>();
-  private static final Map<String, MatchProperties> expr_properties = new HashMap<>();
-  private static final Map<String, Integer> stat_type = new HashMap<>();
-  private static final Map<String, Integer> expr_type = new HashMap<>();
-  private static final Map<String, Integer> expr_func_type = new HashMap<>();
-  private static final Map<String, Integer> expr_exit_type = new HashMap<>();
-  private static final Map<String, Integer> stat_if_type = new HashMap<>();
-  private static final Map<String, VarType> expr_const_type = new HashMap<>();
+  private static final Map<String, MatchProperties> stat_properties = new HashMap<String, MatchProperties>();
+  private static final Map<String, MatchProperties> expr_properties = new HashMap<String, MatchProperties>();
+  private static final Map<String, Integer> stat_type = new HashMap<String, Integer>();
+  private static final Map<String, Integer> expr_type = new HashMap<String, Integer>();
+  private static final Map<String, Integer> expr_func_type = new HashMap<String, Integer>();
+  private static final Map<String, Integer> expr_exit_type = new HashMap<String, Integer>();
+  private static final Map<String, Integer> stat_if_type = new HashMap<String, Integer>();
+  private static final Map<String, VarType> expr_const_type = new HashMap<String, VarType>();
 
   static {
     stat_properties.put("type", MatchProperties.STATEMENT_TYPE);
@@ -78,17 +78,17 @@ public class MatchEngine {
   }
 
   private final MatchNode rootNode;
-  private final Map<String, Object> variables = new HashMap<>();
+  private final Map<String, Object> variables = new HashMap<String, Object>();
 
   public MatchEngine(String description) {
     // each line is a separate statement/exprent
     String[] lines = description.split("\n");
 
     int depth = 0;
-    LinkedList<MatchNode> stack = new LinkedList<>();
+    LinkedList<MatchNode> stack = new LinkedList<MatchNode>();
 
     for (String line : lines) {
-      List<String> properties = new ArrayList<>(Arrays.asList(line.split("\\s+"))); // split on any number of whitespaces
+      List<String> properties = new ArrayList<String>(Arrays.asList(line.split("\\s+"))); // split on any number of whitespaces
       if (properties.get(0).isEmpty()) {
         properties.remove(0);
       }

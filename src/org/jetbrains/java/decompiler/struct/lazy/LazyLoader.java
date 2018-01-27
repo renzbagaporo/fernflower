@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LazyLoader {
-  private final Map<String, Link> mapClassLinks = new HashMap<>();
+  private final Map<String, Link> mapClassLinks = new HashMap<String, Link>();
   private final IBytecodeProvider provider;
 
   public LazyLoader(IBytecodeProvider provider) {

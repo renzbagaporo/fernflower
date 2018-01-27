@@ -50,7 +50,7 @@ public class ExceptionDeobfuscator {
 
       if (!found) {
         // doesn't matter, which range chosen
-        lstRanges.add(new Range(range.getHandler(), range.getUniqueExceptionsString(), new HashSet<>(range.getProtectedRange()), range));
+        lstRanges.add(new Range(range.getHandler(), range.getUniqueExceptionsString(), new HashSet<BasicBlock>(range.getProtectedRange()), range));
       }
     }
 
@@ -250,10 +250,10 @@ public class ExceptionDeobfuscator {
 
   private static List<BasicBlock> getReachableBlocksRestricted(ExceptionRangeCFG range, GenericDominatorEngine engine) {
 
-    List<BasicBlock> lstRes = new ArrayList<>();
+    List<BasicBlock> lstRes = new ArrayList<BasicBlock>();
 
-    LinkedList<BasicBlock> stack = new LinkedList<>();
-    Set<BasicBlock> setVisited = new HashSet<>();
+    LinkedList<BasicBlock> stack = new LinkedList<BasicBlock>();
+    Set<BasicBlock> setVisited = new HashSet<BasicBlock>();
 
     BasicBlock handler = range.getHandler();
     stack.addFirst(handler);
@@ -266,7 +266,7 @@ public class ExceptionDeobfuscator {
       if (range.getProtectedRange().contains(block) && engine.isDominator(block, handler)) {
         lstRes.add(block);
 
-        List<BasicBlock> lstSuccs = new ArrayList<>(block.getSuccs());
+        List<BasicBlock> lstSuccs = new ArrayList<BasicBlock>(block.getSuccs());
         lstSuccs.addAll(block.getSuccExceptions());
 
         for (BasicBlock succ : lstSuccs) {
@@ -281,21 +281,21 @@ public class ExceptionDeobfuscator {
   }
 
   public static boolean hasObfuscatedExceptions(ControlFlowGraph graph) {
-    Map<BasicBlock, Set<BasicBlock>> mapRanges = new HashMap<>();
+    Map<BasicBlock, Set<BasicBlock>> mapRanges = new HashMap<BasicBlock, Set<BasicBlock>>();
     for (ExceptionRangeCFG range : graph.getExceptions()) {
       mapRanges.computeIfAbsent(range.getHandler(), new Function<BasicBlock, Set<BasicBlock>>() {
 		@Override
 		public Set<BasicBlock> apply(BasicBlock k) {
-			return new HashSet<>();
+			return new HashSet<BasicBlock>();
 		}
 	}).addAll(range.getProtectedRange());
     }
 
     for (Entry<BasicBlock, Set<BasicBlock>> ent : mapRanges.entrySet()) {
-      Set<BasicBlock> setEntries = new HashSet<>();
+      Set<BasicBlock> setEntries = new HashSet<BasicBlock>();
 
       for (BasicBlock block : ent.getValue()) {
-        Set<BasicBlock> setTemp = new HashSet<>(block.getPreds());
+        Set<BasicBlock> setTemp = new HashSet<BasicBlock>(block.getPreds());
         setTemp.removeAll(ent.getValue());
 
         if (!setTemp.isEmpty()) {

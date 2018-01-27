@@ -18,7 +18,7 @@ public class DummyExitStatement extends Statement {
   public void addBytecodeOffsets(Collection<Integer> bytecodeOffsets) {
     if (bytecodeOffsets != null && !bytecodeOffsets.isEmpty()) {
       if (bytecode == null) {
-        bytecode = new HashSet<>(bytecodeOffsets);
+        bytecode = new HashSet<Integer>(bytecodeOffsets);
       }
       else {
         bytecode.addAll(bytecodeOffsets);

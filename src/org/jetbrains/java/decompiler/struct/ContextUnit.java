@@ -28,11 +28,11 @@ public class ContextUnit {
   private final IResultSaver resultSaver;
   private final IDecompiledData decompiledData;
 
-  private final List<String> classEntries = new ArrayList<>();  // class file or jar/zip entry
-  private final List<String> dirEntries = new ArrayList<>();
-  private final List<String[]> otherEntries = new ArrayList<>();
+  private final List<String> classEntries = new ArrayList<String>();  // class file or jar/zip entry
+  private final List<String> dirEntries = new ArrayList<String>();
+  private final List<String[]> otherEntries = new ArrayList<String[]>();
 
-  private List<StructClass> classes = new ArrayList<>();
+  private List<StructClass> classes = new ArrayList<StructClass>();
   private Manifest manifest;
 
   public ContextUnit(int type, String archivePath, String filename, boolean own, IResultSaver resultSaver, IDecompiledData decompiledData) {
@@ -58,7 +58,7 @@ public class ContextUnit {
   }
 
   public void reload(LazyLoader loader) throws IOException {
-    List<StructClass> lstClasses = new ArrayList<>();
+    List<StructClass> lstClasses = new ArrayList<StructClass>();
 
     for (StructClass cl : classes) {
       String oldName = cl.qualifiedName;

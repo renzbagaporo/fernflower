@@ -16,7 +16,7 @@ import java.util.Set;
 public class SwitchExprent extends Exprent {
 
   private Exprent value;
-  private List<List<Exprent>> caseValues = new ArrayList<>();
+  private List<List<Exprent>> caseValues = new ArrayList<List<Exprent>>();
 
   public SwitchExprent(Exprent value, Set<Integer> bytecodeOffsets) {
     super(EXPRENT_SWITCH);
@@ -29,9 +29,9 @@ public class SwitchExprent extends Exprent {
   public Exprent copy() {
     SwitchExprent swExpr = new SwitchExprent(value.copy(), bytecode);
 
-    List<List<Exprent>> lstCaseValues = new ArrayList<>();
+    List<List<Exprent>> lstCaseValues = new ArrayList<List<Exprent>>();
     for (List<Exprent> lst : caseValues) {
-      lstCaseValues.add(new ArrayList<>(lst));
+      lstCaseValues.add(new ArrayList<Exprent>(lst));
     }
     swExpr.setCaseValues(lstCaseValues);
 
@@ -68,7 +68,7 @@ public class SwitchExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     lst.add(value);
     return lst;
   }

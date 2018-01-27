@@ -17,9 +17,9 @@ public class VarVersionNode implements IGraphNode {
 
   public final int version;
 
-  public final Set<VarVersionEdge> succs = new HashSet<>();
+  public final Set<VarVersionEdge> succs = new HashSet<VarVersionEdge>();
 
-  public final Set<VarVersionEdge> preds = new HashSet<>();
+  public final Set<VarVersionEdge> preds = new HashSet<VarVersionEdge>();
 
   public int flags;
 
@@ -32,7 +32,7 @@ public class VarVersionNode implements IGraphNode {
   }
 
   public List<IGraphNode> getPredecessors() {
-    List<IGraphNode> lst = new ArrayList<>(preds.size());
+    List<IGraphNode> lst = new ArrayList<IGraphNode>(preds.size());
     for (VarVersionEdge edge : preds) {
       lst.add(edge.source);
     }

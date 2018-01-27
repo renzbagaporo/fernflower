@@ -13,24 +13,24 @@ import java.util.List;
 
 public class DirectGraph {
 
-  public final VBStyleCollection<DirectNode, String> nodes = new VBStyleCollection<>();
+  public final VBStyleCollection<DirectNode, String> nodes = new VBStyleCollection<DirectNode, String>();
 
   public DirectNode first;
 
   // exit, [source, destination]
-  public final HashMap<String, List<FinallyPathWrapper>> mapShortRangeFinallyPaths = new HashMap<>();
+  public final HashMap<String, List<FinallyPathWrapper>> mapShortRangeFinallyPaths = new HashMap<String, List<FinallyPathWrapper>>();
 
   // exit, [source, destination]
-  public final HashMap<String, List<FinallyPathWrapper>> mapLongRangeFinallyPaths = new HashMap<>();
+  public final HashMap<String, List<FinallyPathWrapper>> mapLongRangeFinallyPaths = new HashMap<String, List<FinallyPathWrapper>>();
 
   // negative if branches (recorded for handling of && and ||)
-  public final HashMap<String, String> mapNegIfBranch = new HashMap<>();
+  public final HashMap<String, String> mapNegIfBranch = new HashMap<String, String>();
 
   // nodes, that are exception exits of a finally block with monitor variable
-  public final HashMap<String, String> mapFinallyMonitorExceptionPathExits = new HashMap<>();
+  public final HashMap<String, String> mapFinallyMonitorExceptionPathExits = new HashMap<String, String>();
 
   public void sortReversePostOrder() {
-    LinkedList<DirectNode> res = new LinkedList<>();
+    LinkedList<DirectNode> res = new LinkedList<DirectNode>();
     addToReversePostOrderListIterative(first, res);
 
     nodes.clear();
@@ -41,10 +41,10 @@ public class DirectGraph {
 
   private static void addToReversePostOrderListIterative(DirectNode root, List<DirectNode> lst) {
 
-    LinkedList<DirectNode> stackNode = new LinkedList<>();
-    LinkedList<Integer> stackIndex = new LinkedList<>();
+    LinkedList<DirectNode> stackNode = new LinkedList<DirectNode>();
+    LinkedList<Integer> stackIndex = new LinkedList<Integer>();
 
-    HashSet<DirectNode> setVisited = new HashSet<>();
+    HashSet<DirectNode> setVisited = new HashSet<DirectNode>();
 
     stackNode.add(root);
     stackIndex.add(0);
@@ -80,10 +80,10 @@ public class DirectGraph {
 
   public boolean iterateExprents(ExprentIterator iter) {
 
-    LinkedList<DirectNode> stack = new LinkedList<>();
+    LinkedList<DirectNode> stack = new LinkedList<DirectNode>();
     stack.add(first);
 
-    HashSet<DirectNode> setVisited = new HashSet<>();
+    HashSet<DirectNode> setVisited = new HashSet<DirectNode>();
 
     while (!stack.isEmpty()) {
 

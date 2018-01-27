@@ -34,7 +34,7 @@ public class MonitorExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     lst.add(value);
     return lst;
   }

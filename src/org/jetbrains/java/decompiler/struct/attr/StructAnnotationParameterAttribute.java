@@ -18,7 +18,7 @@ public class StructAnnotationParameterAttribute extends StructGeneralAttribute {
   public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
     int len = data.readUnsignedByte();
     if (len > 0) {
-      paramAnnotations = new ArrayList<>(len);
+      paramAnnotations = new ArrayList<List<AnnotationExprent>>(len);
       for (int i = 0; i < len; i++) {
         List<AnnotationExprent> annotations = StructAnnotationAttribute.parseAnnotations(pool, data);
         paramAnnotations.add(annotations);

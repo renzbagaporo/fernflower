@@ -29,8 +29,8 @@ import java.util.Set;
 public class NewExprent extends Exprent {
   private InvocationExprent constructor;
   private final VarType newType;
-  private List<Exprent> lstDims = new ArrayList<>();
-  private List<Exprent> lstArrayElements = new ArrayList<>();
+  private List<Exprent> lstDims = new ArrayList<Exprent>();
+  private List<Exprent> lstArrayElements = new ArrayList<Exprent>();
   private boolean directArrayInit;
   private boolean isVarArgParam;
   private boolean anonymous;
@@ -62,7 +62,7 @@ public class NewExprent extends Exprent {
   }
 
   private static List<Exprent> getDimensions(int arrayDim, ListStack<Exprent> stack) {
-    List<Exprent> lstDims = new ArrayList<>();
+    List<Exprent> lstDims = new ArrayList<Exprent>();
     for (int i = 0; i < arrayDim; i++) {
       lstDims.add(0, stack.pop());
     }
@@ -101,7 +101,7 @@ public class NewExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
 
     if (newType.arrayDim != 0) {
       lst.addAll(lstDims);
@@ -120,7 +120,7 @@ public class NewExprent extends Exprent {
 
   @Override
   public Exprent copy() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     for (Exprent expr : lstDims) {
       lst.add(expr.copy());
     }

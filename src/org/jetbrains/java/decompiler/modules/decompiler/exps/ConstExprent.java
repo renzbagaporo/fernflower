@@ -23,7 +23,7 @@ import java.util.Map.Entry;
 public class ConstExprent extends Exprent {
   private static final Map<Integer, String> CHAR_ESCAPES;
   static {
-    CHAR_ESCAPES = new HashMap<>();
+    CHAR_ESCAPES = new HashMap<Integer, String>();
     CHAR_ESCAPES.put(0x8, "\\b");   /* \u0008: backspace BS */
     CHAR_ESCAPES.put(0x9, "\\t");   /* \u0009: horizontal tab HT */
     CHAR_ESCAPES.put(0xA, "\\n");   /* \u000a: linefeed LF */
@@ -98,7 +98,7 @@ public class ConstExprent extends Exprent {
   }
 
   public List<Exprent> getAllExprents() {
-    return new ArrayList<>();
+    return new ArrayList<Exprent>();
   }
 
   @Override

@@ -17,7 +17,7 @@ public class StructExceptionsAttribute extends StructGeneralAttribute {
   public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
     int len = data.readUnsignedShort();
     if (len > 0) {
-      throwsExceptions = new ArrayList<>(len);
+      throwsExceptions = new ArrayList<Integer>(len);
       for (int i = 0; i < len; i++) {
         throwsExceptions.add(data.readUnsignedShort());
       }

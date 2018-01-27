@@ -24,7 +24,7 @@ public class CatchAllStatement extends Statement {
 
   private VarExprent monitor;
 
-  private final List<VarExprent> vars = new ArrayList<>();
+  private final List<VarExprent> vars = new ArrayList<VarExprent>();
 
   // *****************************************************************************
   // constructors

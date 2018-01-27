@@ -60,14 +60,14 @@ public class Statement implements IMatchable {
   // private fields
   // *****************************************************************************
 
-  private final Map<Integer, List<StatEdge>> mapSuccEdges = new HashMap<>();
-  private final Map<Integer, List<StatEdge>> mapPredEdges = new HashMap<>();
+  private final Map<Integer, List<StatEdge>> mapSuccEdges = new HashMap<Integer, List<StatEdge>>();
+  private final Map<Integer, List<StatEdge>> mapPredEdges = new HashMap<Integer, List<StatEdge>>();
 
-  private final Map<Integer, List<Statement>> mapSuccStates = new HashMap<>();
-  private final Map<Integer, List<Statement>> mapPredStates = new HashMap<>();
+  private final Map<Integer, List<Statement>> mapSuccStates = new HashMap<Integer, List<Statement>>();
+  private final Map<Integer, List<Statement>> mapPredStates = new HashMap<Integer, List<Statement>>();
 
   // statement as graph
-  protected final VBStyleCollection<Statement, Integer> stats = new VBStyleCollection<>();
+  protected final VBStyleCollection<Statement, Integer> stats = new VBStyleCollection<Statement, Integer>();
 
   protected Statement parent;
 
@@ -75,9 +75,9 @@ public class Statement implements IMatchable {
 
   protected List<Exprent> exprents;
 
-  protected final HashSet<StatEdge> labelEdges = new HashSet<>();
+  protected final HashSet<StatEdge> labelEdges = new HashSet<StatEdge>();
 
-  protected final List<Exprent> varDefinitions = new ArrayList<>();
+  protected final List<Exprent> varDefinitions = new ArrayList<Exprent>();
 
   // copied statement, s. deobfuscating of irreducible CFGs
   private boolean copied = false;
@@ -93,7 +93,7 @@ public class Statement implements IMatchable {
 
   protected boolean containsMonitorExit;
 
-  protected HashSet<Statement> continueSet = new HashSet<>();
+  protected HashSet<Statement> continueSet = new HashSet<Statement>();
 
   // *****************************************************************************
   // initializers
@@ -130,7 +130,7 @@ public class Statement implements IMatchable {
 
     List<T> lst = map.get(STATEDGE_DIRECT_ALL);
     if (lst != null) {
-      map.put(STATEDGE_ALL, new ArrayList<>(lst));
+      map.put(STATEDGE_ALL, new ArrayList<T>(lst));
     }
     else {
       map.remove(STATEDGE_ALL);
@@ -173,7 +173,7 @@ public class Statement implements IMatchable {
     }
 
     // exception edges
-    Set<Statement> setHandlers = new HashSet<>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, DIRECTION_FORWARD));
+    Set<Statement> setHandlers = new HashSet<Statement>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, DIRECTION_FORWARD));
     for (Statement node : setNodes) {
       setHandlers.retainAll(node.getNeighbours(StatEdge.TYPE_EXCEPTION, DIRECTION_FORWARD));
     }
@@ -247,14 +247,14 @@ public class Statement implements IMatchable {
     mapEdges.computeIfAbsent(edgetype, new Function<Integer, List<StatEdge>>() {
 		@Override
 		public List<StatEdge> apply(Integer k) {
-			return new ArrayList<>();
+			return new ArrayList<StatEdge>();
 		}
 	}).add(edge);
 
     mapStates.computeIfAbsent(edgetype, new Function<Integer, List<Statement>>() {
 		@Override
 		public List<Statement> apply(Integer k) {
-			return new ArrayList<>();
+			return new ArrayList<Statement>();
 		}
 	}).add(direction == DIRECTION_BACKWARD ? edge.getSource() : edge.getDestination());
   }
@@ -429,7 +429,7 @@ public class Statement implements IMatchable {
   }
 
   public List<Statement> getReversePostOrderList(Statement stat) {
-    List<Statement> res = new ArrayList<>();
+    List<Statement> res = new ArrayList<Statement>();
 
     addToReversePostOrderListIterative(stat, res);
 
@@ -442,14 +442,14 @@ public class Statement implements IMatchable {
 
   public List<Statement> getPostReversePostOrderList(List<Statement> lstexits) {
 
-    List<Statement> res = new ArrayList<>();
+    List<Statement> res = new ArrayList<Statement>();
 
     if (lstexits == null) {
       StrongConnectivityHelper schelper = new StrongConnectivityHelper(this);
       lstexits = StrongConnectivityHelper.getExitReps(schelper.getComponents());
     }
 
-    HashSet<Statement> setVisited = new HashSet<>();
+    HashSet<Statement> setVisited = new HashSet<Statement>();
 
     for (Statement exit : lstexits) {
       addToPostReversePostOrderList(exit, res, setVisited);
@@ -532,7 +532,7 @@ public class Statement implements IMatchable {
       first = newstat;
     }
 
-    List<StatEdge> lst = new ArrayList<>(oldstat.getLabelEdges());
+    List<StatEdge> lst = new ArrayList<StatEdge>(oldstat.getLabelEdges());
 
     for (int i = lst.size() - 1; i >= 0; i--) {
       StatEdge edge = lst.get(i);
@@ -559,9 +559,9 @@ public class Statement implements IMatchable {
 
   private static void addToReversePostOrderListIterative(Statement root, List<Statement> lst) {
 
-    LinkedList<Statement> stackNode = new LinkedList<>();
-    LinkedList<Integer> stackIndex = new LinkedList<>();
-    HashSet<Statement> setVisited = new HashSet<>();
+    LinkedList<Statement> stackNode = new LinkedList<Statement>();
+    LinkedList<Integer> stackIndex = new LinkedList<Integer>();
+    HashSet<Statement> setVisited = new HashSet<Statement>();
 
     stackNode.add(root);
     stackIndex.add(0);
@@ -683,10 +683,10 @@ public class Statement implements IMatchable {
     List<StatEdge> res;
     if ((type & (type - 1)) == 0) {
       res = map.get(type);
-      res = (List<StatEdge>) (res == null ? new ArrayList<>() : new ArrayList<>(res));
+      res = (List<StatEdge>) (res == null ? new ArrayList<Object>() : new ArrayList<StatEdge>(res));
     }
     else {
-      res = new ArrayList<>();
+      res = new ArrayList<StatEdge>();
       for (int edgetype : StatEdge.TYPES) {
         if ((type & edgetype) != 0) {
           List<StatEdge> lst = map.get(edgetype);
@@ -707,10 +707,10 @@ public class Statement implements IMatchable {
     List<Statement> res;
     if ((type & (type - 1)) == 0) {
       res = map.get(type);
-      res = (List<Statement>) (res == null ? new ArrayList<>() : new ArrayList<>(res));
+      res = (List<Statement>) (res == null ? new ArrayList<Object>() : new ArrayList<Statement>(res));
     }
     else {
-      res = new ArrayList<>();
+      res = new ArrayList<Statement>();
       for (int edgetype : StatEdge.TYPES) {
         if ((type & edgetype) != 0) {
           List<Statement> lst = map.get(edgetype);
@@ -725,7 +725,7 @@ public class Statement implements IMatchable {
   }
 
   public Set<Statement> getNeighboursSet(int type, int direction) {
-    return new HashSet<>(getNeighbours(type, direction));
+    return new HashSet<Statement>(getNeighbours(type, direction));
   }
 
   public List<StatEdge> getSuccessorEdges(int type) {

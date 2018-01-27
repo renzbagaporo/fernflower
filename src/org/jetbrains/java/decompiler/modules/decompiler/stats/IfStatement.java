@@ -38,7 +38,7 @@ public class IfStatement extends Statement {
 
   private boolean negated = false;
 
-  private final List<Exprent> headexprent = new ArrayList<>(1); // contains IfExprent
+  private final List<Exprent> headexprent = new ArrayList<Exprent>(1); // contains IfExprent
 
   // *****************************************************************************
   // constructors
@@ -167,7 +167,7 @@ public class IfStatement extends Statement {
 
       boolean ok = (regsize < 2);
       if (!ok) {
-        List<Statement> lst = new ArrayList<>();
+        List<Statement> lst = new ArrayList<Statement>();
         if (DecHelper.isChoiceStatement(head, lst)) {
           p = lst.remove(0);
 

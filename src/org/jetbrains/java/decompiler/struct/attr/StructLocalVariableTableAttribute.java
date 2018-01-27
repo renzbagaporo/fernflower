@@ -32,7 +32,7 @@ public class StructLocalVariableTableAttribute extends StructGeneralAttribute {
   public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
     int len = data.readUnsignedShort();
     if (len > 0) {
-      localVariables = new ArrayList<>(len);
+      localVariables = new ArrayList<LocalVariable>(len);
 
       for (int i = 0; i < len; i++) {
         int start_pc = data.readUnsignedShort();

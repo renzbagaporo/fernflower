@@ -179,7 +179,7 @@ public class FunctionExprent extends Exprent {
     3    // FUNCTION_STR_CONCAT = 49;
   };
 
-  private static final Set<Integer> ASSOCIATIVITY = new HashSet<>(Arrays.asList(
+  private static final Set<Integer> ASSOCIATIVITY = new HashSet<Integer>(Arrays.asList(
     FUNCTION_ADD, FUNCTION_MUL, FUNCTION_AND, FUNCTION_OR, FUNCTION_XOR, FUNCTION_CADD, FUNCTION_COR, FUNCTION_STR_CONCAT));
 
   private int funcType;
@@ -395,12 +395,12 @@ public class FunctionExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    return new ArrayList<>(lstOperands);
+    return new ArrayList<Exprent>(lstOperands);
   }
 
   @Override
   public Exprent copy() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     for (Exprent expr : lstOperands) {
       lst.add(expr.copy());
     }

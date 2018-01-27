@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckTypesResult {
-  private final List<ExprentTypePair> lstMaxTypeExprents = new ArrayList<>();
-  private final List<ExprentTypePair> lstMinTypeExprents = new ArrayList<>();
+  private final List<ExprentTypePair> lstMaxTypeExprents = new ArrayList<ExprentTypePair>();
+  private final List<ExprentTypePair> lstMinTypeExprents = new ArrayList<ExprentTypePair>();
 
   public void addMaxTypeExprent(Exprent exprent, VarType type) {
     lstMaxTypeExprents.add(new ExprentTypePair(exprent, type));

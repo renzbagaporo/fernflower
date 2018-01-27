@@ -13,19 +13,19 @@ import java.util.function.Function;
 public class FlattenStatementsHelper {
 
   // statement.id, node.id(direct), node.id(continue)
-  private final Map<Integer, String[]> mapDestinationNodes = new HashMap<>();
+  private final Map<Integer, String[]> mapDestinationNodes = new HashMap<Integer, String[]>();
 
   // node.id(source), statement.id(destination), edge type
-  private final List<Edge> listEdges = new ArrayList<>();
+  private final List<Edge> listEdges = new ArrayList<Edge>();
 
   // node.id(exit), [node.id(source), statement.id(destination)]
-  private final Map<String, List<String[]>> mapShortRangeFinallyPathIds = new HashMap<>();
+  private final Map<String, List<String[]>> mapShortRangeFinallyPathIds = new HashMap<String, List<String[]>>();
 
   // node.id(exit), [node.id(source), statement.id(destination)]
-  private final Map<String, List<String[]>> mapLongRangeFinallyPathIds = new HashMap<>();
+  private final Map<String, List<String[]>> mapLongRangeFinallyPathIds = new HashMap<String, List<String[]>>();
 
   // positive if branches
-  private final Map<String, Integer> mapPosIfBranch = new HashMap<>();
+  private final Map<String, Integer> mapPosIfBranch = new HashMap<String, Integer>();
 
   private DirectGraph graph;
 
@@ -42,7 +42,7 @@ public class FlattenStatementsHelper {
     // dummy exit node
     Statement dummyexit = root.getDummyExit();
     DirectNode node = new DirectNode(DirectNode.NODE_DIRECT, dummyexit, dummyexit.id.toString());
-    node.exprents = new ArrayList<>();
+    node.exprents = new ArrayList<Exprent>();
     graph.nodes.addWithKey(node, node.id);
     mapDestinationNodes.put(dummyexit.id, new String[]{node.id, null});
 
@@ -72,7 +72,7 @@ public class FlattenStatementsHelper {
       }
     }
 
-    LinkedList<StatementStackEntry> lstStackStatements = new LinkedList<>();
+    LinkedList<StatementStackEntry> lstStackStatements = new LinkedList<StatementStackEntry>();
 
     lstStackStatements.add(new StatementStackEntry(root, new LinkedList<StackEntry>(), null));
 
@@ -87,7 +87,7 @@ public class FlattenStatementsHelper {
 
       DirectNode node, nd;
 
-      List<StatEdge> lstSuccEdges = new ArrayList<>();
+      List<StatEdge> lstSuccEdges = new ArrayList<StatEdge>();
       DirectNode sourcenode = null;
 
       if (statEntry.succEdges == null) {
@@ -130,14 +130,14 @@ public class FlattenStatementsHelper {
             mapDestinationNodes.put(stat.id, new String[]{firstnd.id, null});
             graph.nodes.putWithKey(firstnd, firstnd.id);
 
-            LinkedList<StatementStackEntry> lst = new LinkedList<>();
+            LinkedList<StatementStackEntry> lst = new LinkedList<StatementStackEntry>();
 
             for (Statement st : stat.getStats()) {
               listEdges.add(new Edge(firstnd.id, st.id, StatEdge.TYPE_REGULAR));
 
               LinkedList<StackEntry> stack = stackFinally;
               if (stat.type == Statement.TYPE_CATCHALL && ((CatchAllStatement)stat).isFinally()) {
-                stack = new LinkedList<>(stackFinally);
+                stack = new LinkedList<StackEntry>(stackFinally);
 
                 if (st == stat.getFirst()) { // catch head
                   stack.add(new StackEntry((CatchAllStatement)stat, Boolean.FALSE));
@@ -293,7 +293,7 @@ public class FlattenStatementsHelper {
 
           StatEdge edge = lstSuccEdges.get(edgeindex);
 
-          LinkedList<StackEntry> stack = new LinkedList<>(stackFinally);
+          LinkedList<StackEntry> stack = new LinkedList<StackEntry>(stackFinally);
 
           int edgetype = edge.getType();
           Statement destination = edge.getDestination();
@@ -404,7 +404,7 @@ public class FlattenStatementsHelper {
       mapShortRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
 		@Override
 		public List<String[]> apply(String k) {
-			return new ArrayList<>();
+			return new ArrayList<String[]>();
 		}
 	}).add(new String[]{
         finallyShortRangeSource.id,
@@ -416,7 +416,7 @@ public class FlattenStatementsHelper {
       mapLongRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
 		@Override
 		public List<String[]> apply(String k) {
-			return new ArrayList<>();
+			return new ArrayList<String[]>();
 		}
 	}).add(new String[]{
         finallyLongRangeSource.id,
@@ -453,7 +453,7 @@ public class FlattenStatementsHelper {
     for (int i = 0; i < 2; i++) {
       for (Entry<String, List<String[]>> ent : (i == 0 ? mapShortRangeFinallyPathIds : mapLongRangeFinallyPathIds).entrySet()) {
 
-        List<FinallyPathWrapper> newLst = new ArrayList<>();
+        List<FinallyPathWrapper> newLst = new ArrayList<FinallyPathWrapper>();
 
         List<String[]> lst = ent.getValue();
         for (String[] arr : lst) {
@@ -472,8 +472,8 @@ public class FlattenStatementsHelper {
 
         if (!newLst.isEmpty()) {
           (i == 0 ? graph.mapShortRangeFinallyPaths : graph.mapLongRangeFinallyPaths).put(ent.getKey(),
-                                                                                          new ArrayList<>(
-                                                                                            new HashSet<>(newLst)));
+                                                                                          new ArrayList<FinallyPathWrapper>(
+                                                                                            new HashSet<FinallyPathWrapper>(newLst)));
         }
       }
     }

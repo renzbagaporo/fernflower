@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PoolInterceptor {
-  private final Map<String, String> mapOldToNewNames = new HashMap<>();
-  private final Map<String, String> mapNewToOldNames = new HashMap<>();
+  private final Map<String, String> mapOldToNewNames = new HashMap<String, String>();
+  private final Map<String, String> mapNewToOldNames = new HashMap<String, String>();
 
   public void addName(String oldName, String newName) {
     mapOldToNewNames.put(oldName, newName);

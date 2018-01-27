@@ -22,9 +22,9 @@ public class DoStatement extends Statement {
 
   private int looptype;
 
-  private final List<Exprent> initExprent = new ArrayList<>();
-  private final List<Exprent> conditionExprent = new ArrayList<>();
-  private final List<Exprent> incExprent = new ArrayList<>();
+  private final List<Exprent> initExprent = new ArrayList<Exprent>();
+  private final List<Exprent> conditionExprent = new ArrayList<Exprent>();
+  private final List<Exprent> incExprent = new ArrayList<Exprent>();
 
   // *****************************************************************************
   // constructors
@@ -130,7 +130,7 @@ public class DoStatement extends Statement {
 
   public List<Object> getSequentialObjects() {
 
-    List<Object> lst = new ArrayList<>();
+    List<Object> lst = new ArrayList<Object>();
 
     switch (looptype) {
       case LOOP_FOR:

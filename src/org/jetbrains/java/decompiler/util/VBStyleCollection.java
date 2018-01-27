@@ -7,9 +7,9 @@ import java.util.HashMap;
 
 public class VBStyleCollection<E, K> extends ArrayList<E> {
 
-  private HashMap<K, Integer> map = new HashMap<>();
+  private HashMap<K, Integer> map = new HashMap<K, Integer>();
 
-  private ArrayList<K> lstKeys = new ArrayList<>();
+  private ArrayList<K> lstKeys = new ArrayList<K>();
 
   public VBStyleCollection() {
     super();
@@ -17,8 +17,8 @@ public class VBStyleCollection<E, K> extends ArrayList<E> {
 
   public VBStyleCollection(int initialCapacity) {
     super(initialCapacity);
-    lstKeys = new ArrayList<>(initialCapacity);
-    map = new HashMap<>(initialCapacity);
+    lstKeys = new ArrayList<K>(initialCapacity);
+    map = new HashMap<K, Integer>(initialCapacity);
   }
 
   public boolean add(E element) {
@@ -125,10 +125,10 @@ public class VBStyleCollection<E, K> extends ArrayList<E> {
   }
 
   public VBStyleCollection<E, K> clone() {
-    VBStyleCollection<E, K> c = new VBStyleCollection<>();
-    c.addAll(new ArrayList<>(this));
-    c.setMap(new HashMap<>(map));
-    c.setLstKeys(new ArrayList<>(lstKeys));
+    VBStyleCollection<E, K> c = new VBStyleCollection<E, K>();
+    c.addAll(new ArrayList<E>(this));
+    c.setMap(new HashMap<K, Integer>(map));
+    c.setLstKeys(new ArrayList<K>(lstKeys));
     return c;
   }
 

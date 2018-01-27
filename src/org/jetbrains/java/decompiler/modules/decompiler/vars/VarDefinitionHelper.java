@@ -31,9 +31,9 @@ public class VarDefinitionHelper {
 
   public VarDefinitionHelper(Statement root, StructMethod mt, VarProcessor varproc) {
 
-    mapVarDefStatements = new HashMap<>();
-    mapStatementVars = new HashMap<>();
-    implDefVars = new HashSet<>();
+    mapVarDefStatements = new HashMap<Integer, Statement>();
+    mapStatementVars = new HashMap<Integer, HashSet<Integer>>();
+    implDefVars = new HashSet<Integer>();
 
     this.varproc = varproc;
 
@@ -78,7 +78,7 @@ public class VarDefinitionHelper {
     }
 
     // catch variables are implicitly defined
-    LinkedList<Statement> stack = new LinkedList<>();
+    LinkedList<Statement> stack = new LinkedList<Statement>();
     stack.add(root);
 
     while (!stack.isEmpty()) {
@@ -196,7 +196,7 @@ public class VarDefinitionHelper {
 
   private Statement findFirstBlock(Statement stat, Integer varindex) {
 
-    LinkedList<Statement> stack = new LinkedList<>();
+    LinkedList<Statement> stack = new LinkedList<Statement>();
     stack.add(stat);
 
     while (!stack.isEmpty()) {
@@ -236,15 +236,15 @@ public class VarDefinitionHelper {
 
   private Set<Integer> initStatement(Statement stat) {
 
-    HashMap<Integer, Integer> mapCount = new HashMap<>();
+    HashMap<Integer, Integer> mapCount = new HashMap<Integer, Integer>();
 
     List<VarExprent> condlst;
 
     if (stat.getExprents() == null) {
 
       // recurse on children statements
-      List<Integer> childVars = new ArrayList<>();
-      List<Exprent> currVars = new ArrayList<>();
+      List<Integer> childVars = new ArrayList<Integer>();
+      List<Exprent> currVars = new ArrayList<Exprent>();
 
       for (Object obj : stat.getSequentialObjects()) {
         if (obj instanceof Statement) {
@@ -291,7 +291,7 @@ public class VarDefinitionHelper {
     }
 
 
-    HashSet<Integer> set = new HashSet<>(mapCount.keySet());
+    HashSet<Integer> set = new HashSet<Integer>(mapCount.keySet());
 
     // put all variables defined in this statement into the set
     for (Entry<Integer, Integer> en : mapCount.entrySet()) {
@@ -307,8 +307,8 @@ public class VarDefinitionHelper {
 
   private static List<VarExprent> getAllVars(List<Exprent> lst) {
 
-    List<VarExprent> res = new ArrayList<>();
-    List<Exprent> listTemp = new ArrayList<>();
+    List<VarExprent> res = new ArrayList<VarExprent>();
+    List<Exprent> listTemp = new ArrayList<Exprent>();
 
     for (Exprent expr : lst) {
       listTemp.addAll(expr.getAllExprents(true));

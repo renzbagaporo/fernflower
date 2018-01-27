@@ -34,7 +34,7 @@ public class StructInnerClassesAttribute extends StructGeneralAttribute {
   public void initContent(DataInputFullStream data, ConstantPool pool) throws IOException {
     int len = data.readUnsignedShort();
     if (len > 0) {
-      entries = new ArrayList<>(len);
+      entries = new ArrayList<Entry>(len);
 
       for (int i = 0; i < len; i++) {
         int innerNameIdx = data.readUnsignedShort();

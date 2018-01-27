@@ -17,10 +17,10 @@ public class VarProcessor {
   private final VarNamesCollector varNamesCollector = new VarNamesCollector();
   private final StructMethod method;
   private final MethodDescriptor methodDescriptor;
-  private Map<VarVersionPair, String> mapVarNames = new HashMap<>();
+  private Map<VarVersionPair, String> mapVarNames = new HashMap<VarVersionPair, String>();
   private VarVersionsProcessor varVersions;
-  private final Map<VarVersionPair, String> thisVars = new HashMap<>();
-  private final Set<VarVersionPair> externalVars = new HashSet<>();
+  private final Map<VarVersionPair, String> thisVars = new HashMap<VarVersionPair, String>();
+  private final Set<VarVersionPair> externalVars = new HashSet<VarVersionPair>();
 
   public VarProcessor(StructMethod mt, MethodDescriptor md) {
     method = mt;
@@ -34,7 +34,7 @@ public class VarProcessor {
   }
 
   public void setVarDefinitions(Statement root) {
-    mapVarNames = new HashMap<>();
+    mapVarNames = new HashMap<VarVersionPair, String>();
     new VarDefinitionHelper(root, method, this).setVarDefinitions();
   }
 
@@ -45,7 +45,7 @@ public class VarProcessor {
 
     Map<Integer, Integer> mapOriginalVarIndices = varVersions.getMapOriginalVarIndices();
 
-    List<VarVersionPair> listVars = new ArrayList<>(mapVarNames.keySet());
+    List<VarVersionPair> listVars = new ArrayList<VarVersionPair>(mapVarNames.keySet());
     
     listVars.sort(new Comparator<VarVersionPair>() {
 		@Override
@@ -55,7 +55,7 @@ public class VarProcessor {
 		}
 	});
     
-    Map<String, Integer> mapNames = new HashMap<>();
+    Map<String, Integer> mapNames = new HashMap<String, Integer>();
 
     for (VarVersionPair pair : listVars) {
       String name = mapVarNames.get(pair);
@@ -88,7 +88,7 @@ public class VarProcessor {
   }
 
   public void refreshVarNames(VarNamesCollector vc) {
-    Map<VarVersionPair, String> tempVarNames = new HashMap<>(mapVarNames);
+    Map<VarVersionPair, String> tempVarNames = new HashMap<VarVersionPair, String>(mapVarNames);
     for (Entry<VarVersionPair, String> ent : tempVarNames.entrySet()) {
       mapVarNames.put(ent.getKey(), vc.getFreeName(ent.getValue()));
     }

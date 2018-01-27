@@ -27,9 +27,9 @@ public class VarTypeProcessor {
 
   private final StructMethod method;
   private final MethodDescriptor methodDescriptor;
-  private final Map<VarVersionPair, VarType> mapExprentMinTypes = new HashMap<>();
-  private final Map<VarVersionPair, VarType> mapExprentMaxTypes = new HashMap<>();
-  private final Map<VarVersionPair, Integer> mapFinalVars = new HashMap<>();
+  private final Map<VarVersionPair, VarType> mapExprentMinTypes = new HashMap<VarVersionPair, VarType>();
+  private final Map<VarVersionPair, VarType> mapExprentMaxTypes = new HashMap<VarVersionPair, VarType>();
+  private final Map<VarVersionPair, Integer> mapFinalVars = new HashMap<VarVersionPair, Integer>();
 
   public VarTypeProcessor(StructMethod mt, MethodDescriptor md) {
     method = mt;
@@ -65,7 +65,7 @@ public class VarTypeProcessor {
     }
 
     // catch variables
-    LinkedList<Statement> stack = new LinkedList<>();
+    LinkedList<Statement> stack = new LinkedList<Statement>();
     stack.add(root);
 
     while (!stack.isEmpty()) {

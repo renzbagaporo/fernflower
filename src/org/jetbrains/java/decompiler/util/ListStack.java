@@ -16,7 +16,7 @@ public class ListStack<T> extends ArrayList<T> {
 
   @SuppressWarnings("MethodDoesntCallSuperMethod")
   public ListStack<T> clone() {
-    ListStack<T> copy = new ListStack<>(this);
+    ListStack<T> copy = new ListStack<T>(this);
     copy.pointer = this.pointer;
     return copy;
   }

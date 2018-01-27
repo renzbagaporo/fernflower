@@ -56,7 +56,7 @@ public class InvocationExprent extends Exprent {
   private String stringDescriptor;
   private String invokeDynamicClassSuffix;
   private int invocationTyp = INVOKE_VIRTUAL;
-  private List<Exprent> lstParameters = new ArrayList<>();
+  private List<Exprent> lstParameters = new ArrayList<Exprent>();
   private List<PooledConstant> bootstrapArguments;
 
   public InvocationExprent() {
@@ -153,7 +153,7 @@ public class InvocationExprent extends Exprent {
     invokeDynamicClassSuffix = expr.getInvokeDynamicClassSuffix();
     stringDescriptor = expr.getStringDescriptor();
     descriptor = expr.getDescriptor();
-    lstParameters = new ArrayList<>(expr.getLstParameters());
+    lstParameters = new ArrayList<Exprent>(expr.getLstParameters());
     ExprProcessor.copyEntries(lstParameters);
 
     addBytecodeOffsets(expr.bytecode);
@@ -183,7 +183,7 @@ public class InvocationExprent extends Exprent {
 
   @Override
   public List<Exprent> getAllExprents() {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     if (instance != null) {
       lst.add(instance);
     }
@@ -456,7 +456,7 @@ public class InvocationExprent extends Exprent {
   private static final Map<String, String> UNBOXING_METHODS;
 
   static {
-    UNBOXING_METHODS = new HashMap<>();
+    UNBOXING_METHODS = new HashMap<String, String>();
     UNBOXING_METHODS.put("booleanValue", "java/lang/Boolean");
     UNBOXING_METHODS.put("byteValue", "java/lang/Byte");
     UNBOXING_METHODS.put("shortValue", "java/lang/Short");
@@ -476,7 +476,7 @@ public class InvocationExprent extends Exprent {
     if (cl == null) return EMPTY_BIT_SET;
 
     // check number of matches
-    List<MethodDescriptor> matches = new ArrayList<>();
+    List<MethodDescriptor> matches = new ArrayList<MethodDescriptor>();
     nextMethod:
     for (StructMethod mt : cl.getMethods()) {
       if (name.equals(mt.getName())) {

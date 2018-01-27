@@ -60,15 +60,15 @@ public class GenericMain {
   public static GenericMethodDescriptor parseMethodSignature(String signature) {
     String original = signature;
     try {
-      List<String> typeParameters = new ArrayList<>();
-      List<List<GenericType>> typeParameterBounds = new ArrayList<>();
+      List<String> typeParameters = new ArrayList<String>();
+      List<List<GenericType>> typeParameterBounds = new ArrayList<List<GenericType>>();
       signature = parseFormalParameters(signature, typeParameters, typeParameterBounds);
 
       int to = signature.indexOf(")");
       String parameters = signature.substring(1, to);
       signature = signature.substring(to + 1);
 
-      List<GenericType> parameterTypes = new ArrayList<>();
+      List<GenericType> parameterTypes = new ArrayList<GenericType>();
       while (parameters.length() > 0) {
         String par = GenericType.getNextType(parameters);
         parameterTypes.add(new GenericType(par));
@@ -79,7 +79,7 @@ public class GenericMain {
       GenericType returnType = new GenericType(ret);
       signature = signature.substring(ret.length());
 
-      List<GenericType> exceptionTypes = new ArrayList<>();
+      List<GenericType> exceptionTypes = new ArrayList<GenericType>();
       if (signature.length() > 0) {
         String[] exceptions = signature.split("\\^");
         for (int i = 1; i < exceptions.length; i++) {
@@ -128,7 +128,7 @@ public class GenericMain {
       String param = value.substring(0, to);
       value = value.substring(to + 1);
 
-      List<GenericType> lstBounds = new ArrayList<>();
+      List<GenericType> lstBounds = new ArrayList<GenericType>();
 
       while (true) {
         if (value.charAt(0) == ':') {
