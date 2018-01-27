@@ -15,7 +15,7 @@ public class ExceptionRangeCFG {
     this.handler = handler;
 
     if (exceptionType != null) {
-      this.exceptionTypes = new ArrayList<>(exceptionType);
+      this.exceptionTypes = new ArrayList<String>(exceptionType);
     }
   }
 

@@ -32,7 +32,7 @@ public class ClassesProcessor {
   public static final int AVERAGE_CLASS_SIZE = 16 * 1024;
 
   private final StructContext context;
-  private final Map<String, ClassNode> mapRootClasses = new HashMap<>();
+  private final Map<String, ClassNode> mapRootClasses = new HashMap<String, ClassNode>();
 
   private static class Inner {
     private String simpleName;
@@ -49,10 +49,10 @@ public class ClassesProcessor {
   }
 
   public void loadClasses(IIdentifierRenamer renamer) {
-    Map<String, Inner> mapInnerClasses = new HashMap<>();
-    Map<String, Set<String>> mapNestedClassReferences = new HashMap<>();
-    Map<String, Set<String>> mapEnclosingClassReferences = new HashMap<>();
-    Map<String, String> mapNewSimpleNames = new HashMap<>();
+    Map<String, Inner> mapInnerClasses = new HashMap<String, Inner>();
+    Map<String, Set<String>> mapNestedClassReferences = new HashMap<String, Set<String>>();
+    Map<String, Set<String>> mapEnclosingClassReferences = new HashMap<String, Set<String>>();
+    Map<String, String> mapNewSimpleNames = new HashMap<String, String>();
 
     boolean bDecompileInner = DecompilerContext.getOption(FernflowerPreferences.DECOMPILE_INNER);
 
@@ -108,14 +108,14 @@ public class ClassesProcessor {
                 mapNestedClassReferences.computeIfAbsent(enclClassName, new Function<String, Set<String>>() {
 					@Override
 					public Set<String> apply(String k) {
-						return new HashSet<>();
+						return new HashSet<String>();
 					}
 				}).add(innerName);
                 // reference to the enclosing class
                 mapEnclosingClassReferences.computeIfAbsent(innerName, new Function<String, Set<String>>() {
 					@Override
 					public Set<String> apply(String k) {
-						return new HashSet<>();
+						return new HashSet<String>();
 					}
 				}).add(enclClassName);
               }
@@ -134,8 +134,8 @@ public class ClassesProcessor {
       for (Entry<String, ClassNode> ent : mapRootClasses.entrySet()) {
         // root class?
         if (!mapInnerClasses.containsKey(ent.getKey())) {
-          Set<String> setVisited = new HashSet<>();
-          LinkedList<String> stack = new LinkedList<>();
+          Set<String> setVisited = new HashSet<String>();
+          LinkedList<String> stack = new LinkedList<String>();
 
           stack.add(ent.getKey());
           setVisited.add(ent.getKey());
@@ -335,10 +335,10 @@ public class ClassesProcessor {
     private ClassWrapper wrapper;
     public String enclosingMethod;
     public InvocationExprent superInvocation;
-    public final Map<String, VarVersionPair> mapFieldsToVars = new HashMap<>();
+    public final Map<String, VarVersionPair> mapFieldsToVars = new HashMap<String, VarVersionPair>();
     public VarType anonymousClassType;
-    public final List<ClassNode> nested = new ArrayList<>();
-    public final Set<String> enclosingClasses = new HashSet<>();
+    public final List<ClassNode> nested = new ArrayList<ClassNode>();
+    public final Set<String> enclosingClasses = new HashSet<String>();
     public ClassNode parent;
     public LambdaInformation lambdaInformation;
 

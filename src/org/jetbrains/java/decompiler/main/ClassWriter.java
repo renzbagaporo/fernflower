@@ -953,7 +953,7 @@ public class ClassWriter {
     StructGeneralAttribute.ATTRIBUTE_RUNTIME_VISIBLE_TYPE_ANNOTATIONS, StructGeneralAttribute.ATTRIBUTE_RUNTIME_INVISIBLE_TYPE_ANNOTATIONS};
 
   private static void appendAnnotations(TextBuffer buffer, int indent, StructMember mb, int targetType) {
-    Set<String> filter = new HashSet<>();
+    Set<String> filter = new HashSet<String>();
 
     for (String name : ANNOTATION_ATTRIBUTES) {
       StructAnnotationAttribute attribute = (StructAnnotationAttribute)mb.getAttribute(name);
@@ -970,7 +970,7 @@ public class ClassWriter {
   }
 
   private static void appendParameterAnnotations(TextBuffer buffer, StructMethod mt, int param) {
-    Set<String> filter = new HashSet<>();
+    Set<String> filter = new HashSet<String>();
 
     for (String name : PARAMETER_ANNOTATION_ATTRIBUTES) {
       StructAnnotationParameterAttribute attribute = (StructAnnotationParameterAttribute)mt.getAttribute(name);
@@ -1013,7 +1013,7 @@ public class ClassWriter {
 
   private static final Map<Integer, String> MODIFIERS;
   static {
-    MODIFIERS = new LinkedHashMap<>();
+    MODIFIERS = new LinkedHashMap<Integer, String>();
     MODIFIERS.put(CodeConstants.ACC_PUBLIC, "public");
     MODIFIERS.put(CodeConstants.ACC_PROTECTED, "protected");
     MODIFIERS.put(CodeConstants.ACC_PRIVATE, "private");

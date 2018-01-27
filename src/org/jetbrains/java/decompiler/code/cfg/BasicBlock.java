@@ -25,11 +25,11 @@ public class BasicBlock implements IGraphNode {
 
   private InstructionSequence seq = new SimpleInstructionSequence();
 
-  private final List<BasicBlock> preds = new ArrayList<>();
-  private final List<BasicBlock> succs = new ArrayList<>();
-  private final List<Integer> instrOldOffsets = new ArrayList<>();
-  private final List<BasicBlock> predExceptions = new ArrayList<>();
-  private final List<BasicBlock> succExceptions = new ArrayList<>();
+  private final List<BasicBlock> preds = new ArrayList<BasicBlock>();
+  private final List<BasicBlock> succs = new ArrayList<BasicBlock>();
+  private final List<Integer> instrOldOffsets = new ArrayList<Integer>();
+  private final List<BasicBlock> predExceptions = new ArrayList<BasicBlock>();
+  private final List<BasicBlock> succExceptions = new ArrayList<BasicBlock>();
 
   public BasicBlock(int id) {
     this.id = id;
@@ -161,7 +161,7 @@ public class BasicBlock implements IGraphNode {
   }
 
   public List<? extends IGraphNode> getPredecessors() {
-    List<BasicBlock> lst = new ArrayList<>(preds);
+    List<BasicBlock> lst = new ArrayList<BasicBlock>(preds);
     lst.addAll(predExceptions);
     return lst;
   }

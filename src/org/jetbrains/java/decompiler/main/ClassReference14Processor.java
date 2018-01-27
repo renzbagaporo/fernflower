@@ -37,7 +37,7 @@ public class ClassReference14Processor {
     invFor.setDescriptor(MethodDescriptor.parseDescriptor("(Ljava/lang/String;)Ljava/lang/Class;"));
     invFor.setStatic(true);
     
-    List<Exprent> exprList = new LinkedList<>();
+    List<Exprent> exprList = new LinkedList<Exprent>();
     exprList.add(new VarExprent(0, VarType.VARTYPE_STRING, null));
     
     invFor.setLstParameters(exprList);
@@ -60,7 +60,7 @@ public class ClassReference14Processor {
     invCause.setDescriptor(MethodDescriptor.parseDescriptor("(Ljava/lang/Throwable;)Ljava/lang/Throwable;"));
     invCause.setInstance(newExpr);
     
-    exprList = new LinkedList<>();
+    exprList = new LinkedList<Exprent>();
     exprList.add(new VarExprent(2, new VarType(CodeConstants.TYPE_OBJECT, 0, "java/lang/ClassNotFoundException"), null));
     
     invCause.setLstParameters(exprList);
@@ -69,13 +69,13 @@ public class ClassReference14Processor {
 
   public static void processClassReferences(ClassNode node) {
     // find the synthetic method Class class$(String) if present
-    Map<ClassWrapper, MethodWrapper> mapClassMeths = new HashMap<>();
+    Map<ClassWrapper, MethodWrapper> mapClassMeths = new HashMap<ClassWrapper, MethodWrapper>();
     mapClassMethods(node, mapClassMeths);
     if (mapClassMeths.isEmpty()) {
       return;
     }
 
-    Set<ClassWrapper> setFound = new HashSet<>();
+    Set<ClassWrapper> setFound = new HashSet<ClassWrapper>();
     processClassRec(node, mapClassMeths, setFound);
 
     if (!setFound.isEmpty()) {

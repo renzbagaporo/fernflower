@@ -59,7 +59,7 @@ public class DecompilerContext {
     Objects.requireNonNull(structContext);
     Objects.requireNonNull(classProcessor);
 
-    Map<String, Object> properties = new HashMap<>(FernflowerPreferences.DEFAULTS);
+    Map<String, Object> properties = new HashMap<String, Object>(FernflowerPreferences.DEFAULTS);
     if (customProperties != null) {
       properties.putAll(customProperties);
     }
