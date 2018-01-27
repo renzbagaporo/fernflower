@@ -148,7 +148,8 @@ public class ImportCollector {
   }
 
   private List<String> packImports() {
-    return mapSimpleNames.entrySet().stream()
+	  
+    List<Object> result = mapSimpleNames.entrySet().stream()
       .filter(new Predicate<Entry<String, String>>() {
 		@Override
 		public boolean test(Entry<String, String> ent) {
@@ -159,7 +160,7 @@ public class ImportCollector {
 			!JAVA_LANG_PACKAGE.equals(ent.getValue()) &&
 			!ent.getValue().equals(currentPackagePoint);
 		}
-	}
+	  }
       )
       .sorted((new Comparator<Entry<String, String>>() {
   		@Override
@@ -179,5 +180,13 @@ public class ImportCollector {
   		}
   	  })
       .collect(Collectors.toList());    
+    
+    List<String> toReturn = new LinkedList<String>();
+    
+    for (Object o : result) {
+		toReturn.add((String)o);
+	}
+    
+    return toReturn;
   }
 }
