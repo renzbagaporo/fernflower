@@ -11,6 +11,7 @@ import org.jetbrains.java.decompiler.util.TextUtil;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.ToIntFunction;
 
 public class VarProcessor {
   private final VarNamesCollector varNamesCollector = new VarNamesCollector();
@@ -45,7 +46,12 @@ public class VarProcessor {
     Map<Integer, Integer> mapOriginalVarIndices = varVersions.getMapOriginalVarIndices();
 
     List<VarVersionPair> listVars = new ArrayList<>(mapVarNames.keySet());
-    listVars.sort(Comparator.comparingInt(o -> o.var));
+    listVars.sort(Comparator.comparingInt(new ToIntFunction<VarVersionPair>() {
+		@Override
+		public int applyAsInt(VarVersionPair o) {
+			return o.var;
+		}
+	}));
 
     Map<String, Integer> mapNames = new HashMap<>();
 

@@ -5,6 +5,7 @@ import org.jetbrains.java.decompiler.modules.decompiler.exps.Exprent;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.Statement;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 
 public class DecHelper {
@@ -182,7 +183,12 @@ public class DecHelper {
 
   public static Set<Statement> getUniquePredExceptions(Statement head) {
     Set<Statement> setHandlers = new HashSet<>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, Statement.DIRECTION_FORWARD));
-    setHandlers.removeIf(statement -> statement.getPredecessorEdges(StatEdge.TYPE_EXCEPTION).size() > 1);
+    setHandlers.removeIf(new Predicate<Statement>() {
+		@Override
+		public boolean test(Statement statement) {
+			return statement.getPredecessorEdges(StatEdge.TYPE_EXCEPTION).size() > 1;
+		}
+	});
     return setHandlers;
   }
 

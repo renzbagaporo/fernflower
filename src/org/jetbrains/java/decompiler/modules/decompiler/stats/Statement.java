@@ -20,6 +20,7 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class Statement implements IMatchable {
   public static final int STATEDGE_ALL = 0x80000000;
@@ -243,9 +244,19 @@ public class Statement implements IMatchable {
     Map<Integer, List<StatEdge>> mapEdges = direction == DIRECTION_BACKWARD ? mapPredEdges : mapSuccEdges;
     Map<Integer, List<Statement>> mapStates = direction == DIRECTION_BACKWARD ? mapPredStates : mapSuccStates;
 
-    mapEdges.computeIfAbsent(edgetype, k -> new ArrayList<>()).add(edge);
+    mapEdges.computeIfAbsent(edgetype, new Function<Integer, List<StatEdge>>() {
+		@Override
+		public List<StatEdge> apply(Integer k) {
+			return new ArrayList<>();
+		}
+	}).add(edge);
 
-    mapStates.computeIfAbsent(edgetype, k -> new ArrayList<>()).add(direction == DIRECTION_BACKWARD ? edge.getSource() : edge.getDestination());
+    mapStates.computeIfAbsent(edgetype, new Function<Integer, List<Statement>>() {
+		@Override
+		public List<Statement> apply(Integer k) {
+			return new ArrayList<>();
+		}
+	}).add(direction == DIRECTION_BACKWARD ? edge.getSource() : edge.getDestination());
   }
 
   private void addEdgeInternal(int direction, StatEdge edge) {

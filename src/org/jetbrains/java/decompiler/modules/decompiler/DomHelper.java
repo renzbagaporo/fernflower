@@ -15,6 +15,7 @@ import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class DomHelper {
 
@@ -615,7 +616,12 @@ public class DomHelper {
               set.removeAll(setOldNodes);
 
               if (setOldNodes.contains(key)) {
-                mapExtPost.computeIfAbsent(newid, k -> new HashSet<>()).addAll(set);
+                mapExtPost.computeIfAbsent(newid, new Function<Integer, Set<Integer>>() {
+					@Override
+					public Set<Integer> apply(Integer k) {
+						return new HashSet<>();
+					}
+				}).addAll(set);
                 mapExtPost.remove(key);
               }
               else {

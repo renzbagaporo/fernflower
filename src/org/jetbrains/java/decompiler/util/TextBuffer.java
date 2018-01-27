@@ -7,6 +7,7 @@ import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerPreferences;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Allows to connect text with resulting lines
@@ -277,7 +278,12 @@ public class TextBuffer {
       myLineMapping = new HashMap<>();
       for (int i = 0; i < lineMapping.length; i += 2) {
         int key = lineMapping[i + 1];
-        Set<Integer> existing = myLineMapping.computeIfAbsent(key, k -> new TreeSet<>());
+        Set<Integer> existing = myLineMapping.computeIfAbsent(key, new Function<Integer, Set<Integer>>() {
+			@Override
+			public Set<Integer> apply(Integer k) {
+				return new TreeSet<>();
+			}
+		});
         existing.add(lineMapping[i]);
       }
     }

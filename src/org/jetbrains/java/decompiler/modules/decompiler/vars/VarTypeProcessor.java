@@ -5,6 +5,7 @@ import org.jetbrains.java.decompiler.code.CodeConstants;
 import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.*;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph;
+import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.CatchAllStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.CatchStatement;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement;
@@ -90,27 +91,35 @@ public class VarTypeProcessor {
   }
 
   private static void resetExprentTypes(DirectGraph graph) {
-    graph.iterateExprents(exprent -> {
-      List<Exprent> lst = exprent.getAllExprents(true);
-      lst.add(exprent);
+    graph.iterateExprents(new ExprentIterator() {
+		@Override
+		public int processExprent(Exprent exprent) {
+		  List<Exprent> lst = exprent.getAllExprents(true);
+		  lst.add(exprent);
 
-      for (Exprent expr : lst) {
-        if (expr.type == Exprent.EXPRENT_VAR) {
-          ((VarExprent)expr).setVarType(VarType.VARTYPE_UNKNOWN);
-        }
-        else if (expr.type == Exprent.EXPRENT_CONST) {
-          ConstExprent constExpr = (ConstExprent)expr;
-          if (constExpr.getConstType().typeFamily == CodeConstants.TYPE_FAMILY_INTEGER) {
-            constExpr.setConstType(new ConstExprent(constExpr.getIntValue(), constExpr.isBoolPermitted(), null).getConstType());
-          }
-        }
-      }
-      return 0;
-    });
+		  for (Exprent expr : lst) {
+		    if (expr.type == Exprent.EXPRENT_VAR) {
+		      ((VarExprent)expr).setVarType(VarType.VARTYPE_UNKNOWN);
+		    }
+		    else if (expr.type == Exprent.EXPRENT_CONST) {
+		      ConstExprent constExpr = (ConstExprent)expr;
+		      if (constExpr.getConstType().typeFamily == CodeConstants.TYPE_FAMILY_INTEGER) {
+		        constExpr.setConstType(new ConstExprent(constExpr.getIntValue(), constExpr.isBoolPermitted(), null).getConstType());
+		      }
+		    }
+		  }
+		  return 0;
+		}
+	});
   }
 
   private boolean processVarTypes(DirectGraph graph) {
-    return graph.iterateExprents(exprent -> checkTypeExprent(exprent) ? 0 : 1);
+    return graph.iterateExprents(new ExprentIterator() {
+		@Override
+		public int processExprent(Exprent exprent) {
+			return checkTypeExprent(exprent) ? 0 : 1;
+		}
+	});
   }
 
   private boolean checkTypeExprent(Exprent exprent) {

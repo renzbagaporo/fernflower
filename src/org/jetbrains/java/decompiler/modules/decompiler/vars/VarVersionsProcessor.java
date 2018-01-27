@@ -8,6 +8,7 @@ import org.jetbrains.java.decompiler.modules.decompiler.exps.ConstExprent;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.Exprent;
 import org.jetbrains.java.decompiler.modules.decompiler.exps.VarExprent;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph;
+import org.jetbrains.java.decompiler.modules.decompiler.sforms.DirectGraph.ExprentIterator;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.FlattenStatementsHelper;
 import org.jetbrains.java.decompiler.modules.decompiler.sforms.SSAConstructorSparseEx;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement;
@@ -18,6 +19,7 @@ import org.jetbrains.java.decompiler.util.FastSparseSetFactory.FastSparseSet;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class VarVersionsProcessor {
   private final StructMethod method;
@@ -91,22 +93,25 @@ public class VarVersionsProcessor {
   }
 
   private static void updateVersions(DirectGraph graph, final Map<VarVersionPair, Integer> versions) {
-    graph.iterateExprents(exprent -> {
-      List<Exprent> lst = exprent.getAllExprents(true);
-      lst.add(exprent);
+    graph.iterateExprents(new ExprentIterator() {
+		@Override
+		public int processExprent(Exprent exprent) {
+		  List<Exprent> lst = exprent.getAllExprents(true);
+		  lst.add(exprent);
 
-      for (Exprent expr : lst) {
-        if (expr.type == Exprent.EXPRENT_VAR) {
-          VarExprent var = (VarExprent)expr;
-          Integer version = versions.get(new VarVersionPair(var));
-          if (version != null) {
-            var.setVersion(version);
-          }
-        }
-      }
+		  for (Exprent expr : lst) {
+		    if (expr.type == Exprent.EXPRENT_VAR) {
+		      VarExprent var = (VarExprent)expr;
+		      Integer version = versions.get(new VarVersionPair(var));
+		      if (version != null) {
+		        var.setVersion(version);
+		      }
+		    }
+		  }
 
-      return 0;
-    });
+		  return 0;
+		}
+	});
   }
 
   private static void eliminateNonJavaTypes(VarTypeProcessor typeProcessor) {
@@ -142,7 +147,12 @@ public class VarVersionsProcessor {
 
     for (VarVersionPair pair : mapExprentMinTypes.keySet()) {
       if (pair.version >= 0) {  // don't merge constants
-        mapVarVersions.computeIfAbsent(pair.var, k -> new HashSet<>()).add(pair.version);
+        mapVarVersions.computeIfAbsent(pair.var, new Function<Integer, Set<Integer>>() {
+			@Override
+			public Set<Integer> apply(Integer k) {
+				return new HashSet<>();
+			}
+		}).add(pair.version);
       }
     }
 
@@ -235,29 +245,32 @@ public class VarVersionsProcessor {
     }
 
     // set new vars
-    graph.iterateExprents(exprent -> {
-      List<Exprent> lst = exprent.getAllExprents(true);
-      lst.add(exprent);
+    graph.iterateExprents(new ExprentIterator() {
+		@Override
+		public int processExprent(Exprent exprent) {
+		  List<Exprent> lst = exprent.getAllExprents(true);
+		  lst.add(exprent);
 
-      for (Exprent expr : lst) {
-        if (expr.type == Exprent.EXPRENT_VAR) {
-          VarExprent newVar = (VarExprent)expr;
-          Integer newVarIndex = mapVarPaar.get(new VarVersionPair(newVar));
-          if (newVarIndex != null) {
-            newVar.setIndex(newVarIndex);
-            newVar.setVersion(0);
-          }
-        }
-        else if (expr.type == Exprent.EXPRENT_CONST) {
-          VarType maxType = mapExprentMaxTypes.get(new VarVersionPair(expr.id, -1));
-          if (maxType != null && maxType.equals(VarType.VARTYPE_CHAR)) {
-            ((ConstExprent)expr).setConstType(maxType);
-          }
-        }
-      }
+		  for (Exprent expr : lst) {
+		    if (expr.type == Exprent.EXPRENT_VAR) {
+		      VarExprent newVar = (VarExprent)expr;
+		      Integer newVarIndex = mapVarPaar.get(new VarVersionPair(newVar));
+		      if (newVarIndex != null) {
+		        newVar.setIndex(newVarIndex);
+		        newVar.setVersion(0);
+		      }
+		    }
+		    else if (expr.type == Exprent.EXPRENT_CONST) {
+		      VarType maxType = mapExprentMaxTypes.get(new VarVersionPair(expr.id, -1));
+		      if (maxType != null && maxType.equals(VarType.VARTYPE_CHAR)) {
+		        ((ConstExprent)expr).setConstType(maxType);
+		      }
+		    }
+		  }
 
-      return 0;
-    });
+		  return 0;
+		}
+	});
 
     if (previousVersionsProcessor != null) {
       Map<Integer, Integer> oldIndices = previousVersionsProcessor.getMapOriginalVarIndices();

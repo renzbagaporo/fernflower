@@ -229,9 +229,9 @@ public class NestedClassProcessor {
     return false;
   }
 
-  private static void computeLocalVarsAndDefinitions(ClassNode node) {
+  private static void computeLocalVarsAndDefinitions(final ClassNode node) {
     // class name -> constructor descriptor -> var to field link
-    Map<String, Map<String, List<VarFieldPair>>> mapVarMasks = new HashMap<>();
+    final Map<String, Map<String, List<VarFieldPair>>> mapVarMasks = new HashMap<>();
 
     int clTypes = 0;
 
@@ -254,71 +254,74 @@ public class NestedClassProcessor {
     }
 
     // local var masks
-    Map<String, Map<String, List<VarFieldPair>>> mapVarFieldPairs = new HashMap<>();
+    final Map<String, Map<String, List<VarFieldPair>>> mapVarFieldPairs = new HashMap<>();
 
     if (clTypes != ClassNode.CLASS_MEMBER) {
       // iterate enclosing class
-      for (MethodWrapper method : node.getWrapper().getMethods()) {
+      for (final MethodWrapper method : node.getWrapper().getMethods()) {
         if (method.root != null) { // neither abstract, nor native
-          method.getOrBuildGraph().iterateExprents(exprent -> {
-            List<Exprent> lst = exprent.getAllExprents(true);
-            lst.add(exprent);
+          method.getOrBuildGraph().iterateExprents(new ExprentIterator() {
+			@Override
+			public int processExprent(Exprent exprent) {
+			    List<Exprent> lst = exprent.getAllExprents(true);
+			    lst.add(exprent);
 
-            for (Exprent expr : lst) {
-              if (expr.type == Exprent.EXPRENT_NEW) {
-                InvocationExprent constructor = ((NewExprent)expr).getConstructor();
+			    for (Exprent expr : lst) {
+			      if (expr.type == Exprent.EXPRENT_NEW) {
+			        InvocationExprent constructor = ((NewExprent)expr).getConstructor();
 
-                if (constructor != null && mapVarMasks.containsKey(constructor.getClassname())) { // non-static inner class constructor
-                  String refClassName = constructor.getClassname();
-                  ClassNode nestedClassNode = node.getClassNode(refClassName);
+			        if (constructor != null && mapVarMasks.containsKey(constructor.getClassname())) { // non-static inner class constructor
+			          String refClassName = constructor.getClassname();
+			          ClassNode nestedClassNode = node.getClassNode(refClassName);
 
-                  if (nestedClassNode.type != ClassNode.CLASS_MEMBER) {
-                    List<VarFieldPair> mask = mapVarMasks.get(refClassName).get(constructor.getStringDescriptor());
+			          if (nestedClassNode.type != ClassNode.CLASS_MEMBER) {
+			            List<VarFieldPair> mask = mapVarMasks.get(refClassName).get(constructor.getStringDescriptor());
 
-                    if (!mapVarFieldPairs.containsKey(refClassName)) {
-                      mapVarFieldPairs.put(refClassName, new HashMap<>());
-                    }
+			            if (!mapVarFieldPairs.containsKey(refClassName)) {
+			              mapVarFieldPairs.put(refClassName, new HashMap<String, List<VarFieldPair>>());
+			            }
 
-                    List<VarFieldPair> lstTemp = new ArrayList<>();
+			            List<VarFieldPair> lstTemp = new ArrayList<>();
 
-                    for (int i = 0; i < mask.size(); i++) {
-                      Exprent param = constructor.getLstParameters().get(i);
-                      VarFieldPair pair = null;
+			            for (int i = 0; i < mask.size(); i++) {
+			              Exprent param = constructor.getLstParameters().get(i);
+			              VarFieldPair pair = null;
 
-                      if (param.type == Exprent.EXPRENT_VAR && mask.get(i) != null) {
-                        VarVersionPair varPair = new VarVersionPair((VarExprent)param);
+			              if (param.type == Exprent.EXPRENT_VAR && mask.get(i) != null) {
+			                VarVersionPair varPair = new VarVersionPair((VarExprent)param);
 
-                        // FIXME: flags of variables are wrong! Correct the entire functionality.
-                        // if(method.varproc.getVarFinal(varPair) != VarTypeProcessor.VAR_NON_FINAL) {
-                        pair = new VarFieldPair(mask.get(i).fieldKey, varPair);
-                        // }
-                      }
+			                // FIXME: flags of variables are wrong! Correct the entire functionality.
+			                // if(method.varproc.getVarFinal(varPair) != VarTypeProcessor.VAR_NON_FINAL) {
+			                pair = new VarFieldPair(mask.get(i).fieldKey, varPair);
+			                // }
+			              }
 
-                      lstTemp.add(pair);
-                    }
+			              lstTemp.add(pair);
+			            }
 
-                    List<VarFieldPair> pairMask = mapVarFieldPairs.get(refClassName).get(constructor.getStringDescriptor());
-                    if (pairMask == null) {
-                      pairMask = lstTemp;
-                    }
-                    else {
-                      for (int i = 0; i < pairMask.size(); i++) {
-                        if (!InterpreterUtil.equalObjects(pairMask.get(i), lstTemp.get(i))) {
-                          pairMask.set(i, null);
-                        }
-                      }
-                    }
+			            List<VarFieldPair> pairMask = mapVarFieldPairs.get(refClassName).get(constructor.getStringDescriptor());
+			            if (pairMask == null) {
+			              pairMask = lstTemp;
+			            }
+			            else {
+			              for (int i = 0; i < pairMask.size(); i++) {
+			                if (!InterpreterUtil.equalObjects(pairMask.get(i), lstTemp.get(i))) {
+			                  pairMask.set(i, null);
+			                }
+			              }
+			            }
 
-                    mapVarFieldPairs.get(refClassName).put(constructor.getStringDescriptor(), pairMask);
-                    nestedClassNode.enclosingMethod =
-                      InterpreterUtil.makeUniqueKey(method.methodStruct.getName(), method.methodStruct.getDescriptor());
-                  }
-                }
-              }
-            }
+			            mapVarFieldPairs.get(refClassName).put(constructor.getStringDescriptor(), pairMask);
+			            nestedClassNode.enclosingMethod =
+			              InterpreterUtil.makeUniqueKey(method.methodStruct.getName(), method.methodStruct.getDescriptor());
+			          }
+			        }
+			      }
+			    }
 
-            return 0;
-          });
+			    return 0;
+			  }
+		});
         }
       }
     }

@@ -7,6 +7,7 @@ import org.jetbrains.java.decompiler.modules.decompiler.stats.*;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 
 public class FlattenStatementsHelper {
@@ -400,14 +401,24 @@ public class FlattenStatementsHelper {
     if (finallyShortRangeSource != null) {
       boolean isContinueEdge = (edgetype == StatEdge.TYPE_CONTINUE);
 
-      mapShortRangeFinallyPathIds.computeIfAbsent(sourcenode.id, k -> new ArrayList<>()).add(new String[]{
+      mapShortRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
+		@Override
+		public List<String[]> apply(String k) {
+			return new ArrayList<>();
+		}
+	}).add(new String[]{
         finallyShortRangeSource.id,
         destination.id.toString(),
         finallyShortRangeEntry.id.toString(),
         isFinallyMonitorExceptionPath ? "1" : null,
         isContinueEdge ? "1" : null});
 
-      mapLongRangeFinallyPathIds.computeIfAbsent(sourcenode.id, k -> new ArrayList<>()).add(new String[]{
+      mapLongRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
+		@Override
+		public List<String[]> apply(String k) {
+			return new ArrayList<>();
+		}
+	}).add(new String[]{
         finallyLongRangeSource.id,
         destination.id.toString(),
         finallyLongRangeEntry.id.toString(),
