@@ -22,7 +22,7 @@ public class NestedMemberAccess {
   private enum MethodAccess {NORMAL, FIELD_GET, FIELD_SET, METHOD, FUNCTION}
 
   private boolean noSynthFlag;
-  private final Map<MethodWrapper, MethodAccess> mapMethodType = new HashMap<>();
+  private final Map<MethodWrapper, MethodAccess> mapMethodType = new HashMap<MethodWrapper, MethodAccess>();
 
 
   public void propagateMemberAccess(ClassNode root) {

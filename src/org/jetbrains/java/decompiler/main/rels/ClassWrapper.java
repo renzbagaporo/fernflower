@@ -29,10 +29,10 @@ import java.util.function.Predicate;
 
 public class ClassWrapper {
   private final StructClass classStruct;
-  private final Set<String> hiddenMembers = new HashSet<>();
-  private final VBStyleCollection<Exprent, String> staticFieldInitializers = new VBStyleCollection<>();
-  private final VBStyleCollection<Exprent, String> dynamicFieldInitializers = new VBStyleCollection<>();
-  private final VBStyleCollection<MethodWrapper, String> methods = new VBStyleCollection<>();
+  private final Set<String> hiddenMembers = new HashSet<String>();
+  private final VBStyleCollection<Exprent, String> staticFieldInitializers = new VBStyleCollection<Exprent, String>();
+  private final VBStyleCollection<Exprent, String> dynamicFieldInitializers = new VBStyleCollection<Exprent, String>();
+  private final VBStyleCollection<MethodWrapper, String> methods = new VBStyleCollection<MethodWrapper, String>();
 
   public ClassWrapper(StructClass classStruct) {
     this.classStruct = classStruct;

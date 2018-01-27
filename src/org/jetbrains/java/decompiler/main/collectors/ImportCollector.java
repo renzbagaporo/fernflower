@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 public class ImportCollector {
   private static final String JAVA_LANG_PACKAGE = "java.lang";
 
-  private final Map<String, String> mapSimpleNames = new HashMap<>();
-  private final Set<String> setNotImportedNames = new HashSet<>();
+  private final Map<String, String> mapSimpleNames = new HashMap<String, String>();
+  private final Set<String> setNotImportedNames = new HashSet<String>();
   // set of field names in this class and all its predecessors.
-  private final Set<String> setFieldNames = new HashSet<>();
+  private final Set<String> setFieldNames = new HashSet<String>();
   private final String currentPackageSlash;
   private final String currentPackagePoint;
 

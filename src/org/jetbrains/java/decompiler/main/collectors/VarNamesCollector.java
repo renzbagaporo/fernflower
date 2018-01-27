@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class VarNamesCollector {
 
-  private final Set<String> usedNames = new HashSet<>();
+  private final Set<String> usedNames = new HashSet<String>();
 
   public VarNamesCollector() { }
 

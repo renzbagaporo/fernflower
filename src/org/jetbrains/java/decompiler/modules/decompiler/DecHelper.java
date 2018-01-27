@@ -12,9 +12,9 @@ public class DecHelper {
 
   public static boolean checkStatementExceptions(List<Statement> lst) {
 
-    Set<Statement> all = new HashSet<>(lst);
+    Set<Statement> all = new HashSet<Statement>(lst);
 
-    Set<Statement> handlers = new HashSet<>();
+    Set<Statement> handlers = new HashSet<Statement>();
     Set<Statement> intersection = null;
 
     for (Statement stat : lst) {
@@ -24,7 +24,7 @@ public class DecHelper {
         intersection = setNew;
       }
       else {
-        HashSet<Statement> interclone = new HashSet<>(intersection);
+        HashSet<Statement> interclone = new HashSet<Statement>(intersection);
         interclone.removeAll(setNew);
 
         intersection.retainAll(setNew);
@@ -182,7 +182,7 @@ public class DecHelper {
   }
 
   public static Set<Statement> getUniquePredExceptions(Statement head) {
-    Set<Statement> setHandlers = new HashSet<>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, Statement.DIRECTION_FORWARD));
+    Set<Statement> setHandlers = new HashSet<Statement>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, Statement.DIRECTION_FORWARD));
     setHandlers.removeIf(new Predicate<Statement>() {
 		@Override
 		public boolean test(Statement statement) {
@@ -193,7 +193,7 @@ public class DecHelper {
   }
 
   public static List<Exprent> copyExprentList(List<Exprent> lst) {
-    List<Exprent> ret = new ArrayList<>();
+    List<Exprent> ret = new ArrayList<Exprent>();
     for (Exprent expr : lst) {
       ret.add(expr.copy());
     }

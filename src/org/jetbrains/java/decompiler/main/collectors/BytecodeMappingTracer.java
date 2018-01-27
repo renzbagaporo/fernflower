@@ -11,7 +11,7 @@ public class BytecodeMappingTracer {
 
   private int currentSourceLine;
   private StructLineNumberTableAttribute lineNumberTable = null;
-  private final Map<Integer, Integer> mapping = new HashMap<>();  // bytecode offset, source line
+  private final Map<Integer, Integer> mapping = new HashMap<Integer, Integer>();  // bytecode offset, source line
 
   public BytecodeMappingTracer() { }
 
@@ -67,7 +67,7 @@ public class BytecodeMappingTracer {
     this.lineNumberTable = lineNumberTable;
   }
 
-  private final Set<Integer> unmappedLines = new HashSet<>();
+  private final Set<Integer> unmappedLines = new HashSet<Integer>();
 
   public Set<Integer> getUnmappedLines() {
     return unmappedLines;
@@ -78,7 +78,7 @@ public class BytecodeMappingTracer {
       return Collections.emptyMap();
     }
 
-    Map<Integer, Integer> res = new HashMap<>();
+    Map<Integer, Integer> res = new HashMap<Integer, Integer>();
 
     // first match offsets from line number table
     int[] data = lineNumberTable.getRawData();

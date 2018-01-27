@@ -51,7 +51,7 @@ public abstract class FernflowerPreferences {
   public static Map<String, Object> DEFAULTS = getDefaults();
 
   static Map<String, Object> getDefaults() {
-    Map<String, Object> defaults = new HashMap<>();
+    Map<String, Object> defaults = new HashMap<String, Object>();
 
     defaults.put(REMOVE_BRIDGE, "1");
     defaults.put(REMOVE_SYNTHETIC, "0");

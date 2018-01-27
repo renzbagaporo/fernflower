@@ -18,7 +18,7 @@ public class MethodWrapper {
   public final VarProcessor varproc;
   public final StructMethod methodStruct;
   public final CounterContainer counter;
-  public final Set<String> setOuterVarNames = new HashSet<>();
+  public final Set<String> setOuterVarNames = new HashSet<String>();
 
   public DirectGraph graph;
   public List<VarVersionPair> synthParameters;

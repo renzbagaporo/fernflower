@@ -27,9 +27,9 @@ public class ConsoleDecompiler implements IBytecodeProvider, IResultSaver {
       return;
     }
 
-    Map<String, Object> mapOptions = new HashMap<>();
-    List<File> lstSources = new ArrayList<>();
-    List<File> lstLibraries = new ArrayList<>();
+    Map<String, Object> mapOptions = new HashMap<String, Object>();
+    List<File> lstSources = new ArrayList<File>();
+    List<File> lstLibraries = new ArrayList<File>();
 
     boolean isOption = true;
     for (int i = 0; i < args.length - 1; ++i) { // last parameter - destination
@@ -99,8 +99,8 @@ public class ConsoleDecompiler implements IBytecodeProvider, IResultSaver {
 
   private final File root;
   private final Fernflower fernflower;
-  private final Map<String, ZipOutputStream> mapArchiveStreams = new HashMap<>();
-  private final Map<String, Set<String>> mapArchiveEntries = new HashMap<>();
+  private final Map<String, ZipOutputStream> mapArchiveStreams = new HashMap<String, ZipOutputStream>();
+  private final Map<String, Set<String>> mapArchiveEntries = new HashMap<String, Set<String>>();
 
   protected ConsoleDecompiler(File destination, Map<String, Object> options, IFernflowerLogger logger) {
     root = destination;
@@ -248,7 +248,7 @@ public class ConsoleDecompiler implements IBytecodeProvider, IResultSaver {
     Set<String> set = mapArchiveEntries.computeIfAbsent(file, new Function<String, Set<String>>() {
 		@Override
 		public Set<String> apply(String k) {
-			return new HashSet<>();
+			return new HashSet<String>();
 		}
 	});
 

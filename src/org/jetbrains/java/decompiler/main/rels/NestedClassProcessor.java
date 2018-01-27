@@ -108,7 +108,7 @@ public class NestedClassProcessor {
       method.varproc.setVarName(new VarVersionPair(0, 0), parent.simpleName + ".this");
     }
 
-    final Map<VarVersionPair, String> mapNewNames = new HashMap<>();
+    final Map<VarVersionPair, String> mapNewNames = new HashMap<VarVersionPair, String>();
 
     enclosingMethod.getOrBuildGraph().iterateExprents(new ExprentIterator() {
 		@Override
@@ -152,7 +152,7 @@ public class NestedClassProcessor {
 	});
 
     // update names of local variables
-    Set<String> setNewOuterNames = new HashSet<>(mapNewNames.values());
+    Set<String> setNewOuterNames = new HashSet<String>(mapNewNames.values());
     setNewOuterNames.removeAll(method.setOuterVarNames);
 
     method.varproc.refreshVarNames(new VarNamesCollector(setNewOuterNames));
@@ -164,7 +164,7 @@ public class NestedClassProcessor {
   }
 
   private static void checkNotFoundClasses(ClassNode root, ClassNode node) {
-    List<ClassNode> copy = new ArrayList<>(node.nested);
+    List<ClassNode> copy = new ArrayList<ClassNode>(node.nested);
 
     for (ClassNode child : copy) {
       if (child.classStruct.isSynthetic()) {
@@ -209,7 +209,7 @@ public class NestedClassProcessor {
   private static boolean insertNestedClass(ClassNode root, ClassNode child) {
     Set<String> setEnclosing = child.enclosingClasses;
 
-    LinkedList<ClassNode> stack = new LinkedList<>();
+    LinkedList<ClassNode> stack = new LinkedList<ClassNode>();
     stack.add(root);
 
     while (!stack.isEmpty()) {
@@ -231,7 +231,7 @@ public class NestedClassProcessor {
 
   private static void computeLocalVarsAndDefinitions(final ClassNode node) {
     // class name -> constructor descriptor -> var to field link
-    final Map<String, Map<String, List<VarFieldPair>>> mapVarMasks = new HashMap<>();
+    final Map<String, Map<String, List<VarFieldPair>>> mapVarMasks = new HashMap<String, Map<String, List<VarFieldPair>>>();
 
     int clTypes = 0;
 
@@ -254,7 +254,7 @@ public class NestedClassProcessor {
     }
 
     // local var masks
-    final Map<String, Map<String, List<VarFieldPair>>> mapVarFieldPairs = new HashMap<>();
+    final Map<String, Map<String, List<VarFieldPair>>> mapVarFieldPairs = new HashMap<String, Map<String, List<VarFieldPair>>>();
 
     if (clTypes != ClassNode.CLASS_MEMBER) {
       // iterate enclosing class
@@ -281,7 +281,7 @@ public class NestedClassProcessor {
 			              mapVarFieldPairs.put(refClassName, new HashMap<String, List<VarFieldPair>>());
 			            }
 
-			            List<VarFieldPair> lstTemp = new ArrayList<>();
+			            List<VarFieldPair> lstTemp = new ArrayList<VarFieldPair>();
 
 			            for (int i = 0; i < mask.size(); i++) {
 			              Exprent param = constructor.getLstParameters().get(i);
@@ -336,7 +336,7 @@ public class NestedClassProcessor {
       if (mapVarFieldPairs.containsKey(enclosing.getKey())) {
         for (List<VarFieldPair> mask : mapVarFieldPairs.get(enclosing.getKey()).values()) {
           if (interPairMask == null) {
-            interPairMask = new ArrayList<>(mask);
+            interPairMask = new ArrayList<VarFieldPair>(mask);
           }
           else {
             mergeListSignatures(interPairMask, mask, false);
@@ -348,7 +348,7 @@ public class NestedClassProcessor {
       // merge all constructors
       for (List<VarFieldPair> mask : enclosing.getValue().values()) {
         if (interMask == null) {
-          interMask = new ArrayList<>(mask);
+          interMask = new ArrayList<VarFieldPair>(mask);
         }
         else {
           mergeListSignatures(interMask, mask, false);
@@ -356,7 +356,7 @@ public class NestedClassProcessor {
       }
 
       if (interPairMask == null) { // member or local and never instantiated
-        interPairMask = (List<VarFieldPair>) (interMask != null ? new ArrayList<>(interMask) : new ArrayList<>());
+        interPairMask = (List<VarFieldPair>) (interMask != null ? new ArrayList<VarFieldPair>(interMask) : new ArrayList<VarFieldPair>());
 
         boolean found = false;
 
@@ -382,7 +382,7 @@ public class NestedClassProcessor {
       for (Entry<String, List<VarFieldPair>> entry : enclosing.getValue().entrySet()) {
         mergeListSignatures(entry.getValue(), interPairMask, false);
 
-        List<VarVersionPair> mask = new ArrayList<>(entry.getValue().size());
+        List<VarVersionPair> mask = new ArrayList<VarVersionPair>(entry.getValue().size());
         for (VarFieldPair pair : entry.getValue()) {
           mask.add(pair != null && !pair.fieldKey.isEmpty() ? pair.varPair : null);
         }
@@ -398,10 +398,10 @@ public class NestedClassProcessor {
     // iterate all child methods
     for (final MethodWrapper method : child.getWrapper().getMethods()) {
       if (method.root != null) { // neither abstract nor native
-        Map<VarVersionPair, String> mapNewNames = new HashMap<>();  // local var names
-        Map<VarVersionPair, VarType> mapNewTypes = new HashMap<>();  // local var types
+        Map<VarVersionPair, String> mapNewNames = new HashMap<VarVersionPair, String>();  // local var names
+        Map<VarVersionPair, VarType> mapNewTypes = new HashMap<VarVersionPair, VarType>();  // local var types
 
-        final Map<Integer, VarVersionPair> mapParamsToNewVars = new HashMap<>();
+        final Map<Integer, VarVersionPair> mapParamsToNewVars = new HashMap<Integer, VarVersionPair>();
         if (method.synthParameters != null) {
           int index = 0, varIndex = 1;
           MethodDescriptor md = MethodDescriptor.parseDescriptor(method.methodStruct.getDescriptor());
@@ -441,7 +441,7 @@ public class NestedClassProcessor {
           }
         }
 
-        final Map<String, VarVersionPair> mapFieldsToNewVars = new HashMap<>();
+        final Map<String, VarVersionPair> mapFieldsToNewVars = new HashMap<String, VarVersionPair>();
         for (ClassNode classNode = child; classNode != null; classNode = classNode.parent) {
           for (Entry<String, VarVersionPair> entry : classNode.mapFieldsToVars.entrySet()) {
             VarVersionPair newVar = new VarVersionPair(method.counter.getCounterAndIncrement(CounterContainer.VAR_COUNTER), 0);
@@ -482,7 +482,7 @@ public class NestedClassProcessor {
           }
         }
 
-        Set<String> setNewOuterNames = new HashSet<>(mapNewNames.values());
+        Set<String> setNewOuterNames = new HashSet<String>(mapNewNames.values());
         setNewOuterNames.removeAll(method.setOuterVarNames);
 
         method.varproc.refreshVarNames(new VarNamesCollector(setNewOuterNames));
@@ -572,7 +572,7 @@ public class NestedClassProcessor {
   }
 
   private static Map<String, List<VarFieldPair>> getMaskLocalVars(ClassWrapper wrapper) {
-    Map<String, List<VarFieldPair>> mapMasks = new HashMap<>();
+    Map<String, List<VarFieldPair>> mapMasks = new HashMap<String, List<VarFieldPair>>();
 
     StructClass cl = wrapper.getClassStruct();
 
@@ -584,7 +584,7 @@ public class NestedClassProcessor {
         DirectGraph graph = method.getOrBuildGraph();
 
         if (graph != null) { // something gone wrong, should not be null
-          List<VarFieldPair> fields = new ArrayList<>(md.params.length);
+          List<VarFieldPair> fields = new ArrayList<VarFieldPair>(md.params.length);
 
           int varIndex = 1;
           for (int i = 0; i < md.params.length; i++) {  // no static methods allowed
@@ -736,7 +736,7 @@ public class NestedClassProcessor {
   private static void setLocalClassDefinition(MethodWrapper method, ClassNode node) {
     RootStatement root = method.root;
 
-    Set<Statement> setStats = new HashSet<>();
+    Set<Statement> setStats = new HashSet<Statement>();
     VarType classType = new VarType(node.classStruct.qualifiedName, true);
 
     Statement statement = getDefStatement(root, classType, setStats);
@@ -775,7 +775,7 @@ public class NestedClassProcessor {
   }
 
   private static Statement findFirstBlock(Statement stat, Set<Statement> setStats) {
-    LinkedList<Statement> stack = new LinkedList<>();
+    LinkedList<Statement> stack = new LinkedList<Statement>();
     stack.add(stat);
 
     while (!stack.isEmpty()) {
@@ -809,7 +809,7 @@ public class NestedClassProcessor {
   }
 
   private static Statement getDefStatement(Statement stat, VarType classType, Set<Statement> setStats) {
-    List<Exprent> lst = new ArrayList<>();
+    List<Exprent> lst = new ArrayList<Exprent>();
     Statement retStat = null;
 
     if (stat.getExprents() == null) {
