@@ -177,15 +177,13 @@ public class DomHelper {
       for (Statement stt : lists.get(st)) {
         lstPosts.add(stt.id);
       }
-
-      lstPosts.sort(Comparator.comparing(new Function<Integer, Integer>() {
+      
+      lstPosts.sort(new Comparator<Integer>() {
 		@Override
-		public Integer apply(Integer v) {
-			return mapSortOrder.get(v);
+		public int compare(Integer o1, Integer o2) {
+			return mapSortOrder.get(o1) - mapSortOrder.get(o2);
 		}
-	}));
-      
-      
+      });      
 
       if (lstPosts.size() > 1 && lstPosts.get(0).intValue() == st.id) {
         lstPosts.add(lstPosts.remove(0));

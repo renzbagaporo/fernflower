@@ -161,7 +161,17 @@ public class ImportCollector {
 		}
 	}
       )
-      .sorted(Map.Entry.<String, String>comparingByValue().thenComparing(Map.Entry.comparingByKey()))
+      .sorted((new Comparator<Entry<String, String>>() {
+  		@Override
+  		public int compare(Entry<String, String> o1, Entry<String, String> o2) {
+  			return o1.getValue().compareTo(o2.getValue());
+  		}
+         }).thenComparing(new Comparator<Entry<String, String>>() {
+     		@Override
+    		public int compare(Entry<String, String> o1, Entry<String, String> o2) {
+    			return o1.getKey().compareTo(o2.getKey());
+    		}
+           }))
       .map(new Function<Entry<String, String>, String>() {
   		@Override
   		public String apply(Entry<String, String> ent) {
