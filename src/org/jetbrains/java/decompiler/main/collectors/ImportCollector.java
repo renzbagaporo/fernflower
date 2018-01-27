@@ -12,6 +12,7 @@ import org.jetbrains.java.decompiler.struct.StructField;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -161,7 +162,12 @@ public class ImportCollector {
 	}
       )
       .sorted(Map.Entry.<String, String>comparingByValue().thenComparing(Map.Entry.comparingByKey()))
-      .map(ent -> ent.getValue() + "." + ent.getKey())
+      .map(new Function<Entry<String, String>, String>() {
+  		@Override
+  		public String apply(Entry<String, String> ent) {
+  			return ent.getValue() + "." + ent.getKey();
+  		}
+  	  })
       .collect(Collectors.toList());
   }
 }
