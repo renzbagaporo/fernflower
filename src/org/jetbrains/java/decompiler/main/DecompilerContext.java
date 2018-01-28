@@ -55,9 +55,11 @@ public class DecompilerContext {
                                  StructContext structContext,
                                  ClassesProcessor classProcessor,
                                  PoolInterceptor interceptor) {
-    Objects.requireNonNull(logger);
-    Objects.requireNonNull(structContext);
-    Objects.requireNonNull(classProcessor);
+	  
+	if(logger == null || structContext == null || classProcessor == null)
+	{
+		throw new NullPointerException();
+	}
 
     Map<String, Object> properties = new HashMap<String, Object>(FernflowerPreferences.DEFAULTS);
     if (customProperties != null) {
