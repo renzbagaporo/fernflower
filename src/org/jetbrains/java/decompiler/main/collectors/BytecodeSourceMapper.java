@@ -21,19 +21,21 @@ public class BytecodeSourceMapper {
   private final Set<Integer> unmappedLines = new TreeSet<Integer>();
 
   public void addMapping(String className, String methodName, int bytecodeOffset, int sourceLine) {
-    Map<String, Map<Integer, Integer>> class_mapping = mapping.computeIfAbsent(className, new Function<String, Map<String, Map<Integer, Integer>>>() {
-		@Override
-		public Map<String, Map<Integer, Integer>> apply(String k) {
-			return new LinkedHashMap<String, Map<Integer, Integer>>();
-		}
-	}); // need to preserve order
-    Map<Integer, Integer> method_mapping = class_mapping.computeIfAbsent(methodName, new Function<String, Map<Integer, Integer>>() {
-		@Override
-		public Map<Integer, Integer> apply(String k) {
-			return new HashMap<Integer, Integer>();
-		}
-	});
-
+	
+	Map<String, Map<Integer, Integer>> class_mapping = mapping.get(className);
+		
+	if(class_mapping == null) {
+		class_mapping = new LinkedHashMap<String, Map<Integer, Integer>>();
+		mapping.put(className, class_mapping);
+	}
+	
+	Map<Integer, Integer> method_mapping = class_mapping.get(methodName);
+	
+	if(method_mapping == null) {
+		method_mapping = new HashMap<Integer, Integer>();;
+		class_mapping.put(methodName, method_mapping);
+	}
+	  	
     // don't overwrite
     if (!method_mapping.containsKey(bytecodeOffset)) {
       method_mapping.put(bytecodeOffset, sourceLine);

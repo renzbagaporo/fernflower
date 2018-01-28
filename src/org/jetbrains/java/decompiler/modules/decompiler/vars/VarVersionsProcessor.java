@@ -147,12 +147,15 @@ public class VarVersionsProcessor {
 
     for (VarVersionPair pair : mapExprentMinTypes.keySet()) {
       if (pair.version >= 0) {  // don't merge constants
-        mapVarVersions.computeIfAbsent(pair.var, new Function<Integer, Set<Integer>>() {
-			@Override
-			public Set<Integer> apply(Integer k) {
-				return new HashSet<Integer>();
-			}
-		}).add(pair.version);
+    	
+    	Set<Integer> mySet = mapVarVersions.get(pair.var);
+    	
+    	if(mySet == null) {
+    		mySet = new HashSet<Integer>();
+    		mapVarVersions.put(pair.var, mySet);
+    	}
+    	
+    	mySet.add(pair.version);
       }
     }
 

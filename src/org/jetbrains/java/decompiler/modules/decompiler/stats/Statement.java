@@ -244,19 +244,26 @@ public class Statement implements IMatchable {
     Map<Integer, List<StatEdge>> mapEdges = direction == DIRECTION_BACKWARD ? mapPredEdges : mapSuccEdges;
     Map<Integer, List<Statement>> mapStates = direction == DIRECTION_BACKWARD ? mapPredStates : mapSuccStates;
 
-    mapEdges.computeIfAbsent(edgetype, new Function<Integer, List<StatEdge>>() {
-		@Override
-		public List<StatEdge> apply(Integer k) {
-			return new ArrayList<StatEdge>();
-		}
-	}).add(edge);
-
-    mapStates.computeIfAbsent(edgetype, new Function<Integer, List<Statement>>() {
-		@Override
-		public List<Statement> apply(Integer k) {
-			return new ArrayList<Statement>();
-		}
-	}).add(direction == DIRECTION_BACKWARD ? edge.getSource() : edge.getDestination());
+    List<StatEdge> edges = mapEdges.get(edgetype);
+    
+    if(edges == null)
+    {
+    	edges = new LinkedList<StatEdge>();
+    	mapEdges.put(edgetype, edges);
+    }
+    
+    edges.add(edge);
+    
+    List<Statement> states = mapStates.get(edgetype);
+    
+    if(states == null)
+    {
+    	states = new LinkedList<Statement>();
+    	mapStates.put(edgetype, states);
+    }
+    
+    states.add(direction == DIRECTION_BACKWARD ? edge.getSource() : edge.getDestination());
+    
   }
 
   private void addEdgeInternal(int direction, StatEdge edge) {

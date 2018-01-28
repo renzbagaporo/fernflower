@@ -183,12 +183,17 @@ public class DecHelper {
 
   public static Set<Statement> getUniquePredExceptions(Statement head) {
     Set<Statement> setHandlers = new HashSet<Statement>(head.getNeighbours(StatEdge.TYPE_EXCEPTION, Statement.DIRECTION_FORWARD));
-    setHandlers.removeIf(new Predicate<Statement>() {
-		@Override
-		public boolean test(Statement statement) {
-			return statement.getPredecessorEdges(StatEdge.TYPE_EXCEPTION).size() > 1;
-		}
-	});
+    
+    List<Statement> toRemove = new LinkedList<Statement>();
+    
+    for(Statement statement : setHandlers) {
+    	if(statement.getPredecessorEdges(StatEdge.TYPE_EXCEPTION).size() > 1) {
+    		toRemove.add(statement);
+    	}
+    }
+    
+    setHandlers.removeAll(toRemove);
+    
     return setHandlers;
   }
 

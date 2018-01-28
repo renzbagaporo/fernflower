@@ -111,16 +111,14 @@ public class VarVersionsGraph {
       int index = stackIndex.removeLast();
 
       setVisited.add(node);
-
-      List<VarVersionEdge> lstSuccs = mapNodeSuccs.computeIfAbsent(node, new Function<VarVersionNode, List<VarVersionEdge>>() {
-		@Override
-		public List<VarVersionEdge> apply(VarVersionNode n) {
-			return new ArrayList<VarVersionEdge>(n.succs);
-		}
-	});
       
-      
-      
+      List<VarVersionEdge> lstSuccs  = mapNodeSuccs.get(node);
+		
+	  if(lstSuccs == null) {
+		lstSuccs = new ArrayList<VarVersionEdge>(node.succs);
+		mapNodeSuccs.put(node, lstSuccs);
+	  }
+	        
       for (; index < lstSuccs.size(); index++) {
         VarVersionNode succ = lstSuccs.get(index).dest;
 

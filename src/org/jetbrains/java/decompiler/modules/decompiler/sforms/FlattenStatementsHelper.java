@@ -400,29 +400,36 @@ public class FlattenStatementsHelper {
 
     if (finallyShortRangeSource != null) {
       boolean isContinueEdge = (edgetype == StatEdge.TYPE_CONTINUE);
+	  
+      List<String[]> myList;
+      
+      myList = mapShortRangeFinallyPathIds.get(sourcenode.id);
+		
+	  if(myList == null) {
+		myList = new ArrayList<String[]>();
+		mapShortRangeFinallyPathIds.put(sourcenode.id, myList);
+	  }
+	  	
+	  myList.add(new String[]{
+		        finallyShortRangeSource.id,
+		        destination.id.toString(),
+		        finallyShortRangeEntry.id.toString(),
+		        isFinallyMonitorExceptionPath ? "1" : null,
+		        isContinueEdge ? "1" : null});
 
-      mapShortRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
-		@Override
-		public List<String[]> apply(String k) {
-			return new ArrayList<String[]>();
-		}
-	}).add(new String[]{
-        finallyShortRangeSource.id,
-        destination.id.toString(),
-        finallyShortRangeEntry.id.toString(),
-        isFinallyMonitorExceptionPath ? "1" : null,
-        isContinueEdge ? "1" : null});
+      myList = mapLongRangeFinallyPathIds.get(sourcenode.id);
+		
+	  if(myList == null) {
+		myList = new ArrayList<String[]>();
+		mapLongRangeFinallyPathIds.put(sourcenode.id, myList);
+	  }
+	  
+	  myList.add(new String[]{
+		        finallyLongRangeSource.id,
+		        destination.id.toString(),
+		        finallyLongRangeEntry.id.toString(),
+		        isContinueEdge ? "1" : null});
 
-      mapLongRangeFinallyPathIds.computeIfAbsent(sourcenode.id, new Function<String, List<String[]>>() {
-		@Override
-		public List<String[]> apply(String k) {
-			return new ArrayList<String[]>();
-		}
-	}).add(new String[]{
-        finallyLongRangeSource.id,
-        destination.id.toString(),
-        finallyLongRangeEntry.id.toString(),
-        isContinueEdge ? "1" : null});
     }
   }
 

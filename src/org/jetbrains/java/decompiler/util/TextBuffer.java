@@ -278,13 +278,16 @@ public class TextBuffer {
       myLineMapping = new HashMap<Integer, Set<Integer>>();
       for (int i = 0; i < lineMapping.length; i += 2) {
         int key = lineMapping[i + 1];
-        Set<Integer> existing = myLineMapping.computeIfAbsent(key, new Function<Integer, Set<Integer>>() {
-			@Override
-			public Set<Integer> apply(Integer k) {
-				return new TreeSet<Integer>();
-			}
-		});
-        existing.add(lineMapping[i]);
+        
+        Set<Integer> mySet = myLineMapping.get(key);
+        
+        if(mySet == null)
+        {
+        	mySet = new TreeSet<Integer>();
+        	myLineMapping.put(key, mySet);
+        }
+        
+        mySet.add(lineMapping[i]);
       }
     }
   }

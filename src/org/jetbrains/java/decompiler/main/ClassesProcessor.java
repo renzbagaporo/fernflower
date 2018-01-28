@@ -104,20 +104,26 @@ public class ClassesProcessor {
                   DecompilerContext.getLogger().writeMessage(message, IFernflowerLogger.Severity.WARN);
                 }
 
-                // reference to the nested class
-                mapNestedClassReferences.computeIfAbsent(enclClassName, new Function<String, Set<String>>() {
-					@Override
-					public Set<String> apply(String k) {
-						return new HashSet<String>();
-					}
-				}).add(innerName);
-                // reference to the enclosing class
-                mapEnclosingClassReferences.computeIfAbsent(innerName, new Function<String, Set<String>>() {
-					@Override
-					public Set<String> apply(String k) {
-						return new HashSet<String>();
-					}
-				}).add(enclClassName);
+            	Set<String> set;
+            	
+            	set = mapNestedClassReferences.get(enclClassName);
+        		
+            	if(set == null) {
+            	  set = new HashSet<String>();
+            	  mapNestedClassReferences.put(enclClassName, set);
+            	}
+            	
+            	set.add(innerName);
+            	
+            	
+            	set = mapEnclosingClassReferences.get(innerName);
+        		
+            	if(set == null) {
+            	  set = new HashSet<String>();
+            	  mapEnclosingClassReferences.put(innerName, set);
+            	}
+            	
+            	set.add(enclClassName);
               }
             }
           }

@@ -178,12 +178,12 @@ public class DomHelper {
         lstPosts.add(stt.id);
       }
       
-      lstPosts.sort(new Comparator<Integer>() {
-		@Override
-		public int compare(Integer o1, Integer o2) {
-			return mapSortOrder.get(o1) - mapSortOrder.get(o2);
-		}
-      });      
+      Collections.sort(lstPosts, new Comparator<Integer>() {
+  		@Override
+  		public int compare(Integer o1, Integer o2) {
+  			return mapSortOrder.get(o1) - mapSortOrder.get(o2);
+  		}
+      });
 
       if (lstPosts.size() > 1 && lstPosts.get(0).intValue() == st.id) {
         lstPosts.add(lstPosts.remove(0));
@@ -620,13 +620,15 @@ public class DomHelper {
               int oldsize = set.size();
               set.removeAll(setOldNodes);
 
-              if (setOldNodes.contains(key)) {
-                mapExtPost.computeIfAbsent(newid, new Function<Integer, Set<Integer>>() {
-					@Override
-					public Set<Integer> apply(Integer k) {
-						return new HashSet<Integer>();
-					}
-				}).addAll(set);
+              if (setOldNodes.contains(key)) {  
+            	Set<Integer> mySet = mapExtPost.get(newid);
+          		
+            	if(mySet == null) {
+            	  mySet = new HashSet<Integer>();
+            	  mapExtPost.put(newid, mySet);
+            	}
+            	  	
+            	mySet.addAll(set);
                 mapExtPost.remove(key);
               }
               else {

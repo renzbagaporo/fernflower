@@ -29,6 +29,7 @@ import org.jetbrains.java.decompiler.struct.gen.VarType;
 import org.jetbrains.java.decompiler.util.TextUtil;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.Function;
 
 public class ExprProcessor implements CodeConstants {
@@ -174,12 +175,18 @@ public class ExprProcessor implements CodeConstants {
         }
 
         if (isSuccessor) {
-          Map<String, PrimitiveExprsList> mapSucc = mapData.computeIfAbsent(nd, new Function<DirectNode, Map<String, PrimitiveExprsList>>() {
-			@Override
-			public Map<String, PrimitiveExprsList> apply(DirectNode k) {
-				return new HashMap<String, PrimitiveExprsList>();
-			}
-		});
+          Map<String, PrimitiveExprsList> mapSucc;
+
+    	  if(!mapData.containsKey(nd) || mapData.get(nd) == null)
+    	  {
+    		  mapSucc = new HashMap<String, PrimitiveExprsList>();
+    		  mapData.put(nd, mapSucc);
+    	  }
+    	  else
+    	  {
+    		  mapSucc = mapData.get(nd);
+    	  }
+          
           LinkedList<String> ndentrypoints = new LinkedList<String>(entrypoints);
 
           if (setFinallyLongRangeEntryPaths.contains(node.id + "##" + nd.id)) {

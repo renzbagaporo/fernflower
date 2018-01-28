@@ -47,7 +47,7 @@ public class VarProcessor {
 
     List<VarVersionPair> listVars = new ArrayList<VarVersionPair>(mapVarNames.keySet());
     
-    listVars.sort(new Comparator<VarVersionPair>() {
+    Collections.sort(listVars, new Comparator<VarVersionPair>() {
 		@Override
 		public int compare(VarVersionPair o1, VarVersionPair o2) {
 			// TODO Auto-generated method stub
