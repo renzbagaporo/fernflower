@@ -30,7 +30,6 @@ import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.TextBuffer;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class ClassWriter {
   private final PoolInterceptor interceptor;

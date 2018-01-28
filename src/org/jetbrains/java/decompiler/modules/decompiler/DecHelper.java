@@ -5,7 +5,6 @@ import org.jetbrains.java.decompiler.modules.decompiler.exps.Exprent;
 import org.jetbrains.java.decompiler.modules.decompiler.stats.Statement;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 
 public class DecHelper {

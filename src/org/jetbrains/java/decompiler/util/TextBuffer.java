@@ -7,7 +7,6 @@ import org.jetbrains.java.decompiler.main.DecompilerContext;
 import org.jetbrains.java.decompiler.main.extern.FernflowerPreferences;
 
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * Allows to connect text with resulting lines

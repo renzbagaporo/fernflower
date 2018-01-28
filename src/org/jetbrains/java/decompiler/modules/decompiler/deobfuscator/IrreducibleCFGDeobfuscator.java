@@ -9,7 +9,6 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.ToIntFunction;
 
 
 public class IrreducibleCFGDeobfuscator {

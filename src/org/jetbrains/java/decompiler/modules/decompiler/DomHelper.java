@@ -15,7 +15,6 @@ import org.jetbrains.java.decompiler.util.InterpreterUtil;
 import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class DomHelper {
 

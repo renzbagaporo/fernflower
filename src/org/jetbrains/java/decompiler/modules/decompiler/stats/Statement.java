@@ -20,7 +20,6 @@ import org.jetbrains.java.decompiler.util.VBStyleCollection;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Function;
 
 public class Statement implements IMatchable {
   public static final int STATEDGE_ALL = 0x80000000;

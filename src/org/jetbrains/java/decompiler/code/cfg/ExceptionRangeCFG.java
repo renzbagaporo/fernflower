@@ -4,7 +4,6 @@ package org.jetbrains.java.decompiler.code.cfg;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ExceptionRangeCFG {
   private final List<BasicBlock> protectedRange; // FIXME: replace with set
