@@ -1,4 +1,4 @@
-#### Backport to Java 6 - Ongoing
+#### Backport to Java 6
 
 ### About Fernflower
 
