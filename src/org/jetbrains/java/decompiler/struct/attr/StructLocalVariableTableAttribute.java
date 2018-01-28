@@ -7,6 +7,7 @@ import org.jetbrains.java.decompiler.util.DataInputFullStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -106,27 +107,23 @@ public class StructLocalVariableTableAttribute extends StructGeneralAttribute {
   }
 
   public Map<Integer, String> getMapParamNames() {
-    return localVariables.stream().filter(new Predicate<LocalVariable>() {
-		@Override
-		public boolean test(LocalVariable v) {
-			return v.start_pc == 0;
+	
+	List<LocalVariable> filtered = new LinkedList<LocalVariable>();
+	
+	for (LocalVariable localVariable : localVariables) {
+		if(localVariable.start_pc == 0)
+		{
+			filtered.add(localVariable);
 		}
-	}).collect(Collectors.toMap(new Function<LocalVariable, Integer>() {
-		@Override
-		public Integer apply(LocalVariable v) {
-			return v.index;
-		}
-	}, new Function<LocalVariable, String>() {
-		@Override
-		public String apply(LocalVariable v) {
-			return v.name;
-		}
-	}, new BinaryOperator<String>() {
-		@Override
-		public String apply(String n1, String n2) {
-			return n2;
-		}
-	}));
+	}
+	
+	Map<Integer, String> mapped = new HashMap<Integer, String>();
+	
+	for (LocalVariable localVariable : filtered) {
+		mapped.put(localVariable.index, localVariable.name);
+	}
+	
+	return mapped;
   }
 
   private static class LocalVariable {

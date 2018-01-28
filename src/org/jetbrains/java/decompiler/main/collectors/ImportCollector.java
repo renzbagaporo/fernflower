@@ -148,45 +148,37 @@ public class ImportCollector {
   }
 
   private List<String> packImports() {
-	  
-    List<Object> result = mapSimpleNames.entrySet().stream()
-      .filter(new Predicate<Entry<String, String>>() {
-		@Override
-		public boolean test(Entry<String, String> ent) {
-			return // exclude the current class or one of the nested ones
-			// empty, java.lang and the current packages
-			!setNotImportedNames.contains(ent.getKey()) &&
-			!ent.getValue().isEmpty() &&
-			!JAVA_LANG_PACKAGE.equals(ent.getValue()) &&
-			!ent.getValue().equals(currentPackagePoint);
+
+	List<Entry<String, String>> filtered = new LinkedList<Entry<String, String>>();
+
+	for (Entry<String, String> entry : mapSimpleNames.entrySet()) {
+		if (!setNotImportedNames.contains(entry.getKey()) && !entry.getValue().isEmpty()
+				&& !JAVA_LANG_PACKAGE.equals(entry.getValue()) && !entry.getValue().equals(currentPackagePoint)) {
+			filtered.add(entry);
 		}
-	  }
-      )
-      .sorted((new Comparator<Entry<String, String>>() {
-  		@Override
-  		public int compare(Entry<String, String> o1, Entry<String, String> o2) {
-  			return o1.getValue().compareTo(o2.getValue());
-  		}
-         }).thenComparing(new Comparator<Entry<String, String>>() {
-     		@Override
-    		public int compare(Entry<String, String> o1, Entry<String, String> o2) {
-    			return o1.getKey().compareTo(o2.getKey());
-    		}
-           }))
-      .map(new Function<Entry<String, String>, String>() {
-  		@Override
-  		public String apply(Entry<String, String> ent) {
-  			return ent.getValue() + "." + ent.getKey();
-  		}
-  	  })
-      .collect(Collectors.toList());    
-    
-    List<String> toReturn = new LinkedList<String>();
-    
-    for (Object o : result) {
-		toReturn.add((String)o);
 	}
-    
-    return toReturn;
+
+	List<Entry<String, String>> sorted = new LinkedList<Entry<String, String>>(filtered);
+
+	Collections.sort(sorted, new Comparator<Entry<String, String>>() {
+		@Override
+		public int compare(Entry<String, String> o1, Entry<String, String> o2) {
+			int result = o1.getValue().compareTo(o2.getValue());
+
+			if (result == 0) {
+				result = o1.getKey().compareTo(o2.getKey());
+			}
+
+			return result;
+		}
+	});
+
+	List<String> mapped = new LinkedList<String>();
+
+	for (Entry<String, String> entry : sorted) {
+		mapped.add(entry.getValue() + "." + entry.getKey());
+	}
+
+	return mapped;
   }
 }

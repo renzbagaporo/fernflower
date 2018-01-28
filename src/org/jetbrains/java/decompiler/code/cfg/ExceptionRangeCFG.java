@@ -2,6 +2,7 @@
 package org.jetbrains.java.decompiler.code.cfg;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,36 @@ public class ExceptionRangeCFG {
   }
 
   public String getUniqueExceptionsString() {
-    return exceptionTypes != null ? exceptionTypes.stream().distinct().collect(Collectors.joining(":")) : null;
+	
+	if(exceptionTypes != null)
+	{
+		List<String> distinct = new LinkedList<String>();
+		
+		for (String exp : exceptionTypes) {
+			if(!distinct.contains(exp))
+			{
+				distinct.add(exp);
+			}
+		}
+		
+		StringBuilder result = new StringBuilder();
+		
+		boolean first = true;
+		
+		for (String string : distinct) {
+			if(first) {
+				first = false;
+			}
+			else {
+				result.append(":");
+			}
+			
+			result.append(string);
+		}
+		
+		return result.toString();
+	}
+    
+    return null;
   }
 }
