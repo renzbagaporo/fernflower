@@ -67,14 +67,14 @@ public class DominatorTreeExceptionFilter {
       Integer key = lstKeys.get(index);
       Integer idom = orderedIDoms.get(index);
       
-	  Set<Integer> mySet = mapTreeBranches.get(idom);
+	    Set<Integer> mySet = mapTreeBranches.get(idom);
 		
-	  if(mySet == null) {
-	  	mySet = new HashSet<Integer>();
-	  	mapTreeBranches.put(idom, mySet);
-	  }
+	    if(mySet == null) {
+	  	  mySet = new HashSet<Integer>();
+	  	  mapTreeBranches.put(idom, mySet);
+	    }
 	  	
-	  mySet.add(key);
+	    mySet.add(key);
     }
 
     Integer firstid = statement.getFirst().id;
@@ -121,7 +121,7 @@ public class DominatorTreeExceptionFilter {
     return map;
   }
 
-  private void buildFilter(Integer id) {
+  private void buildFilter(Integer id)  {
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
     Set<Integer> children = mapTreeBranches.get(id);
@@ -136,14 +136,13 @@ public class DominatorTreeExceptionFilter {
 
           if (range.contains(id)) {
 
-            Integer exit;
+            Integer exit = null;
 
             if (!range.contains(childid)) {
               exit = childid;
             }
             else {
               // exit = map.containsKey(handler)?-1:mapChild.get(handler); FIXME: Eclipse bug?
-              exit = map.containsKey(handler) ? -1 : mapChild.get(handler);
             }
 
             if (exit != null) {
