@@ -97,28 +97,31 @@ public class StructContext {
       if (isArchive) {
         return;
       }
-
+      
       ContextUnit unit = units.get(path);
       if (unit == null) {
         unit = new ContextUnit(ContextUnit.TYPE_FOLDER, null, path, isOwn, saver, decompiledData);
         units.put(path, unit);
       }
 
-      if (filename.endsWith(".class")) {
-        try {
-          DataInputFullStream in = loader.getClassStream(file.getAbsolutePath(), null);
-          StructClass cl = new StructClass(in, isOwn, loader);
-          classes.put(cl.qualifiedName, cl);
-          unit.addClass(cl, filename);
-          loader.addClassLink(cl.qualifiedName, new LazyLoader.Link(file.getAbsolutePath(), null));
-        }
-        catch (IOException ex) {
-          String message = "Corrupted class file: " + file;
-          DecompilerContext.getLogger().writeMessage(message, ex);
-        }
-      }
-      else {
-        unit.addOtherEntry(file.getAbsolutePath(), filename);
+      if(!filename.endsWith(".j")) // Exclude jasmin assembly files
+      {
+	      if (filename.endsWith(".class")) {
+	        try {
+	          DataInputFullStream in = loader.getClassStream(file.getAbsolutePath(), null);
+	          StructClass cl = new StructClass(in, isOwn, loader);
+	          classes.put(cl.qualifiedName, cl);
+	          unit.addClass(cl, filename);
+	          loader.addClassLink(cl.qualifiedName, new LazyLoader.Link(file.getAbsolutePath(), null));
+	        }
+	        catch (IOException ex) {
+	          String message = "Corrupted class file: " + file;
+	          DecompilerContext.getLogger().writeMessage(message, ex);
+	        }
+	      }
+	      else {
+	        unit.addOtherEntry(file.getAbsolutePath(), filename);
+	      }
       }
     }
   }
